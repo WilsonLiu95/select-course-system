@@ -21,18 +21,6 @@ class Teacher extends Model
      */
     protected $guarded = ['created_at','updated_at'];
 
-
-    // get与set
-    public function account(){
-        $data =  array(
-            "major" =>$this->major()->first()["name"],
-            "institute" =>$this->institute()->first()["name"]
-        );
-        $orign = $this->toArray();
-
-        $orign = array_except($orign,["id","openid","created_at","updated_at","direction_id","institute_id"]);
-        return array_merge($orign,$data);
-    }
     // 关联
     public function  isMajorAdmin(){
         return $this->is_admin;
