@@ -15,21 +15,21 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
 
         factory(\App\Model\Institute::class)->create();
-        factory(\App\Model\Grade::class)->create();
-        factory(\App\Model\Major::class,4)->create();
         factory(\App\Model\Admin::class)->create();
 
+        factory(\App\Model\Grade::class)->create();
 
-        factory(\App\Model\Teacher::class,100)->create();
+        factory(\App\Model\Major::class,3)->create();
+        factory(\App\Model\Direction::class,7)->create();
+        factory(\App\Model\MajorDirection::class,10)->create();
 
-        factory(\App\Model\Message::class,1000)->create();
-
-        factory(\App\Model\Course::class,1000)->create()->each(function($course){
+        factory(\App\Model\Classes::class,10)->create();
+        factory(\App\Model\Course::class,77)->create()->each(function($course){
             $schedule = factory(\App\Model\Schedule::class)->make();
             $course->schedule()->save($schedule);
         });
 
-        factory(\App\Model\Student::class,100)->create();
+        factory(\App\Model\Student::class,237)->create();
         Model::reguard();
     }
 }

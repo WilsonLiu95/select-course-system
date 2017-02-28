@@ -4,9 +4,9 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Message extends Model
+class Classes extends Model
 {
-    protected $table = 'message';
+    protected $table = 'classes';
 
     /**
      * 可以被批量赋值的属性。
@@ -21,11 +21,4 @@ class Message extends Model
      */
     protected $guarded = ['created_at','updated_at'];
 
-    public function from(){
-        return $this->morphTo();
-    }
-
-    public function send(){
-        return $this->morphTo();
-    }
 }

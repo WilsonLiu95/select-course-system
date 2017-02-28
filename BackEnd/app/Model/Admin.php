@@ -27,12 +27,4 @@ class Admin extends Model
         return $this->belongsTo('App\Model\Institute');
     }
 
-    public function message_from()
-    {
-        return $this->morphMany('App\Model\Message','from');
-    }
-    public function message_send()
-    {
-        return $this->morphMany('App\Model\Message','send');
-    }
 }

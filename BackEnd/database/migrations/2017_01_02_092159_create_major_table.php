@@ -15,6 +15,9 @@ class CreateMajorTable extends Migration
         Schema::create('major', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('institute_id');
+            $table->tinyInteger('status')
+                ->default(1)
+                ->comment("为防止以后新增或删除专业预留字段");
             $table->string('name', 32);
             $table->timestamps();
         });

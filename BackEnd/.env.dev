@@ -3,7 +3,7 @@ APP_DEBUG=false
 APP_KEY=SomeRandomString
 
 DB_HOST=localhost
-DB_DATABASE=bishe
+DB_DATABASE=select_course_system
 DB_USERNAME=root
 DB_PASSWORD=root
 

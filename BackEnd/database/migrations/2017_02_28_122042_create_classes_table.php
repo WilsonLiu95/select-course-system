@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStudentTable extends Migration
+class CreateClassesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,18 +12,18 @@ class CreateStudentTable extends Migration
      */
     public function up()
     {
-        Schema::create('student', function (Blueprint $table) {
+        Schema::create('classes', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('openid',28); // 微信的uid来标识唯一的微信号
-            $table->integer('grade_id');
             $table->integer('institute_id');
-
+            // 用于映射两者的多对多关系
+            $table->string('name',32)
+                ->comment('班级名称');
+            $table->integer('grade_id');
+            $table->boolean('is_prior')
+                ->comment('是否优先,即提高卓越');
             $table->tinyInteger('status')
                 ->default(1)
-                ->comment("状态包含 0:删除,1:有效");
-
-            $table->string('name',32);
-            $table->string('job_num',32)->comment("学号");
+                ->comment("为防止以后新增或删除方向预留字段");
 
             $table->timestamps();
         });
@@ -36,6 +36,6 @@ class CreateStudentTable extends Migration
      */
     public function down()
     {
-        Schema::drop('student');
+        Schema::drop('classes');
     }
 }

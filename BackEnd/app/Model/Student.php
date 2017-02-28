@@ -22,13 +22,6 @@ class Student extends Model
      */
     protected $guarded = ['created_at','updated_at'];
 
-    public function account(){
-        $orign = $this->toArray();
-        $orign['institute'] = $this->institute()->first()["name"];
-        $orign = array_except($orign,["id","openid","created_at","updated_at","direction_id","institute_id"]);
-        return $orign;
-    }
-
     // 关联
     public function institute()
     {
@@ -46,13 +39,6 @@ class Student extends Model
     {
         return $this->hasMany('App\Model\Course');
     }
-    public function message_from()
-    {
-        return $this->morphMany('App\Model\Message','from');
-    }
-    public function message_send()
-    {
-        return $this->morphMany('App\Model\Message','send');
-    }
+
 
 }

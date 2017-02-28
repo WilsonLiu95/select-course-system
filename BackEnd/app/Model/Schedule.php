@@ -30,13 +30,5 @@ class Schedule extends Model
     {
         return $this->belongsTo('App\Model\Course');
     }
-    public function getStudentNameAttribute()
-    {
-        return $this->student()->get()[0]['name'];
-    }
-    public function getJobNumAttribute()
-    {
-        return $this->student()->get()[0]['job_num'];
-    }
 
 }

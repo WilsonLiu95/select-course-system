@@ -24,6 +24,14 @@ class Grade extends Model
     {
         return $this->hasMany('App\Model\Student');
     }
+    public function schedule()
+    {
+        return $this->hasMany('App\Model\Scheule');
+    }
+    public function course()
+    {
+        return $this->hasMany('App\Model\Course');
+    }
     public function institute()
     {
         return $this->belongsTo('App\Model\Institute');

@@ -14,9 +14,14 @@ class CreateScheduleTable extends Migration
     {
         Schema::create('schedule', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('grade_id');
+
             $table->integer('course_id');
-            $table->string('student_id',32);
-            $table->tinyInteger('status'); // 0为选定后退选课程,1为学生选定该课程，2为互选成功，
+            $table->integer('student_id');
+
+            $table->tinyInteger('status')
+            ->comment("0:为选中后退选课程,1:选中课程");
+
             $table->timestamps();
         });
     }

@@ -36,4 +36,12 @@ class Institute extends Model
     {
         return $this->hasMany('App\Model\Major');
     }
+    public function direction()
+    {
+        return $this->hasMany('App\Model\Direction');
+    }
+    public function classes()
+    {
+        return $this->hasMany('App\Model\Classes');
+    }
 }
