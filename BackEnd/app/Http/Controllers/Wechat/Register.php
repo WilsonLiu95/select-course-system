@@ -45,13 +45,13 @@ class Register extends Controller
         session()->put("isTeacher", $isTeacher);
         session()->put("id",$user["id"]);
 
-        return $this->redirect($isTeacher ? "teacher":"student",false,$msg);
+        return $this->redirect([ "name" => 'course'],$msg,["isTeacher"=>$isTeacher]);
     }
     public function getIsLogin(){
         if($this->getSessionInfo("isLogin")){
-            return $this->redirect($this->isTeacher()?'teacher':'student');
+            return $this->redirect([ "name" => 'course'],'已登录，为您自动跳转',["isTeacher"=>$this->isTeacher()]);
         }else{
-            return "未登录";
+            return $this->toast(0,"请先注册");
         }
 
     }
