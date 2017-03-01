@@ -20,10 +20,7 @@ class CreateMajorDirectionTable extends Migration
             $table->integer('major_id');
             $table->integer('direction_id');
 
-            $table->tinyInteger('status')
-                ->default(1)
-                ->comment("为防止以后新增或删除方向预留字段");
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

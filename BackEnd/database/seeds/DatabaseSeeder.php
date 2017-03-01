@@ -14,22 +14,25 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        factory(\App\Model\Institute::class)->create();
-        factory(\App\Model\Admin::class)->create();
 
-        factory(\App\Model\Grade::class)->create();
 
-        factory(\App\Model\Major::class,3)->create();
-        factory(\App\Model\Direction::class,7)->create();
-        factory(\App\Model\MajorDirection::class,10)->create();
+        // 暂时一条数据部分
+        $this->call(InstituteTableSeeder::class);
+        $this->call(AdminTableSeeder::class);
+        $this->call(GradeTableSeeder::class);
 
-        factory(\App\Model\Classes::class,10)->create();
-        factory(\App\Model\Course::class,77)->create()->each(function($course){
-            $schedule = factory(\App\Model\Schedule::class)->make();
-            $course->schedule()->save($schedule);
-        });
+        // 单独设定
+        $this->call(MajorDirectionTableSeeder::class);
+        $this->call(DirectionTableSeeder::class);
+        $this->call(MajorTableSeeder::class);
+        $this->call(ClassesTableSeeder::class);
 
-        factory(\App\Model\Student::class,237)->create();
+        $this->call(CourseTableSeeder::class); // 课程
+        $this->call(StudentTableSeeder::class); // 学生表
+
+
+        $this->call(ScheduleTableSeeder::class);
+
         Model::reguard();
     }
 }

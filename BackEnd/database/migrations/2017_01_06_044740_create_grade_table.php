@@ -17,7 +17,7 @@ class CreateGradeTable extends Migration
             $table->integer('institute_id');
             $table->string('name',32);
             // 个性化配置
-            $table->tinyInteger('status')
+            $table->tinyInteger('system_status')
                 ->comment("状态包含 0:关闭,1:对特权班级开发,2:对所有学生开放。关闭中的年份只要不结束都可以再次开放");
             $table->boolean('isHistory')
                 ->default(false)
@@ -26,7 +26,7 @@ class CreateGradeTable extends Migration
                 ->comment("最少学分限制");
             $table->integer('max_prior_select_num')
                 ->comment("对于特权班级,每门课程最多有多少人选上");
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -19,7 +19,15 @@ class Major extends Model
      *
      * @var array
      */
-    protected $guarded = ['created_at','updated_at'];
+    protected $touches = ['institute'];
+
+
+    public function direction(){
+        return $this->belongsToMany('App\Model\Direction','major_direction')
+            ->withPivot('institute_id')
+            ->withTimestamps();
+    }
+//    protected $guarded = ['created_at','updated_at'];
 
     public function institute()
     {

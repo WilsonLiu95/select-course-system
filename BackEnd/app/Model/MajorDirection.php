@@ -8,10 +8,12 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class MajorDirection extends Model
 {
+    use SoftDeletes;
     protected $table = 'major_direction';
-
+    protected $dates = ['deleted_at'];
     /**
      * 可以被批量赋值的属性。
      *

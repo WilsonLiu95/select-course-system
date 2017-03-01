@@ -14,7 +14,7 @@
 1. 配置中的`unix_socket`，应该是记录socket的路径，换台机子可能对应路径不一样
 2. guzzle请求https服务时(微信认证)，本地没有对应的SSL证书造成请求失败。可以省去SSL证书认证`$client = new \GuzzleHttp\Client(['base_uri'=>'https://api.weixin.qq.com','verify' => false]);`
 3. window平台可以安装XMAPP提供mysql等服务。XMAPP安装后,无法初始化数据。原因是安装后，密码没有设置为root [设置方法](http://www.cnblogs.com/xlw1219/p/3197771.html)
-
+4. 如果在你运行时出现「class not found」的错误，请试着在运行 `composer dump-autoload` 命令后再次运行迁移命令。
 ## 整体说明
 本项目主要采用laravel作为框架。另外使用了guzzle作为http请求插件。
 所有的配置文件都在`.env`中，包括数据库配置，和微信公众号配置，和跨域设置的域名，与前端的前缀路径(给前端返回重定向请求时使用)无法初始化数据。原因是安装后，密码没有设置为root

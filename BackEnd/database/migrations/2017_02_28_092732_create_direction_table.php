@@ -15,10 +15,12 @@ class CreateDirectionTable extends Migration
         //
         Schema::create('direction', function (Blueprint $table) {
             $table->increments('id');
+
             $table->integer('institute_id');
-            $table->tinyInteger('status')
-                ->default(1)
-                ->comment("为防止以后新增或删除方向预留字段");
+            $table->integer('direction_code')
+                ->comment('方向代号用于填充在excel中,根据institute与方向代号一起确认方向ID');
+            $table->softDeletes();
+            $table->integer('direction_id');
             $table->string('name', 32);
             $table->timestamps();
         });

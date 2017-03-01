@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Api\ScheduleTab;
-use App\Model\Course;
-use App\Model\Schedule;
-use App\Model\Student;
-use App\Model\Teacher;
-use Faker\Factory;
+use App\Model\Direction;
+use App\Model\Major;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-use Psy\Util\Json;
+use Schema;
+use DB;
+use Illuminate\Database\Schema\Blueprint;
 
 class Test extends Controller
 {
-    public function getIndex(Request $request)
-    {
 
-        return "laravel启动成功";
+    public function getIndex()
+    {
+        return rand(1,3);
     }
 
 

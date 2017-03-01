@@ -20,17 +20,16 @@ class Institute extends Model
      * @var array
      */
     protected $guarded = ['created_at','updated_at'];
-    public function teacher()
-    {
-        return $this->hasMany('App\Model\Teacher');
-    }
-    public function student()
-    {
-        return $this->hasMany('App\Model\Student');
-    }
+
+
+
     public function grade()
     {
         return $this->hasMany('App\Model\Grade');
+    }
+    public function major_direction()
+    {
+
     }
     public function major()
     {
@@ -40,8 +39,19 @@ class Institute extends Model
     {
         return $this->hasMany('App\Model\Direction');
     }
+
+    public function student()
+    {
+        return $this->hasMany('App\Model\Student');
+    }
     public function classes()
     {
         return $this->hasMany('App\Model\Classes');
     }
+    public function course()
+    {
+
+    }
+
+
 }

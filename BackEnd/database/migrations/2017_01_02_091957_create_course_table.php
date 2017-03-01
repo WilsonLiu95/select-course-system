@@ -14,6 +14,8 @@ class CreateCourseTable extends Migration
     {
         Schema::create('course', function (Blueprint $table) {
             $table->increments('id');
+            $table->uuid('uuid')
+                ->comment('用于内存中特殊标识某门课程');
             $table->integer('institute_id');
             $table->integer('grade_id');
 
@@ -26,16 +28,15 @@ class CreateCourseTable extends Migration
                 ->comment('是否为选修课');
 
             $table->string('title',32);
+            $table->string('course_code',32)
+                ->comment('国家给的课程编号');
             $table->integer('credit')
                 ->comment('学分');
             $table->integer('required_number')
                 ->comment('所需学生数量');
 
-            $table->tinyInteger('status')
-                ->comment("状态包含 0:已删除,1:有效")
-                ->default(1);
 
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

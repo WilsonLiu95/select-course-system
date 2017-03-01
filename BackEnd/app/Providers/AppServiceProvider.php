@@ -4,6 +4,7 @@ namespace App\Providers;
 use App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use DB;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,12 +14,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        DB::listen(function($sql, $bindings, $time) {
 
-        Relation::morphMap([
-            '1' => App\Model\Admin::class,
-            '2' => App\Model\Teacher::class,
-            '3' => App\Model\Student::class,
-        ]);
+        });
+        App\Model\Major::updating(function ($major) {
+            var_dump($major->original);
+        });
     }
 
     /**
