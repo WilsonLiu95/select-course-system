@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Psy\Exception\ErrorException;
 use Schema;
 use DB;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,7 +18,7 @@ class Test extends Controller
 
     public function getIndex()
     {
-        return Model\Student::where('major_id',3)->value('id');
+
     }
 
 

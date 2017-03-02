@@ -13,6 +13,8 @@
 
     <!--start 课表清单-->
     <div class="page-tab-container" v-if="isInit">
+      <mt-cell v-if="current_page==1"style="text-align:center" label="提示：部分公选课同时属于专业方向选修课，优先当成选修课">
+      </mt-cell>
       <mt-cell v-for="item in course[current_page-1]" :title="item.title" :label="getLabel(item)" :to="'/details/' + item.id" is-link>
         {{ item.teacher}}
       </mt-cell>
@@ -56,8 +58,8 @@
       }
     },
     created() {
-      if (_store.tab_course.isValid()) {
-        // 如果存储过,则直接拿_store中的数据
+      if (_store.tab_course.hasStoreCourse) {
+        // 如果存储过,则直接拿_store.tab_course中的数据进行初始化
         this.initData(_store.tab_course.direction, _store.tab_course.course, _store.tab_course.all_direction)
       } else {
         this.getCourse()
@@ -75,6 +77,7 @@
           _store.tab_course.direction = data.direction
           _store.tab_course.course = data.course
           _store.tab_course.all_direction = data.all_direction
+          _store.tab_course.hasStoreCourse = true
         })
       },
       initData(direction, course, all_direction) {
@@ -85,9 +88,9 @@
         this.slots[0].values = direction
         this.course = course
         this.isInit = true
-        if (_store.tab_course.page) {
+        if (_store.page) {
           // debugger
-          this.current_page = _store.tab_course.page
+          this.current_page = _store.page
         }
       },
       getLabel(item) {
@@ -106,7 +109,7 @@
           this.first_into = false
         } else {
           this.current_page = this.direction.indexOf($item[0]) + 1
-          _store.tab_course.page = this.current_page
+          _store.page = this.current_page
         }
 
       },
@@ -124,7 +127,7 @@
           return
         }
         this.current_page = this.current_page + n
-        _store.tab_course.page = this.current_page
+        _store.page = this.current_page
       },
 
     },

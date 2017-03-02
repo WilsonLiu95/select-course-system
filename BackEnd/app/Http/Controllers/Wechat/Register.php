@@ -41,10 +41,17 @@ class Register extends Controller
         session()->put("isLogin", true);
         session()->put("id",$user["id"]);
 
-        return $this->redirect([ "name" => 'course'],$msg);
+        if(!$this->getUser()->classes_id) { // 如果classes_id为空,则先导向课程
+            return $this->redirect(['name' => 'select-class']);
+        }
+        return $this->redirect([ "name" => 'select-class'],$msg);
     }
     public function getIsLogin(){
         if($this->getSessionInfo("isLogin")){
+            if(!$this->getUser()->classes_id) { // 如果classes_id为空,则先导向课程
+                return $this->redirect(['name' => 'select-class']);
+            }
+
             return $this->redirect([ "name" => 'course'],'已登录，为您自动跳转');
         }else{
             return $this->toast(0,"请先注册");

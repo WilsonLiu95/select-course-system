@@ -24,14 +24,16 @@ var router = new VueRouter(routerConfig)
 
 // ======================配置mock数据和全局常量===============================
 window._store = { // 因为是单页面框架，将全局变量当成session使用
-  tab_course:{
-    page: '', // 用户在哪一页
-    direction: [], // 存储方向
+  // course页面的数据
+  page: '', // 用户在哪一页
+  tab_course: {
+    hasStoreCourse: false,
     course: [], // 存储课程数据
-    isValid(){
-      return _store.tab_course.direction.length
-    }
-  }
+    all_direction: [], // 存储所有方向
+    direction: [], // 存储用户可选的方向
+  },
+  // account页面的数据
+  account: {}, // 账户信息
 }
 window.util = {
   v: validator,

@@ -15,6 +15,7 @@ Route::controller("/test","Test");
 Route::group(['prefix' => 'wechat'], function(){
 
     Route::controller("/wechat","Wechat\Wechat"); // 微信授权
+
     Route::group(['middleware' => 'AuthOfWechat'], function(){
         // 微信接口 如下
         Route::controller("/register","Wechat\Register");

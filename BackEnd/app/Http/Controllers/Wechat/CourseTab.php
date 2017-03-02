@@ -15,7 +15,6 @@ class CourseTab extends Controller
     use BaseTrait;
     public function getIndex()
     {
-
         $user = $this->getUser();
         $dir = $user->major->direction;
         $all_dir = $user->institute->direction;
