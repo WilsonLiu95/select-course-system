@@ -23,28 +23,17 @@ Vue.config.debug = true;
 var router = new VueRouter(routerConfig)
 
 // ======================配置mock数据和全局常量===============================
-window._const = {
-  msg: [], // 保存所有消息
-  isTeacher: '',
-  search: "", // 搜索信息
-  page: '', // 用户在哪一页
+window._store = { // 因为是单页面框架，将全局变量当成session使用
+  tab_course:{
+    page: '', // 用户在哪一页
+    direction: [], // 存储方向
+    course: [], // 存储课程数据
+    isValid(){
+      return _store.tab_course.direction.length
+    }
+  }
 }
 window.util = {
-  isTeacher() {
-    return new Promise(function (resolve, reject) {
-      if (_const.isTeacher !== "") {
-        resolve(_const.isTeacher)
-      } else {
-        axios.get('/account/is-teacher')
-          .then(res => {
-            _const.isTeacher = res.data.data
-            resolve(res.data.data)
-          },res=>{
-            reject(res)
-          })
-      }
-    })
-  },
   v: validator,
   is(type, value, option) {
     if (value === undefined || value === null) {

@@ -16,11 +16,8 @@ class StudentTableSeeder extends Seeder
         $major_id = App\Model\Major::where('institute_id',1)
             ->where('major_code',$major_code)->value('id');
 
-        $classes_code = '';
+//        $classes_code = '';
 
-        factory(\App\Model\Student::class)->make([
-
-
-        ]);
+        factory(\App\Model\Student::class,247)->create();
     }
 }

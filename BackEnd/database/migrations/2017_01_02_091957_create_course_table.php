@@ -21,12 +21,13 @@ class CreateCourseTable extends Migration
 
             $table->integer('direction_id')
                   ->comment('属于哪个专业方向');
-
+            $table->integer('direction_code')
+                ->comment('用于excel');
             $table->boolean('is_common')
                 ->comment('是否为公选课');
             $table->boolean('is_select')
                 ->comment('是否为选修课');
-
+            $table->string('teacher',32);
             $table->string('title',32);
             $table->string('course_code',32)
                 ->comment('国家给的课程编号');

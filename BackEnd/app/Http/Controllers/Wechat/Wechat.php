@@ -36,19 +36,13 @@ class Wechat extends Controller
         session()->put("openid",$body->openid);
 
         $student = Model\Student::where("openid",$body->openid);
-        $teacher = Model\Teacher::where("openid",$body->openid);
         if ($student->exists()){
-            session()->put("isTeacher", 0); 
             $user = $student->first();
-        } else if ($teacher->exists()){
-            session()->put("isTeacher", 1);
-            $user = $teacher->first();
         }else{
             // 该微信用户未注册
         return response()->json([
             'state'=>301,
             'url'=> env("BASE_PATH"),
-            'data'=>["isTeacher"=>$this->isTeacher()]
         ]);        
         }
         // 登录成功
@@ -57,7 +51,6 @@ class Wechat extends Controller
         return response()->json([
             'state'=>301,
             'url'=> env("BASE_PATH"),
-            'data'=>["isTeacher"=>$this->isTeacher()]
         ]);        
 
     }

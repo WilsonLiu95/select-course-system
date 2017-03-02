@@ -4,7 +4,6 @@
     <div>
       <mt-field label="姓名" placeholder="请输入姓名" :state="data.name ? 'success' : 'error'" v-model="data.name"></mt-field>
       <mt-field label="学号" placeholder="请输入学号" :state="data.job_num ? 'success' : 'error'" v-model="data.job_num"></mt-field>
-      <mt-field label="电话" placeholder="请输入电话" :state="isPhone ? 'success' : 'error'" v-model="data.phone"></mt-field>
       <mt-button size="large" type="primary" @click="register">确认</mt-button>
     </div>
   </div>
@@ -15,27 +14,18 @@
     data() {
       return {
         data: {
-          name: "测试账号",
-          job_num: "44",
-          phone: "18571635614",
+          name: "刘盛",
+          job_num: "1995",
+
         }
       }
     },
     created() {
-      this.$http.get('register/is-login').then(res => {
-        if (res.state == 301) {
-          _const.isTeacher = res.data.isTeacher
-        }
-      }) // 判断是否已经登录，登录过则自动跳转
-    },
-    computed: {
-      isPhone() {
-        return util.is('isMobilePhone', this.data.phone, 'zh-CN')
-      },
+      this.$http.get('register/is-login') // 判断是否已经登录，登录过则自动跳转
     },
     methods: {
       register() {
-        if (this.data.name && this.data.job_num && this.isPhone) {
+        if (this.data.name && this.data.job_num) {
           this.$http.post("register", this.data).then(res => {
             if (res.state == 301) {
               _const.isTeacher = res.data.isTeacher

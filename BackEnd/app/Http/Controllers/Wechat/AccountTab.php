@@ -13,7 +13,8 @@ class AccountTab extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        $data = $this->getUser()->account();
+        $data = $this->getUser()->account()
+        ;
         return $this->json(1,$data);
     }
     public function postModify()

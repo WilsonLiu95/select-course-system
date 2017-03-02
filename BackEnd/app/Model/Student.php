@@ -22,23 +22,44 @@ class Student extends Model
      */
     protected $guarded = ['created_at','updated_at'];
 
+    public function account(){
+        $orign = $this->toArray();
+        $orign['institute'] = $this->institute()->value("name");
+        $orign['major'] = $this->major()->value('name');
+        $orign['direction'] = $this->direction()->value('name');
+        $orign['classes'] = $this->classes()->value('name');
+        $orign['grade'] = $this->grade()->value('name');
+        return $orign;
+    }
     // 关联
     public function institute()
     {
         return $this->belongsTo('App\Model\Institute');
     }
+    public function major()
+    {
+        return $this->belongsTo('App\Model\Major');
+    }
+    public function direction()
+    {
+        return $this->belongsTo('App\Model\Direction');
+    }
     public function grade()
     {
         return $this->belongsTo('App\Model\Grade');
     }
+    public function classes()
+    {
+        return $this->belongsTo('App\Model\Classes');
+    }
+
+
+
     public function schedule()
     {
         return $this->hasMany('App\Model\Schedule');
     }
-    public function course()
-    {
-        return $this->hasMany('App\Model\Course');
-    }
+
 
 
 }

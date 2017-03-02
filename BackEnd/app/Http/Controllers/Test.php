@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Direction;
-use App\Model\Major;
+use App\Model;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,7 +17,7 @@ class Test extends Controller
 
     public function getIndex()
     {
-        return rand(1,3);
+        return Model\Student::where('major_id',3)->value('id');
     }
 
 

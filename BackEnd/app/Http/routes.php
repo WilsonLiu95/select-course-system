@@ -23,7 +23,6 @@ Route::group(['prefix' => 'wechat'], function(){
         Route::controller("/course","Wechat\CourseTab");
         Route::controller("/schedule","Wechat\ScheduleTab");
         Route::controller("/detail","Wechat\Detail");
-        Route::controller("/message","Wechat\MessageTab");
     });
 });
 

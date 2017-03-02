@@ -16,25 +16,22 @@ class Register extends Controller
 
         // 是否已经绑定过
         $hasRegisterStudent = Model\Student::where('openid',$sid);
-        $hasRegisterTeacher =  Model\Teacher::where('openid',$sid);
 
         // 是否存在该用户信息
         $isExistStudent = Model\Student::where("job_num", $request->job_num)->where("name", $request->name);
-        $isExistTeacher =  Model\Teacher::where("job_num", $request->job_num)->where("name", $request->name);
 
-        if($hasRegisterStudent->exists() || $hasRegisterTeacher->exists()){
+        if($hasRegisterStudent->exists()){
             // 如果已注册绑定过
-            $isTeacher = $hasRegisterTeacher->exists();
-            $user = $isTeacher ?  $hasRegisterTeacher->first():$hasRegisterStudent->first() ;
+
+            $user = $hasRegisterStudent->first() ;
 
             $msg = '您已经注册过,请勿重复注册,即将为您跳转';
-        }else if($isExistStudent->exists() || $isExistTeacher->exists()){
+        }else if($isExistStudent->exists()){
 
-            $isTeacher = $isExistTeacher->exists();
-            $user = $isTeacher ?   $isExistTeacher->first() : $isExistStudent->first();
+
+            $user = $isExistStudent->first();
             // 如果存在,则更新openid
             $user->update([
-                "phone" => $request->phone,
                 "openid" => $sid]);
             $msg = "登录成功，自动为您跳转";
         }else{
@@ -42,14 +39,13 @@ class Register extends Controller
         }
         // 注入session
         session()->put("isLogin", true);
-        session()->put("isTeacher", $isTeacher);
         session()->put("id",$user["id"]);
 
-        return $this->redirect([ "name" => 'course'],$msg,["isTeacher"=>$isTeacher]);
+        return $this->redirect([ "name" => 'course'],$msg);
     }
     public function getIsLogin(){
         if($this->getSessionInfo("isLogin")){
-            return $this->redirect([ "name" => 'course'],'已登录，为您自动跳转',["isTeacher"=>$this->isTeacher()]);
+            return $this->redirect([ "name" => 'course'],'已登录，为您自动跳转');
         }else{
             return $this->toast(0,"请先注册");
         }

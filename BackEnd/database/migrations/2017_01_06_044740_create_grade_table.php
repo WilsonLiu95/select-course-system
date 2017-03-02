@@ -19,9 +19,6 @@ class CreateGradeTable extends Migration
             // 个性化配置
             $table->tinyInteger('system_status')
                 ->comment("状态包含 0:关闭,1:对特权班级开发,2:对所有学生开放。关闭中的年份只要不结束都可以再次开放");
-            $table->boolean('isHistory')
-                ->default(false)
-                ->comment("已经结束选课的年份,结束后的年份将不能再开放");
             $table->integer('min_credit')
                 ->comment("最少学分限制");
             $table->integer('max_prior_select_num')
