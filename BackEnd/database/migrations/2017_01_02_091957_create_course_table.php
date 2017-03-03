@@ -27,10 +27,12 @@ class CreateCourseTable extends Migration
                 ->comment('是否为公选课');
             $table->boolean('is_select')
                 ->comment('是否为选修课');
-            $table->string('teacher',32);
-            $table->string('title',32);
+
             $table->string('course_code',32)
                 ->comment('国家给的课程编号');
+            $table->string('teacher',32);
+            $table->string('title',32);
+            $table->string('detail',256);
             $table->integer('credit')
                 ->comment('学分');
             $table->integer('required_number')

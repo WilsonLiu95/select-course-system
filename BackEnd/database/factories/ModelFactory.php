@@ -105,6 +105,7 @@ $factory->define(\App\Model\Course::class, function ($faker) {
         'grade_id' => 1,
         'teacher'=> $faker->name,
         'is_common' => $is_common,
+        'detail'=> $faker->text,
         'is_select' =>$is_select,
         'direction_code' =>$direction_id,
         'direction_id'=> $direction_id,
