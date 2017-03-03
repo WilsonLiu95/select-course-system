@@ -58,7 +58,6 @@ $factory->define(\App\Model\Classes::class, function ($faker) {
         'name' => $faker->name,
         'institute_id' => 1,
         "grade_id"=>1,
-        'classes_code'=> $faker->numberBetween($min = 0, $max = 20),
         'is_prior'=>$faker->shuffle([true,false])[0],
     ];
 });

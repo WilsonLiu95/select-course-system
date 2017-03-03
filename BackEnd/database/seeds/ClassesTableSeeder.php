@@ -23,34 +23,38 @@ class ClassesTableSeeder extends Seeder
         $prior = [
             '卓越班','提高班'
         ];
-        foreach($class_one as $v){
+        foreach($class_one as $key=>$v){
             factory(\App\Model\Classes::class)->create([
                 'name'=> $v,
                 'is_prior'=>false,
                 'major_code'=>1,
+                'classes_code'=> $key+1,
                 'major_id'=>1
             ]);
         }
-        foreach($class_two as $v){
+        foreach($class_two as $key=>$v){
             factory(\App\Model\Classes::class)->create([
                 'name'=> $v,
                 'is_prior'=>false,
                 'major_code'=>2,
+                'classes_code'=> $key+7,
                 'major_id'=>2
             ]);
         }
-        foreach($class_three as $v){
+        foreach($class_three as $key=>$v){
             factory(\App\Model\Classes::class)->create([
                 'name'=> $v,
                 'is_prior'=>false,
+                'classes_code'=> $key+13,
                 'major_code'=>3,
                 'major_id'=>3
             ]);
         }
-        foreach($prior as $v){
+        foreach($prior as $key=>$v){
             factory(\App\Model\Classes::class)->create([
                 'name'=> $v,
                 'major_code'=>0,
+                'classes_code'=> $key+19,
                 'major_id'=>0,
                 'is_prior'=>true
             ]);

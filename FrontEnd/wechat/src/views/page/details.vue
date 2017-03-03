@@ -2,10 +2,12 @@
   <div class="details-page">
     <!--第一部分 start 基本课程信息-->
     <div class="detail-section">
-      <mt-field label="课程" placeholder="课程名称" v-model="course.title" :disabled="!course.isowner || isDiabled"></mt-field>
+      <mt-field label="课程" placeholder="课程名称" v-model="course.title" disabled></mt-field>
       <mt-field label="导师" placeholder="导师姓名" v-model="course.teacher" disabled></mt-field>
-      <mt-field label="电话" placeholder="导师电话" v-model="course.teacher_phone" disabled></mt-field>
-      <mt-field label="详情" placeholder="课题详情" type="textarea" rows="8" v-model="course.details" :disabled="!course.isowner || isDiabled"></mt-field>
+      <mt-field label="人数" placeholder="37" v-model="course.required_number" disabled></mt-field>
+      <mt-field label="学分" placeholder="3" v-model="course.credit" disabled></mt-field>
+
+      <mt-field v-if="course.detail" label="详情" placeholder="课题详情" type="textarea" rows="8" v-model="course.details" disabled></mt-field>
     </div>
     <!--第一部分 end 基本课程信息-->
   </div>
@@ -25,7 +27,7 @@
     methods: {
       getDetail() {
         // 请求数据
-        this.$http.get("detail?id=" + this.$route.params.courseId).then((res) => {
+        this.$http.get("detail?id=" + this.$route.params.course_id).then((res) => {
           this.course = res.data.data
         })
       },

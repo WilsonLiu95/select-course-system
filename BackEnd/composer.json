@@ -9,7 +9,8 @@
         "laravel/framework": "5.1.*",
         "predis/predis": "1.0.*",
         "guzzlehttp/guzzle": "^6.2",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "barryvdh/laravel-ide-helper": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

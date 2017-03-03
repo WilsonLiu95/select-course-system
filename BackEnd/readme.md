@@ -66,5 +66,10 @@ PC端不提供注册，只有登录。PC为教务科使用。
 - 接口调试工具 http://mp.weixin.qq.com/debug/ 
 
 
+
 ## TODO LIST
 1. 后端很多接口的数据未进行校验
+
+
+## 一些参考链接
+1. [使用PHPStorm开发laravel的代码提示-自动完成](http://www.adki.me/phpstorm-develop-laravel-code-tips-auto-complete.html)

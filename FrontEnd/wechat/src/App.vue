@@ -12,7 +12,7 @@
 
 </script>
 
-<style scoped>
+<style>
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -24,5 +24,8 @@
   #app {
     height: 100%;
     /*margin: 0;*/
+  }
+  .t-center{
+    text-align: center
   }
 </style>

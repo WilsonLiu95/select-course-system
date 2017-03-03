@@ -1,6 +1,9 @@
 <template>
   <div>
-    <mt-radio title="请确认您的班级，选定后不可再更改。" v-model="finalClass" :options="canSelectClassOptions">
+    <div class='t-center'>
+      <h4>第二步：绑定班级信息</h4>
+    </div>
+    <mt-radio title="请确认您的班级，选定后不可再更改。"  v-model="finalClass" :options="canSelectClassOptions">
     </mt-radio>
     <mt-button type="primary" size="large" @click="confirm" class="confirm">
       确认
@@ -18,6 +21,7 @@
       }
     },
     created() {
+      this.$http.get('register/is-login') // 判断是否已经登录，登录过则自动跳转
       this.getCanSelectClass()
     },
     methods: {
@@ -40,7 +44,7 @@
       confirm() {
         util.box.confirm("确定选中该方向？").then(action => {
           // 首先清楚存储的账户数据，以便更新
-          _store =  []
+          _store.account = {}
           // 发送请求
           this.$http.post("account/select-class", { class_code: this.finalClass })
         }, action => {
@@ -56,6 +60,6 @@
 </script>
 <style scoped>
   .confirm {
-    margin-top: 40px;
+    margin: 20px 0 20px 0;
   }
 </style>

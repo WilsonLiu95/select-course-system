@@ -145,7 +145,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // wilson 添加
-
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class, // Laravel IDE helper
     ],
 
     /*
