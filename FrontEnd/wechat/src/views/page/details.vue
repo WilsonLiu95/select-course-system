@@ -13,7 +13,6 @@
   </div>
 </template>
 <script>
-
   export default {
     name: "details",
     data() {
@@ -37,5 +36,4 @@
 
 </script>
 <style scoped>
-
 </style>

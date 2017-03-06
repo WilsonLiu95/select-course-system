@@ -52,7 +52,7 @@ window.util = {
 // ======================配置HTTP请求===============================
 
 // Add a request interceptor
-axios.interceptors.request.use(function (config) {
+axios.interceptors.request.use(function(config) {
   if (!config.noIndicator) {
     Indicator.open({
       text: '请求中...',
@@ -62,15 +62,15 @@ axios.interceptors.request.use(function (config) {
   // Do something before request is sent
 
   return config;
-}, function (error) {
+}, function(error) {
   // Do something with request error
   return Promise.reject(error);
 });
 
 // Add a response interceptor
 
-axios.interceptors.response.use(function (response) {
-  if (typeof (response.data.msg) == "string" && response.data.msg !== "") {
+axios.interceptors.response.use(function(response) {
+  if (typeof(response.data.msg) == "string" && response.data.msg !== "") {
     // 如果msg存在，且不为空，则弹出
     util.toast({
       message: response.data.msg,
@@ -88,13 +88,13 @@ axios.interceptors.response.use(function (response) {
   // Do something with response data
   Indicator.close();
   return response;
-}, function (error) {
+}, function(error) {
   // Do something with response error
   return Promise.reject(error);
 });
 
 
-axios.defaults.baseURL = (process.env.NODE_ENV !== 'production' ? config.dev.httpUrl : config.build.httpUrl);// 同时根据不同环境引用不同的ajax请求前缀。
+axios.defaults.baseURL = (process.env.NODE_ENV !== 'production' ? config.dev.httpUrl : config.build.httpUrl); // 同时根据不同环境引用不同的ajax请求前缀。
 axios.defaults.withCredentials = true; // 本地dev开发时，存在跨域。跨域请求时，将不带上cookie。需要设置这个参数为true才会带上cookie。坑了几天。
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // phpstorm断点调试 需要此参数
@@ -102,9 +102,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //   XDEBUG_SESSION_START: "PHPSTORM"
 // }
 Vue.prototype.$http = axios
-/* eslint-disable no-new */
+  /* eslint-disable no-new */
 new Vue({
   router: router,
   render: h => h(App)
 }).$mount('#app');
-

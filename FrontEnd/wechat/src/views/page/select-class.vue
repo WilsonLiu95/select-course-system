@@ -3,7 +3,7 @@
     <div class='t-center'>
       <h4>第二步：绑定班级信息</h4>
     </div>
-    <mt-radio title="请确认您的班级，选定后不可再更改。"  v-model="finalClass" :options="canSelectClassOptions">
+    <mt-radio title="请确认您的班级，选定后不可再更改。" v-model="finalClass" :options="canSelectClassOptions">
     </mt-radio>
     <mt-button type="primary" size="large" @click="confirm" class="confirm">
       确认

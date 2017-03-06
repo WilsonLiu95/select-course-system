@@ -22,12 +22,12 @@
       }
     },
     created() {
-      this.getcanSelectCourse()
+      this.getcanSelectCourse();
     },
     methods: {
       getcanSelectCourse() {
         this.$http.get("select-course/can-select-course").then((res) => {
-          this.canSelectCourse  = res.data.data
+          this.canSelectCourse = res.data.data
           this.makeOption(res.data.data)
         })
       },
@@ -46,7 +46,7 @@
           // 首先清楚存储的账户数据，以便更新
           _store.account = {}
           // 发送请求
-          this.$http.post("account/select-class", { class_code: this.finalClass })
+          this.$http.post("account/select-course", { class_code: this.finalClass })
         }, action => {
           util.toast("您已取消操作")
         })

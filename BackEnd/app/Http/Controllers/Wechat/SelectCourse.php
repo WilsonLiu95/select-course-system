@@ -23,4 +23,7 @@ class SelectCourse extends Controller
         $course = Course::where('direction_id',$dir_id)->get();
         return $this->json(1,$course);
     }
+    public function postSelectCourse(){
+        
+    }
 }
