@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class='t-center'>
+    <h4>选择专业方向</h4>
+   </div>
     <mt-radio title="可选的专业方向列表,请勿频繁重选方向" v-model="finalDirection" :options="canSelectDirOptions">
     </mt-radio>
     <mt-button type="primary" size="large" @click="confirm" class="confirm">

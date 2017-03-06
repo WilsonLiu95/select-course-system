@@ -19,11 +19,9 @@ Route::group(['prefix' => 'wechat'], function(){
     Route::group(['middleware' => 'AuthOfWechat'], function(){
         // 微信接口 如下
         Route::controller("/register","Wechat\Register");
-
-        Route::controller("/account","Wechat\AccountTab");
+        Route::controller("/account","Wechat\Account");
         Route::controller("/course","Wechat\CourseTab");
-        Route::controller("/schedule","Wechat\ScheduleTab");
-        Route::controller("/detail","Wechat\Detail");
+        Route::controller("/select-course","Wechat\SelectCourse");
     });
 });
 

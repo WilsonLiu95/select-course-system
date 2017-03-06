@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMajorDirectionTable extends Migration
+class CreateDirectionMajorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateMajorDirectionTable extends Migration
      */
     public function up()
     {
-        Schema::create('major_direction', function (Blueprint $table) {
+        Schema::create('direction_major', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('institute_id');
 
@@ -32,6 +32,6 @@ class CreateMajorDirectionTable extends Migration
      */
     public function down()
     {
-        Schema::drop('major_direction');
+        Schema::drop('direction_major');
     }
 }

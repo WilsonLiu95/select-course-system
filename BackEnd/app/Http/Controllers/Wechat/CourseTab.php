@@ -23,8 +23,6 @@ class CourseTab extends Controller
             'direction' => ['公选课'],
             'all_direction'=>['公选课']
         ];
-
-
         // 公共课程排第一位
         $data['course'][0] = Model\Course::where("institute_id",1)
             ->where('is_common',true)->get()->toArray();
@@ -36,14 +34,12 @@ class CourseTab extends Controller
                 ->where('direction_id',$value->id)->get()->toArray();
             $data['course'][$index+1] =$c;
             $data['direction'][$index+1] = $value->name;
-
-
         }
         return $this->json(1,$data);
     }
     public function getDetail(){
         $id =  request()->input("id");
-        return $this->json(1,Course::find($id));
+        return $this->json(1,Model\Course::find($id));
     }
 
 }

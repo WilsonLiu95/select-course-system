@@ -20,12 +20,11 @@
         data: {
           name: "刘盛",
           job_num: "1995",
-
         }
       }
     },
     created() {
-      this.$http.get('register/is-login') // 判断是否已经登录，登录过则自动跳转
+      // this.$http.get('register/is-login') // 判断是否已经登录，登录过则自动跳转
     },
     methods: {
       register() {

@@ -1,26 +1,25 @@
 <template>
   <div class="tab-page-container">
     <div class="nav tab-line">
-      <mt-button @click.native="jumpPage(-1)" size="normal">
-        <img :src="assets.previous" height="20" width="20" slot="icon">
+      <mt-button class="t-btn" type="primary" @click.native="jumpPage(-1)" size="small">
+        上个方向
       </mt-button>
-      <mt-button @click.native="isPopupVisible = true" size="normal" v-if="isInit">{{current_page}}/{{direction.length}} {{direction[current_page-1]}}</mt-button>
-      <mt-button @click.native="jumpPage(+1)" size="normal">
-        <img :src="assets.next" height="20" width="20" slot="icon">
+      <mt-button class="t-center-btn" type="primary" @click.native="isPopupVisible = true" size="small" v-if="isInit">{{current_page}}/{{direction.length}} {{direction[current_page-1]}}</mt-button>
+      <mt-button class="t-btn" type="primary" @click.native="jumpPage(+1)" size="small">
+        下个方向
       </mt-button>
     </div>
     <!--end 下一页-->
 
     <!--start 课表清单-->
     <div class="page-tab-container" v-if="isInit">
-      <mt-cell v-if="current_page==1"style="text-align:center" label="提示：部分公选课同时属于专业方向选修课，优先当成选修课">
+      <mt-cell v-if="current_page==1" style="text-align:center" label="提示：部分公选课同时属于专业方向选修课，优先当成选修课">
       </mt-cell>
       <mt-cell v-for="item in course[current_page-1]" :title="item.title" :label="getLabel(item)" :to="'/details/' + item.id" is-link>
         {{ item.teacher}}
       </mt-cell>
     </div>
     <!--end 课表清单-->
-
     <!--start 选页面弹窗-->
     <mt-popup v-model="isPopupVisible" position="bottom" class="mint-popup" v-if="isInit">
       <!--这里v-if="isInit"的功能在于首次进入页面时，禁止调用pickerPage函数，以防止其将current_page重置为1-->
@@ -34,10 +33,6 @@
     name: "course-tab",
     data() {
       return {
-        assets: {
-          previous: require("assets/previous.svg"),
-          next: require("assets/next.svg"),
-        },
         isInit: false,
         first_into: true,
         isPopupVisible: false,
@@ -150,5 +145,13 @@
 
   .mint-popup {
     width: 100%;
+  }
+
+  .t-btn {
+    font-size: 8px;
+  }
+
+  .t-center-btn {
+    font-size: 14px;
   }
 </style>

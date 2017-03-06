@@ -28,7 +28,7 @@ $factory->define(\App\Model\Major::class, function ($faker) {
     ];
 });
 
-$factory->define(\App\Model\MajorDirection::class, function ($faker) {
+$factory->define(\App\Model\DirectionMajor::class, function ($faker) {
     return [
         'institute_id' => 1,
         'direction_id'=>$faker->shuffle([1,2,3,4,5,6,7])[0],
@@ -91,13 +91,11 @@ $factory->define(\App\Model\Schedule::class, function ($faker) {
 });
 
 $factory->define(\App\Model\Course::class, function ($faker) {
-    $is_select = $faker->shuffle([true,false])[0];
-    if($is_select){
-        $is_common = $faker->shuffle([true,false])[0];
-        $direction_id = 0;
-    }else{
+    $direction_code = $faker->shuffle([0,1,2,3,4,5,6,7])[0];
+    if($direction_code == 0){
         $is_common = true;
-        $direction_id = $faker->shuffle([1,2,3,4,5,6,7])[0];
+    }else{
+        $is_common = $faker->shuffle([true,false])[0];
     }
     return [
         'institute_id' => 1,
@@ -106,9 +104,8 @@ $factory->define(\App\Model\Course::class, function ($faker) {
         'teacher'=> $faker->name,
         'is_common' => $is_common,
         'detail'=> $faker->text,
-        'is_select' =>$is_select,
-        'direction_code' =>$direction_id,
-        'direction_id'=> $direction_id,
+        'direction_code' =>$direction_code,
+        'direction_id'=> $direction_code,
         'credit' => $faker->shuffle([2,3,4,5])[0],
         'required_number' => $faker->numberBetween($min = 30, $max = 100),
         'title'=>$faker->word,

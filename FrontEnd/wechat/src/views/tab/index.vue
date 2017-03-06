@@ -8,13 +8,13 @@
       <mt-tab-item id="course">
         <img slot="icon" :src="assets.class"> <span>课题</span>
       </mt-tab-item>
-      <mt-tab-item id="schedule">
+      <mt-tab-item id="start-select">
         <img slot="icon" :src="assets.schedule"> <span>选课</span>
       </mt-tab-item>
 
-      <mt-tab-item id="account">
+      <!--<mt-tab-item id="account">
         <img slot="icon" :src="assets.account"> <span>我的</span>
-      </mt-tab-item>
+      </mt-tab-item>-->
     </mt-tabbar>
   </div>
 </template>

@@ -22,17 +22,15 @@ class CreateStudentTable extends Migration
 
             $table->tinyInteger('major_code')
                 ->comment('专业代码,如果专业代码为0,则表示自由选择专业的班级');
-            $table->integer('major_id'); // 专业ID
+            $table->integer('major_id')  
+                ->comment('专业ID');
+            $table->tinyInteger('classes_code')
+                ->comment('班级代码,根据班级代码以及学院ID年份ID确认班级ID，0代表由用户自己去选择班级'); 
+            $table->integer('classes_id')
+                ->comment('班级ID');  
 
-            $table->integer('classes_code')
-                ->comment('班级代码,根据班级代码以及学院ID年份ID确认班级ID'); // 班级ID
-
-            // 这三个自已选择
-            $table->integer('classes_id'); // 班级ID
             $table->integer('direction_id'); // 方向ID
-
-
-
+            
             $table->string('name',32);
             $table->string('job_num',32)->comment("学号");
             $table->softDeletes();

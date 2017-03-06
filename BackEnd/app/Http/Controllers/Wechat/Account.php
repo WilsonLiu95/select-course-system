@@ -7,7 +7,7 @@ use App\Http\Controllers\Wechat\BaseTrait;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class AccountTab extends Controller
+class Account extends Controller
 {
     use BaseTrait;
     public function getIndex()
@@ -29,7 +29,7 @@ class AccountTab extends Controller
             $user->update([
                 'direction_id' => $dir->first()->id,
             ]);
-            return $this->redirect(['name'=> 'account'],'选定反向成功,马上为您自动跳转');
+            return $this->redirect(['name'=> 'select-course'],'选定反向成功,马上为您自动跳转');
         }else{
             return $this->toast(0,'系统出错,暂无该课程,请检查');
         }
@@ -59,25 +59,9 @@ class AccountTab extends Controller
                 $data['major_id'] = $_class->major_id;
             }
             $user->update($data);
-            return $this->redirect(['name'=> 'course'],'选定反向成功,马上为您自动跳转');
+            return $this->redirect(['name'=> 'start-select'],'选定反向成功,马上为您自动跳转');
         }else{
             return $this->toast(0,'系统出错,暂无该班级,请检查');
-        }
-    }
-    public function getCanSelectMajor(){
-        $canSelectMajor = $this->getUser()->institute->major;
-        return $this->json(1,$canSelectMajor);
-    }
-    public function postSelectMajor(){
-        $major_code = request()->get('major_code');
-        $user = $this->getUser();
-        $major = $user->institute->major()->where('major_code',$major_code);
-        if($major->count()){
-            $user->update(
-                [
-                    'major_code' => $major_code,
-                    'major_id' =>$major->first()->id
-                ]);
         }
     }
 }

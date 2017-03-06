@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class MajorDirectionTableSeeder extends Seeder
+class DirectionMajorTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,7 +20,7 @@ class MajorDirectionTableSeeder extends Seeder
 
         foreach($map as $key=>$value){
             foreach($value as $v){
-                factory(\App\Model\MajorDirection::class)->create([
+                factory(\App\Model\DirectionMajor::class)->create([
                     'direction_id'=> $v,
                     'major_id'=>$key,
 

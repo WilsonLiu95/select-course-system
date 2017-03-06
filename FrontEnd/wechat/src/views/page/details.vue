@@ -7,7 +7,7 @@
       <mt-field label="人数" placeholder="37" v-model="course.required_number" disabled></mt-field>
       <mt-field label="学分" placeholder="3" v-model="course.credit" disabled></mt-field>
 
-      <mt-field v-if="course.detail" label="详情" placeholder="课题详情" type="textarea" rows="8" v-model="course.details" disabled></mt-field>
+      <mt-field v-if="course.detail" label="详情" placeholder="课题详情" type="textarea" rows="8" v-model="course.detail" disabled></mt-field>
     </div>
     <!--第一部分 end 基本课程信息-->
   </div>
@@ -27,7 +27,7 @@
     methods: {
       getDetail() {
         // 请求数据
-        this.$http.get("detail?id=" + this.$route.params.course_id).then((res) => {
+        this.$http.get("course/detail?id=" + this.$route.params.course_id).then((res) => {
           this.course = res.data.data
         })
       },

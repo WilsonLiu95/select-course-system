@@ -23,12 +23,9 @@ class CreateCourseTable extends Migration
                   ->comment('属于哪个专业方向');
             $table->integer('direction_code')
                 ->comment('用于excel');
-            $table->boolean('is_common')
-                ->comment('是否为公选课');
-            $table->boolean('is_select')
-                ->comment('是否为选修课');
-
-            $table->string('course_code',32)
+            $table->tinyInteger('course_type')
+                ->comment('1:单纯的公选课，2:单纯的选修课，3:即是公选课又是选修课');
+            $table->string('course_code',10)
                 ->comment('国家给的课程编号');
             $table->string('teacher',32);
             $table->string('title',32);

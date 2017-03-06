@@ -18,7 +18,8 @@ class Test extends Controller
 
     public function getIndex()
     {
-
+        $a = 2;
+        return 22;
     }
 
 
