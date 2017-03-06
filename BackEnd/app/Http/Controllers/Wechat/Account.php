@@ -20,7 +20,7 @@ class AccountTab extends Controller
         $data = $this->getUser()->major->direction;
         return $this->json(1,$data);
     }
-    public  function  postSelectDir(){
+    public function postSelectDir(){
         $direction_code = request()->get('direction_code');
         $user = $this->getUser();
         $dir = $user->major->direction()
@@ -62,6 +62,22 @@ class AccountTab extends Controller
             return $this->redirect(['name'=> 'course'],'选定反向成功,马上为您自动跳转');
         }else{
             return $this->toast(0,'系统出错,暂无该班级,请检查');
+        }
+    }
+    public function getCanSelectMajor(){
+        $canSelectMajor = $this->getUser()->institute->major;
+        return $this->json(1,$canSelectMajor);
+    }
+    public function postSelectMajor(){
+        $major_code = request()->get('major_code');
+        $user = $this->getUser();
+        $major = $user->institute->major()->where('major_code',$major_code);
+        if($major->count()){
+            $user->update(
+                [
+                    'major_code' => $major_code,
+                    'major_id' =>$major->first()->id
+                ]);
         }
     }
 }
