@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\Test::class,
     ];
 
     /**
@@ -24,7 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+        $schedule->exec('/usr/bin/say "hello"')
+//            ->sendOutputTo('/data/htdocs/self_product/select-course-system/BackEnd/storage/app/ttt.txt')
+                 ->everyMinute();
     }
 }

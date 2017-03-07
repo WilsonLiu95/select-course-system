@@ -11,9 +11,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::controller("/test","Test");
-Route::group(['prefix' => 'wechat'], function(){
 
+Route::group(['prefix' => 'wechat'], function(){
+    Route::controller("/test","Test");
     Route::controller("/wechat","Wechat\Wechat"); // 微信授权
 
     Route::group(['middleware' => 'AuthOfWechat'], function(){

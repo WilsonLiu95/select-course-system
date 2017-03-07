@@ -23,7 +23,7 @@ class Major extends Model
 
 
     public function direction(){
-        return $this->belongsToMany('App\Model\Direction','major_direction')
+        return $this->belongsToMany('App\Model\Direction')
             ->withPivot('institute_id')
             ->withTimestamps();
     }

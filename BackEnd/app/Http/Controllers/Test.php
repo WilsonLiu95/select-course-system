@@ -2,25 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Direction;
 use App\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-
+use Validator;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Psy\Exception\ErrorException;
-use Schema;
-use DB;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
+
 
 class Test extends Controller
 {
-
-    public function getIndex()
+    public function getIndex(Request $request)
     {
-        $a = 2;
-        return 22;
-    }
+        $v = $this->validate($request,[
+            'title' => 'required|max:2',
+        ]);
 
+        return $this->json(1,$v);
+
+    }
+    public function getFile(){
+
+        $test = \Artisan::call('redis:subscribe');
+
+        return $this->json(1,$test);
+
+    }
+    public function getMail(){
+
+        Redis::publish('test-channel', json_encode(['foo' => 'bar']));
+        echo \Redis::OPT_READ_TIMEOUT;
+    }
 
 }

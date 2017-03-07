@@ -89,6 +89,14 @@ axios.interceptors.response.use(function(response) {
   Indicator.close();
   return response;
 }, function(error) {
+  if (error.response.status == 422) {
+    Indicator.close();
+    util.toast({
+      message: error.message,
+      duration: 2000
+    })
+  }
+
   // Do something with response error
   return Promise.reject(error);
 });

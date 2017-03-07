@@ -24,6 +24,6 @@ class SelectCourse extends Controller
         return $this->json(1,$course);
     }
     public function postSelectCourse(){
-        
+
     }
 }

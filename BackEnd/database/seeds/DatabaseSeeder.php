@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GradeTableSeeder::class);
 
         // 单独设定
-        $this->call(MajorDirectionTableSeeder::class);
+        $this->call(DirectionMajorTableSeeder::class);
         $this->call(DirectionTableSeeder::class);
         $this->call(MajorTableSeeder::class);
         $this->call(ClassesTableSeeder::class);

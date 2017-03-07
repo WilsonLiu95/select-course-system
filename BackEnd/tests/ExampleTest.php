@@ -13,7 +13,15 @@ class ExampleTest extends TestCase
      */
     public function testBasicExample()
     {
-        $this->visit('/')
-             ->see('Laravel 5');
+
+        $this->get('http://dev.wilsonliu.cn:8000/test')
+             ->seeJson([
+                 'state'=>2
+             ]);
     }
+//    public function testBasicTwoExample()
+//    {
+//        $this->visit('http://dev.wilsonliu.cn:8000/test')
+//            ->see('21');
+//    }
 }

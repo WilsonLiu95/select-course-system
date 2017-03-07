@@ -18,7 +18,7 @@
 ## 整体说明
 本项目主要采用laravel作为框架。另外使用了guzzle作为http请求插件。
 所有的配置文件都在`.env`中，包括数据库配置，和微信公众号配置，和跨域设置的域名，与前端的前缀路径(给前端返回重定向请求时使用)无法初始化数据。原因是安装后，密码没有设置为root
-
+5. 在mac上配置crontab [无效](http://superuser.com/questions/201172/mac-crontab-is-never-created)
 ### 数据库
 `database`文件夹下，`migrations`下为数据库迁移的建表文件。`Factories`下为利用laravel的模型工程进行数据填充。
 - [数据库: 迁移](https://laravel-china.org/docs/5.1/migrations)

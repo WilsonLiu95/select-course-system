@@ -6,6 +6,7 @@ use App\Model;
 use App\Http\Controllers\Wechat\BaseTrait;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class Account extends Controller
 {
@@ -35,6 +36,7 @@ class Account extends Controller
         }
     }
     public function getCanSelectClass(){
+
         $data = $this->getUser()->institute->classes;
         return $this->json(1,$data);
     }
