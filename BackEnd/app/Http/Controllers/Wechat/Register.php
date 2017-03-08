@@ -28,7 +28,6 @@ class Register extends Controller
             $msg = '您已经注册过,请勿重复注册,即将为您跳转';
         }else if($isExistStudent->exists()){
 
-
             $user = $isExistStudent->first();
             // 如果存在,则更新openid
             $user->update([

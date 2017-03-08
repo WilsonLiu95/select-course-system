@@ -14,7 +14,7 @@ class Account extends Controller
     public function getIndex()
     {
         $data['account'] = $this->getUser()->account();
-        return $this->json(1,$data);
+        return $this->json(1, $data);
     }
 
     public function getCanSelectDir(){

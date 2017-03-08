@@ -106,9 +106,9 @@ axios.defaults.baseURL = (process.env.NODE_ENV !== 'production' ? config.dev.htt
 axios.defaults.withCredentials = true; // 本地dev开发时，存在跨域。跨域请求时，将不带上cookie。需要设置这个参数为true才会带上cookie。坑了几天。
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // phpstorm断点调试 需要此参数
-// axios.defaults.params = {
-//   XDEBUG_SESSION_START: "PHPSTORM"
-// }
+axios.defaults.params = {
+  XDEBUG_SESSION_START: "PHPSTORM"
+}
 Vue.prototype.$http = axios
   /* eslint-disable no-new */
 new Vue({
