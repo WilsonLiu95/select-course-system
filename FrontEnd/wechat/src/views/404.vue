@@ -11,13 +11,8 @@
 <script>
   export default {
     name: "not-found",
-    data() {
-      return {
-
-      }
-    },
     created() {
-      this.$http.get('/test').then() // 判断是否已经登录，登录过则自动跳转
+
     },
     
 
