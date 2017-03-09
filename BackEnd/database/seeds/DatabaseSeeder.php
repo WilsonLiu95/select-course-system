@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(StudentTableSeeder::class); // 学生表
 
 
-        $this->call(ScheduleTableSeeder::class);
+        $this->call(SelectCourseTableSeeder::class);
 
         Model::reguard();
     }

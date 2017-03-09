@@ -29,7 +29,9 @@ class Student extends Model
         $orign['direction'] = $this->direction()->value('name');
         $orign['classes'] = $this->classes()->value('name');
         $orign['grade'] = $this->grade()->value('name');
-        return $orign;
+        return array_except($orign,['id','institute_id','major_id','major_code','direction_id','classes_id','classes_code','grade_id']);
+
+
     }
     // 关联
     public function institute()
@@ -55,9 +57,9 @@ class Student extends Model
 
 
 
-    public function schedule()
+    public function selectCourse()
     {
-        return $this->hasMany('App\Model\Schedule');
+        return $this->hasMany('App\Model\SelectCourse');
     }
 
 

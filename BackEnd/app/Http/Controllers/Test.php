@@ -19,8 +19,12 @@ class Test extends Controller
 {
     public function getIndex(Request $request)
     {
-
-//        return $this->json(1,$v);
+        \Session::set('select_course_map',array(
+            1,2,34,533
+        ));
+        \Session::set('detail',Model\Student::find(1)->account());
+        \Session::push('select_course_map',[2233,22]);
+        return session()->all();
 
     }
     public function getFile(){

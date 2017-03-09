@@ -26,7 +26,7 @@ class Direction extends Model
     public function major(){
         return $this->belongsToMany('App\Model\Major')
             ->withPivot('institute_id')
-            ->withTimestamps();;
+            ->withTimestamps();
     }
     public function institute()
     {
@@ -35,7 +35,9 @@ class Direction extends Model
 
     public function course()
     {
-        return $this->hasMany('App\Model\Course');
+        return $this->belongsToMany('App\Model\Course')
+            ->withPivot('institute_id')
+            ->withTimestamps();
     }
 
 }

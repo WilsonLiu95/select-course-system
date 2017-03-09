@@ -3,11 +3,11 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-class SelectCourse extends Model
+
+class CourseDirection extends Model
 {
     use SoftDeletes;
-    protected $table = 'select_course';
+    protected $table = 'course_direction';
     protected $dates = ['deleted_at'];
     /**
      * 可以被批量赋值的属性。
@@ -21,15 +21,13 @@ class SelectCourse extends Model
      * @var array
      */
     protected $guarded = ['created_at','updated_at'];
-    protected $appends = ['student_name','job_num'];
 
-    public function student()
-    {
-        return $this->belongsTo('App\Model\Student');
-    }
     public function course()
     {
         return $this->belongsTo('App\Model\Course');
     }
-
+    public function direction()
+    {
+        return $this->belongsTo('App\Model\Direction');
+    }
 }

@@ -89,6 +89,11 @@ class CourseTableSeeder extends Seeder
             '0844151' => [0,'天线与电波传播',2,true],
             '0844161' => [0,'微波射频电路',2,true],
         ];
-        factory(\App\Model\Course::class)->create();
+        foreach( $dir_course as $key => $value){
+            foreach($value as $k=>$v){
+                factory(\App\Model\Course::class)->create();
+            }
+        }
+
     }
 }

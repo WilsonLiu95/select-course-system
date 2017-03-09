@@ -31,8 +31,6 @@ class Wechat extends Controller
         }
         // 微信授权成功
 
-        session()->put("access_token",$body->access_token);
-        session()->put("refresh_token",$body->refresh_token);
         session()->put("openid",$body->openid);
 
         $student = Model\Student::where("openid",$body->openid);

@@ -18,7 +18,6 @@ class DirectionTableSeeder extends Seeder
             factory(\App\Model\Direction::class)->create([
                 'name'=>$item,
                 'direction_code'=> $index+1 // 方向代码
-
             ]);
         }
     }

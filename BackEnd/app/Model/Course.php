@@ -29,15 +29,18 @@ class Course extends Model
     }
     public function direction()
     {
-        return $this->belongsTo('App\Model\Direction');
+        return $this->belongsToMany('App\Model\Direction')
+            ->withPivot('institute_id')
+            ->withTimestamps();
+
     }
     public function grade()
     {
         return $this->belongsTo('App\Model\Grade');
     }
-    public function schedule()
+    public function selectCourse()
     {
-        return $this->hasMany('App\Model\Schedule');
+        return $this->hasMany('App\Model\SelectCourse');
     }
 
 }

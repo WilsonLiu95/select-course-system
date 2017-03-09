@@ -25,9 +25,9 @@ class Grade extends Model
     {
         return $this->hasMany('App\Model\Student');
     }
-    public function schedule()
+    public function selectCourse()
     {
-        return $this->hasMany('App\Model\Scheule');
+        return $this->hasMany('App\Model\SelectCourse');
     }
     public function course()
     {
