@@ -15,6 +15,7 @@ class CreateInstituteTable extends Migration
         Schema::create('institute', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',32);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

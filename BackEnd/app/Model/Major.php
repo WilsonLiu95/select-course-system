@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Major extends Model
 {
     protected $table = 'major';
-
+    protected $dates = ['deleted_at'];
     /**
      * 可以被批量赋值的属性。
      *
@@ -21,13 +21,11 @@ class Major extends Model
      */
     protected $touches = ['institute'];
 
-
     public function direction(){
         return $this->belongsToMany('App\Model\Direction')
             ->withPivot('institute_id')
             ->withTimestamps();
     }
-//    protected $guarded = ['created_at','updated_at'];
 
     public function institute()
     {

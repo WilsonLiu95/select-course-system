@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Institute extends Model
 {
     protected $table = 'institute';
-
+    protected $dates = ['deleted_at'];
     /**
      * 可以被批量赋值的属性。
      *

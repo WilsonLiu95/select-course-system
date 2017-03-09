@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Admin extends Model
 {
     protected $table = 'admin';
-
+    protected $dates = ['deleted_at'];
     /**
      * 可以被批量赋值的属性。
      *

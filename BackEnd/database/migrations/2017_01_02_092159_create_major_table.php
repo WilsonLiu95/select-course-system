@@ -18,6 +18,7 @@ class CreateMajorTable extends Migration
             $table->tinyInteger('major_code')
                 ->comment('专业代号用于填充在excel中,根据institute与专业代号一起确认方向ID。同时如果专业代号为0');
             $table->string('name', 32);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

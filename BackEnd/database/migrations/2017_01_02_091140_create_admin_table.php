@@ -19,6 +19,7 @@ class CreateAdminTable extends Migration
             $table->string("account",32);
             $table->string("password",32);
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }
