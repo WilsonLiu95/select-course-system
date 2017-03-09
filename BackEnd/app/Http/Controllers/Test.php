@@ -21,8 +21,8 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-
-        return $this->json(1, $key = 'major_course_' . 2 . "_" . 2);
+        $a = Model\Student::find(1)->account();
+        return $this->json(1, $a);
 
 
     }

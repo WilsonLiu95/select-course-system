@@ -31,7 +31,6 @@ class Student extends Model
         $orign['grade'] = $this->grade()->value('name');
         return $orign;
 
-
     }
     // 关联
     public function institute()

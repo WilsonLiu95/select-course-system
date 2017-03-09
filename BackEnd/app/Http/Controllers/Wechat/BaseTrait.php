@@ -11,6 +11,7 @@ trait BaseTrait {
         $id = $this->getSessionInfo("id");
         return Student::find($id);
     }
+
     public function getSessionInfo($which){
         // 		which 即session中存储的基本用户信息,目前包括 id,type两个
         $session_which = session()->get($which);
@@ -80,10 +81,8 @@ trait BaseTrait {
     private function initSession(){
         // openid一定存在,否则会被鉴权挡回去做微信认证
         $openid = session()->get("openid");
-
         $student = Student::where("openid",$openid);
         if ($student->exists()){
-            session()->put("id",$student->value('id'));
             session()->put('account',$student->first()->account());
 
         }

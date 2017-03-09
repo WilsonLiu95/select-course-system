@@ -8,13 +8,20 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class Account extends Controller
 {
     use BaseTrait;
+    private $account;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->account = $this->getSessionInfo('account');
+    }
     public function getIndex()
     {
-        $data['account'] = $this->getSessionInfo('account');
+        $data['account'] = $this->account;
         return $this->json(1, $data);
     }
     public function getCanSelectDir(){
@@ -37,39 +44,52 @@ class Account extends Controller
         return $this->toast("该方向不在您的候选范围内,请确认无误。如有问题,请咨询老师。");
 
     }
+
     public function getCanSelectClass(){
-        $data = $this->getUser()->institute->classes;
+        if($this->isHasSelectClass()){
+            return $this->redirect(['name'=> 'start-select']);
+        }
+        // 获取学院下所有可选的班级
+        $data = Model\Classes::where('institute_id', $this->account['institute_id'])->get();
         return $this->json(1,$data);
     }
     public function postSelectClass(){
+        if($this->isHasSelectClass()){
+            return $this->redirect(['name'=> 'start-select']);
+        }
         // 说明没有录入过班级需要手动选择
         $class_code = request()->get('class_code');
-        $user = $this->getUser();
 
-        $class = $user->institute->classes()
-            ->where('classes_code',$class_code);
+        $class = Model\Classes::where('institute_id', $this->account['institute_id'])
+            ->where('classes_code',$class_code)->first();
 
         if($class->count()){ // 班级存在
-            $_class = $class->first();
             $data=[
                 'classes_code'=> $class_code,
-                'classes_id' => $class->first()->id,
+                'classes_id' => $class->id,
             ];
-            if($_class->major_code){
+            if(!$class->major_code){
                 // 如果班级的 major_code不为0,即自动帮学生选定专业
-                // 否则,代表是可以自选专业的班级
-                $data['major_code'] = $_class->major_code;
-                $data['major_id'] = $_class->major_id;
+                // 否则,代表是不属于任何专业的特殊班级
+                $data['major_code'] = $class->major_code;
+                $data['major_id'] = $class->major_id;
             }
-            $user->update($data);
+            $this->getUser()->update($data);
+            Session::forget('account');
             return $this->redirect(['name'=> 'start-select'],'选定反向成功,马上为您自动跳转');
         }else{
             return $this->toast(0,'系统出错,暂无该班级,请检查');
         }
     }
+    private function isHasSelectClass(){
+        if($this->account['classes_id']){
+            // 已经选定过班级,不可再更改
+            return true;
+        }
+        return false;
+    }
 
     private function userCanSelectDir(){
-        $account = $this->getSessionInfo("account");
-        return $this->cacheMajorDirMap($account['institute_id'],$account['major_id']); // 取cache中的数据
+        return $this->cacheMajorDirMap($this->account['institute_id'],$this->account['major_id']); // 取cache中的数据
     }
 }
