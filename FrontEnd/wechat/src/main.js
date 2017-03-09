@@ -26,12 +26,8 @@ var router = new VueRouter(routerConfig)
 window._store = { // 因为是单页面框架，将全局变量当成session使用
   // course页面的数据
   page: '', // 用户在哪一页
-  tab_course: {
-    hasStoreCourse: false,
-    course: [], // 存储课程数据
-    all_direction: [], // 存储所有方向
-    direction: [], // 存储用户可选的方向
-  },
+  hasStoreCourse: false,
+  course: [], // 存储课程数据
   // account页面的数据
   account: {}, // 账户信息
 }
@@ -52,7 +48,7 @@ window.util = {
 // ======================配置HTTP请求===============================
 
 // Add a request interceptor
-axios.interceptors.request.use(function(config) {
+axios.interceptors.request.use((config) => {
   if (!config.noIndicator) {
     Indicator.open({
       text: '请求中...',
@@ -62,14 +58,14 @@ axios.interceptors.request.use(function(config) {
   // Do something before request is sent
 
   return config;
-}, function(error) {
+}, (error) => {
   // Do something with request error
   return Promise.reject(error);
 });
 
 // Add a response interceptor
 
-axios.interceptors.response.use(function(response) {
+axios.interceptors.response.use((response) => {
   if (typeof(response.data.msg) == "string" && response.data.msg !== "") {
     // 如果msg存在，且不为空，则弹出
     util.toast({
@@ -78,25 +74,33 @@ axios.interceptors.response.use(function(response) {
     })
   }
 
-  if (response.data.state == 301) {
-    if (response.data.url) {
-      location.href = response.data.url;
-    } else {
-      router.push(response.data.option)
-    }
-  }
   // Do something with response data
   Indicator.close();
   return response;
-}, function(error) {
-  if (error.response.status == 422) {
-    Indicator.close();
-    util.toast({
-      message: error.message,
-      duration: 2000
-    })
+}, (error) => {
+  var res = error.response;
+  if (res.status == 301) { // 跳转
+    if (res.data.url) {
+      location.href = res.data.url
+    } else {
+      router.push(res.data.option)
+    }
+    return res
   }
 
+  if (res.status == 422) { // 校验错误
+    var message = '';
+    for (var key in res.data) {
+      message += res.data[key]
+    }
+    util.toast({
+      message: message,
+      duration: 2000
+    })
+    return res
+  }
+  // 关闭弹窗
+  Indicator.close();
   // Do something with response error
   return Promise.reject(error);
 });

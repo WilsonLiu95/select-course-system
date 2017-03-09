@@ -7,36 +7,37 @@ use App\Http\Controllers\Wechat\BaseTrait;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redirect;
 
 class Account extends Controller
 {
     use BaseTrait;
     public function getIndex()
     {
-        $data['account'] = $this->getUser()->account();
+        $data['account'] = $this->getSessionInfo('account');
         return $this->json(1, $data);
     }
-
     public function getCanSelectDir(){
-        $data = $this->getUser()->major->direction;
-        return $this->json(1,$data);
+        return $this->json(1,$this->userCanSelectDir());
     }
     public function postSelectDir(){
-        $direction_code = request()->get('direction_code');
-        $user = $this->getUser();
-        $dir = $user->major->direction()
-            ->where('direction_code',$direction_code);
-        if($dir->count()){
-            $user->update([
-                'direction_id' => $dir->first()->id,
+        // 数据校验无误
+        $this->validate(request(),[
+            "direction_id" =>'required|integer']);
+        $direction_id = request()->get('direction_id');
+
+        if($this->userCanSelectDir()->where('id',$direction_id)->isEmpty()){
+            // 用户有权选择该方向
+            $this->getUser()->update([
+                'direction_id' => $direction_id ,
             ]);
-            return $this->redirect(['name'=> 'select-course'],'选定反向成功,马上为您自动跳转');
-        }else{
-            return $this->toast(0,'系统出错,暂无该课程,请检查');
+            session()->forget('account'); // 更新账户数据
+            return $this->redirect(['name'=> 'select-course'],'选定方向成功,马上为您自动跳转');
         }
+        return $this->toast("该方向不在您的候选范围内,请确认无误。如有问题,请咨询老师。");
+
     }
     public function getCanSelectClass(){
-
         $data = $this->getUser()->institute->classes;
         return $this->json(1,$data);
     }
@@ -65,5 +66,10 @@ class Account extends Controller
         }else{
             return $this->toast(0,'系统出错,暂无该班级,请检查');
         }
+    }
+
+    private function userCanSelectDir(){
+        $account = $this->getSessionInfo("account");
+        return $this->cacheMajorDirMap($account['institute_id'],$account['major_id']); // 取cache中的数据
     }
 }

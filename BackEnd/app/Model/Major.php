@@ -8,6 +8,7 @@ class Major extends Model
 {
     protected $table = 'major';
     protected $dates = ['deleted_at'];
+    protected $hidden = ['pivot'];
     /**
      * 可以被批量赋值的属性。
      *
@@ -23,7 +24,6 @@ class Major extends Model
 
     public function direction(){
         return $this->belongsToMany('App\Model\Direction')
-            ->withPivot('institute_id')
             ->withTimestamps();
     }
 

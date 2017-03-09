@@ -12,25 +12,22 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redis;
+use App\Http\Controllers\Wechat\BaseTrait;
 use Illuminate\Support\Facades\Storage;
 use App\Jobs\SendReminderEmail;
 
 class Test extends Controller
 {
-    public function getIndex(Request $request)
+    use BaseTrait;
+    public function getIndex()
     {
-        \Session::set('select_course_map',array(
-            1,2,34,533
-        ));
-        \Session::set('detail',Model\Student::find(1)->account());
-        \Session::push('select_course_map',[2233,22]);
-        return session()->all();
+
+        return $this->json(1, $key = 'major_course_' . 2 . "_" . 2);
+
 
     }
     public function getFile(){
-
         $test = \Artisan::call('redis:subscribe');
-
         return $this->json(1,$test);
 
     }

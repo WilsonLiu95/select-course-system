@@ -23,7 +23,8 @@
   body,
   #app {
     height: 100%;
-    /*margin: 0;*/
+    margin: 0;
+
   }
   .t-center{
     text-align: center

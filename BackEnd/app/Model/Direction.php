@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Direction extends Model
 {
     use SoftDeletes;
+    protected $hidden = ['pivot'];
     protected $table = 'direction';
     protected $dates = ['deleted_at'];
     /**
@@ -25,7 +26,6 @@ class Direction extends Model
     // 关联
     public function major(){
         return $this->belongsToMany('App\Model\Major')
-            ->withPivot('institute_id')
             ->withTimestamps();
     }
     public function institute()

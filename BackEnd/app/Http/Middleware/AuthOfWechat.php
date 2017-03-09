@@ -27,9 +27,8 @@ class AuthOfWechat
         if (!session()->has("openid")){
             $res_data = array(
                 "url" =>"https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . env('WE_APPID') . "&redirect_uri=". urlencode(env('BASE_PATH') . '/#/wechat') . "&response_type=code&scope=snsapi_base#wechat_redirect",
-                "state" => 301,
             );
-            return response()->json($res_data);
+            return response()->json($res_data,301);
         }
 
         return $next($request);

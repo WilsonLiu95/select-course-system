@@ -47,9 +47,8 @@ class Wechat extends Controller
         session()->put("isLogin", true);
         session()->put("id",$user["id"]);
         return response()->json([
-            'state'=>301,
             'url'=> env("BASE_PATH"),
-        ]);        
+        ],301);
 
     }
 }

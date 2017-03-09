@@ -35,7 +35,7 @@
         canSelectDir.forEach((item, index) => {
           data.push({
             label: item.name,
-            value: String(item.direction_code)
+            value: String(item.id)
           })
         })
         this.canSelectDirOptions = data
@@ -47,7 +47,7 @@
           _store.account = {}
           // 发送请求
           this.$http.post("account/select-dir", {
-            direction_code: this.finalDirection })
+            direction_id: this.finalDirection })
         }, action => {
           util.toast("您已取消操作")
         })

@@ -19,10 +19,9 @@ abstract class Controller extends BaseController
 	public function redirect($option=array(), $msg="",$data = array()){
 		// 如果要填路径则$option为路径
 				return response()->json([
-				            "state" => 301,
 				            "option"=>$option,
                             'msg'=>$msg,
-							'data'=> $data]);
+							'data'=> $data],301);
 	}
 	public function toast($state=1,$msg="",$data=array()){
 		$toast = array(

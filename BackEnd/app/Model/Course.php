@@ -15,6 +15,7 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [];
+    protected $hidden = ['pivot'];
     /**
      * 不可被批量赋值的属性。
      *
@@ -30,7 +31,6 @@ class Course extends Model
     public function direction()
     {
         return $this->belongsToMany('App\Model\Direction')
-            ->withPivot('institute_id')
             ->withTimestamps();
 
     }
