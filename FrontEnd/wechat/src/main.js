@@ -66,29 +66,29 @@ axios.interceptors.request.use((config) => {
 // Add a response interceptor
 
 axios.interceptors.response.use((response) => {
-  if (typeof(response.data.msg) == "string" && response.data.msg !== "") {
-    // 如果msg存在，且不为空，则弹出
-    util.toast({
-      message: response.data.msg,
-      duration: 2000
-    })
-  }
-
-  // Do something with response data
   Indicator.close();
+
+
   return response;
 }, (error) => {
+  Indicator.close();
   var res = error.response;
-  if (res.status == 301) { // 跳转
+
+
+  if (res.status == 301) { // 前端控制跳转
     if (res.data.url) {
       location.href = res.data.url
     } else {
       router.push(res.data.option)
     }
-    return res
   }
-
-  if (res.status == 422) { // 校验错误
+  if (res.status == 400) { // 客户端请求错误，数据校验无问题
+    util.toast({
+      message: response.data.msg,
+      duration: 2000
+    })
+  }
+  if (res.status == 422) { // 前端的数据校验错误
     var message = '';
     for (var key in res.data) {
       message += res.data[key]
@@ -97,10 +97,9 @@ axios.interceptors.response.use((response) => {
       message: message,
       duration: 2000
     })
-    return res
   }
   // 关闭弹窗
-  Indicator.close();
+
   // Do something with response error
   return Promise.reject(error);
 });

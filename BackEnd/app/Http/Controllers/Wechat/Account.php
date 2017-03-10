@@ -22,10 +22,10 @@ class Account extends Controller
     public function getIndex()
     {
         $data['account'] = $this->account;
-        return $this->json(1, $data);
+        return $this->json($data);
     }
     public function getCanSelectDir(){
-        return $this->json(1,$this->userCanSelectDir());
+        return $this->json($this->userCanSelectDir());
     }
     public function postSelectDir(){
         // 数据校验无误
@@ -44,14 +44,13 @@ class Account extends Controller
         return $this->toast("该方向不在您的候选范围内,请确认无误。如有问题,请咨询老师。");
 
     }
-
     public function getCanSelectClass(){
         if($this->isHasSelectClass()){
             return $this->redirect(['name'=> 'start-select']);
         }
         // 获取学院下所有可选的班级
         $data = Model\Classes::where('institute_id', $this->account['institute_id'])->get();
-        return $this->json(1,$data);
+        return $this->json($data);
     }
     public function postSelectClass(){
         if($this->isHasSelectClass()){
@@ -78,7 +77,7 @@ class Account extends Controller
             Session::forget('account');
             return $this->redirect(['name'=> 'start-select'],'选定反向成功,马上为您自动跳转');
         }else{
-            return $this->toast(0,'系统出错,暂无该班级,请检查');
+            return $this->toast('系统出错,暂无该班级,请检查');
         }
     }
     private function isHasSelectClass(){

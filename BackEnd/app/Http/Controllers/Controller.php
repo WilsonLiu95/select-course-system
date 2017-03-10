@@ -8,29 +8,26 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 abstract class Controller extends BaseController
 {
 	use DispatchesJobs, ValidatesRequests;
+	public function __construct()
+	{
+		// 默认http状态码为200
+        if(session()->get('openid')){
 
-	public function json($state=1,$data=array()){
-		$res = array(
-		            "state"=>$state,
-		            "data"=>$data
-		        );
-		return response()->json($res);
+        }
 	}
-	public function redirect($option=array(), $msg="",$data = array()){
+	public function json($data=array(),$http_code=200){
+
+			return response()->json($data,$http_code);
+	}
+
+	public function redirect($option=array(), $msg=""){
 		// 如果要填路径则$option为路径
 				return response()->json([
 				            "option"=>$option,
-                            'msg'=>$msg,
-							'data'=> $data],301);
+                            'msg'=>$msg],301);
 	}
-	public function toast($state=1,$msg="",$data=array()){
-		$toast = array(
-		            "state"=>$state,
-		            "msg"=>$msg,
-		            "data"=>$data,
-		
-		);
-		return response()->json($toast);
+	public function errorRequest($msg=""){
+		return response()->json($msg, 400);
 	}
 	
 }

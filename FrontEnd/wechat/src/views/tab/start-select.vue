@@ -36,7 +36,7 @@
     methods: {
       getAccount() {
         this.$http.get("account").then((res) => {
-          var data = res.data.data
+          var data = res.data
           this.initData(data.account)
           // 更新到全局变量中
           _store.account = data.account

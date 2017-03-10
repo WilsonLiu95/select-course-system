@@ -22,9 +22,11 @@ class Test extends Controller
     public function getIndex()
     {
         $a = Model\Student::find(1)->account();
-        return $this->json(1, $a);
 
+    }
 
+    private function call(){
+        echo "callback";
     }
     public function getFile(){
         $test = \Artisan::call('redis:subscribe');

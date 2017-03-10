@@ -26,8 +26,8 @@
     methods: {
       getCanSelectDir() {
         this.$http.get("account/can-select-dir").then((res) => {
-          this.canSelectDir = res.data.data
-          this.makeOption(res.data.data)
+          this.canSelectDir = res.data
+          this.makeOption(res.data)
         })
       },
       makeOption(canSelectDir) {
