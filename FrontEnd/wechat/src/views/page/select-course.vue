@@ -4,7 +4,7 @@
       <h4>选定专业方向选修课</h4>
     </div>
 
-    <mt-checklist v-if="canSelectCourseOptions.length" :max="6" title="专业方向课程列表" v-model="finalClass" :options="canSelectCourseOptions"></mt-checklist>
+    <mt-checklist v-if="canSelectCourseOptions.length" :max="7" title="专业方向课程列表" v-model="finalCourseArr" :options="canSelectCourseOptions"></mt-checklist>
     <mt-button type="primary" size="large" @click="confirm" class="confirm">
       确认
     </mt-button>
@@ -17,18 +17,18 @@
       return {
         canSelectCourse: [],
         canSelectCourseOptions: [],
-        finalClass: [],
-
+        finalCourseArr: [],
       }
     },
     created() {
-      this.getcanSelectCourse();
+
+      this.getCanSelectCourse();
     },
     methods: {
-      getcanSelectCourse() {
+      getCanSelectCourse() {
         this.$http.get("select-course/can-select-course").then((res) => {
-          this.canSelectCourse = res.data.data
-          this.makeOption(res.data.data)
+          this.canSelectCourse = res.data.courseList
+          this.makeOption(res.data.courseList)
         })
       },
       makeOption(canSelectCourse) {
@@ -43,10 +43,8 @@
       },
       confirm() {
         util.box.confirm("确定选中该方向？").then(action => {
-          // 首先清楚存储的账户数据，以便更新
-          _store.account = {}
-          // 发送请求
-          this.$http.post("account/select-course", { class_code: this.finalClass })
+          this.$http.post("select-course/select-course", { course_id_arr: Number(this.finalCourseArr) })
+
         }, action => {
           util.toast("您已取消操作")
         })

@@ -26,8 +26,8 @@
     methods: {
       getCanSelectClass() {
         this.$http.get("account/can-select-class").then((res) => {
-          this.canSelectClass = res.data.data
-          this.makeOption(res.data.data)
+          this.canSelectClass = res.data
+          this.makeOption(res.data)
         })
       },
       makeOption(canSelectClass) {

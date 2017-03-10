@@ -27,7 +27,7 @@
       getDetail() {
         // 请求数据
         this.$http.get("course/detail?id=" + this.$route.params.course_id).then((res) => {
-          this.course = res.data.data
+          this.course = res.data
         })
       },
     },

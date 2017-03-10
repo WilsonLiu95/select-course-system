@@ -26,7 +26,7 @@ abstract class Controller extends BaseController
 				            "option"=>$option,
                             'msg'=>$msg],301);
 	}
-	public function errorRequest($msg=""){
+	public function errorMsg($msg=""){
 		return response()->json($msg, 400);
 	}
 	

@@ -47,7 +47,7 @@
           _store.account = {}
           // 发送请求
           this.$http.post("account/select-dir", {
-            direction_id: this.finalDirection })
+            direction_id: Number(this.finalDirection) })
         }, action => {
           util.toast("您已取消操作")
         })

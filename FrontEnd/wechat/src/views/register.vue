@@ -27,20 +27,16 @@
     },
     methods: {
       register() {
-        if (this.data.name && this.data.job_num) {
-          this.$http.post("register", this.data).then(res => {
-            if (res.state == 301) {
-              _const.isTeacher = res.data.isTeacher
-            }
-          })
-        } else {
-          util.toast("数据错误，请正确填写")
+        var data = {
+          name: this.data.name,
+          job_num: this.data.job_num.toUpperCase() // 默认大小
         }
-
-      },
-
-    },
-
+        // debugger
+        if (data.name && data.job_num) { // 需要填写过
+          this.$http.post("register", data)
+      }
+    }
+    }
   };
 
 </script>

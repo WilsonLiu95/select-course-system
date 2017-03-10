@@ -63,10 +63,9 @@
     methods: {
       getCourse() {
         this.$http.get("/course").then((res) => {
-          this.initData(res.data.data)
-
+          this.initData(res.data)
           // 存储在全局中，挡掉之后的请求
-          _store.course = res.data.data
+          _store.course = res.data
           _store.hasStoreCourse = true
         })
       },

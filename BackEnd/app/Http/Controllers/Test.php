@@ -21,8 +21,8 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        $a = Model\Student::find(1)->account();
-
+        $res = Model\Student::find(1)->update(['name'=>"测试"]);
+        return $this->json($res);
     }
 
     private function call(){

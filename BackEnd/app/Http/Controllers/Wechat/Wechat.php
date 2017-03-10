@@ -15,7 +15,7 @@ class Wechat extends Controller
         $code = $request->query("code");
         // 请求中需要带上code,否则无法进行微信认证
         if (!isset($code)){
-            return $this->toast(0,"code不存在");
+            return $this->errorMsg("微信授权code不存在");
         }
         
         $getUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . env("WE_APPID") ."&secret=" .
@@ -27,28 +27,18 @@ class Wechat extends Controller
 
         if (isset($body->errcode)){
             // 说明验证码无效
-            return $this->toast(0,"系统错误，请重新登录");
+            return $this->errorMsg("系统错误，请重新登录");
         }
         // 微信授权成功
 
         session()->put("openid",$body->openid);
 
         $student = Model\Student::where("openid",$body->openid);
-        if ($student->exists()){
-            $user = $student->first();
-        }else{
-            // 该微信用户未注册
-        return response()->json([
-            'state'=>301,
-            'url'=> env("BASE_PATH"),
-        ]);        
+        if ($student->exists()) {
+            // 用户已绑定过账号
+            session()->put("id",$student->value('id'));
         }
-        // 登录成功
-        session()->put("isLogin", true);
-        session()->put("id",$user["id"]);
-        return response()->json([
-            'url'=> env("BASE_PATH"),
-        ],301);
+        return response()->json(['url'=> env("BASE_PATH"),],301);
 
     }
 }

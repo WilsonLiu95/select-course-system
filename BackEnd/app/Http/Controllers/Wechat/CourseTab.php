@@ -7,9 +7,6 @@ use App\Http\Controllers\Wechat\BaseTrait;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-
-
-
 class CourseTab extends Controller
 {
     use BaseTrait;
@@ -21,11 +18,14 @@ class CourseTab extends Controller
         $institute_id = $account['institute_id'];
         // 从cache中获取课程信息
         $course = $this->cacheMajorCourse($institute_id,$major_id);
-        return $this->json(1,$course);
+        if(is_null($course)){
+           return $this->errorMsg("系统出错,暂无你的课程");
+        }
+        return $this->json($course);
     }
     public function getDetail(){
         $id =  request()->input("id");
-        return $this->json(1,Model\Course::find($id));
+        return $this->json(Model\Course::find($id));
     }
 
 }

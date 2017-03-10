@@ -11,17 +11,24 @@ use App\Http\Controllers\Controller;
 class SelectCourse extends Controller
 {
     use BaseTrait;
-    public function getIndex(){
-        $user = $this->getUser();
-        $data['major_id'] = $user->major_id;
-        $data['classes_id'] = $user->classes_id;
-        $data['direction_id'] = $user->direction_id;
-        return $this->json(1,$user);
+    private $account;
+    public function __construct()
+    {
+        parent::__construct();
+        // 操作账户信息较多,默认生成
+        $this->account = $this->getSessionInfo('account');
     }
     public function getCanSelectCourse(){
-        $dir_id = $this->getUser()->direction_id;
-        $course = Course::where('direction_id',$dir_id)->get();
-        return $this->json(1,$course);
+
+        $cache_dir = $this->cacheDirection($this->account['institute_id'],$this->account['direction_id']);
+
+        $data = [
+            'current_number' => $this->cacheDirStudentNum($this->account['institute_id'],$this->account['direction_id']),
+
+            'courseList'=>$cache_dir['courseList'],
+        ];
+
+        return $this->json($data);
     }
     public function postSelectCourse(){
 
