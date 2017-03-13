@@ -14,11 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        DB::listen(function($sql, $bindings, $time) {
 
-        });
-        App\Model\Major::updating(function ($major) {
-            var_dump($major->original);
+        \Queue::after(function ($connection, $job, $data) {
+            //
+//            var_dump($job);
         });
     }
 

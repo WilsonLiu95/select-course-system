@@ -67,17 +67,21 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use((response) => {
   // 关闭弹窗
-  Indicator.close();
-
+  if (!response.config.noIndicator) {
+    Indicator.close();
+  }
   return response;
 }, (error) => {
+  if (!error.response.config.noIndicator) {
+    Indicator.close();
+  }
 
-  Indicator.close();
   var res = error.response;
   if (res.status == 301) { // 前端控制跳转
     res.data.msg ? util.toast({
       message: res.data.msg,
       duration: 1000,
+      position: 'top',
     }) : ""
 
     // 跳转提示

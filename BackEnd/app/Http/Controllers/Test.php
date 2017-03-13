@@ -21,17 +21,12 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        $res = Model\Student::find(1)->update(['name'=>"测试"]);
-        return $this->json($res);
+        $w = $this->cacheWaitSelectCourseNum(1,12);
+        return $this->json($c);
     }
 
-    private function call(){
-        echo "callback";
-    }
     public function getFile(){
-        $test = \Artisan::call('redis:subscribe');
-        return $this->json(1,$test);
-
+        Cache::put('test',['a'=>2,"b"=>2],10);
     }
     public function getMail(){
         $id = request()->id;

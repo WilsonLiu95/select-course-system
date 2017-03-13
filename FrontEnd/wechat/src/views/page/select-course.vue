@@ -4,7 +4,7 @@
       <h4>选定专业方向选修课</h4>
     </div>
 
-    <mt-checklist v-if="canSelectCourseOptions.length" :max="7" title="专业方向课程列表" v-model="finalCourseArr" :options="canSelectCourseOptions"></mt-checklist>
+    <mt-checklist id="course-check-item" v-if="canSelectCourseOptions.length" :max="7" title="专业方向课程列表" v-model="finalCourseArr" :options="canSelectCourseOptions"></mt-checklist>
     <mt-button type="primary" size="large" @click="confirm" class="confirm">
       确认
     </mt-button>
@@ -21,7 +21,6 @@
       }
     },
     created() {
-
       this.getCanSelectCourse();
     },
     methods: {
@@ -31,20 +30,37 @@
           this.makeOption(res.data.courseList)
         })
       },
+      getSelectResult(){
+
+        setTimeout(()=>{
+          this.$http.get('select-course/select-result',{ noIndicator:true }).then(res=>{
+            if(res.data.isFinish === false){
+              this.getSelectResult() // 没有结束处理，继续请求
+            } else {
+              this.$indicator.close()
+              console.log(res)
+            }
+          })
+        },1000) // 每1S发送一次请求
+      },
       makeOption(canSelectCourse) {
         var data = [];
         canSelectCourse.forEach((item, index) => {
           data.push({
-            label: item.title,
-            value: String(item.id)
+            label: " 学分:" + item.credit + " 人数" + item.current_number + "/" + item.required_number + " " + "《"+item.title +"》",
+            value: item.id
           })
         })
         this.canSelectCourseOptions = data
       },
       confirm() {
         util.box.confirm("确定选中该方向？").then(action => {
-          this.$http.post("select-course/select-course", { course_id_arr: Number(this.finalCourseArr) })
-
+          this.$http.post("select-course/select-course", { course_id_arr: this.finalCourseArr},{noIndicator: true}) 
+          this.$indicator.open({
+            text: '紧急抢课ing~',
+            spinnerType: 'double-bounce'
+          })
+          this.getSelectResult()
         }, action => {
           util.toast("您已取消操作")
         })
@@ -56,8 +72,11 @@
   }
 
 </script>
-<style scoped>
+<style>
   .confirm {
     margin: 20px 0 20px 0;
+  }
+  #course-check-item .mint-checkbox-label{
+    font-size: 12px;
   }
 </style>
