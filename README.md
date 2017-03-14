@@ -13,6 +13,7 @@
 
 - [laravel](https://laravel-china.org/docs/5.1/installation) 后台框架
 - [guzzle](https://github.com/guzzle/guzzle) 后台http请求插件
+- [flexihash](https://github.com/pda/flexihash) 一致性哈希插件，用于组织多个队列任务
 - redis 用于session与cache的
 - mysql 持久数据化数据库
 

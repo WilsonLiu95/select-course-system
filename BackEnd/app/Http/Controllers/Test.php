@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model;
+use Flexihash\Flexihash;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -22,8 +23,14 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        Cache::put('test',1,1);
-        return $this->json((int)(Cache::get('test')));
+
+        $hash = new Flexihash();
+        // bulk add
+         $hash->addTargets(array('cache-1', 'cache-2', 'cache-3'));
+
+        // simple lookup
+        echo $hash->lookup('wilson'); // "cache-1"
+        echo $hash->lookup('object-b'); // "cache-2"
 
     }
 
