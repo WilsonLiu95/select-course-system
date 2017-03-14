@@ -25,9 +25,18 @@
     },
     methods: {
       getCanSelectDir() {
-        this.$http.get("account/can-select-dir").then((res) => {
-          this.canSelectDir = res.data
-          this.makeOption(res.data)
+        this.$http.get("direction/can-select-dir").then((res) => {
+          if(res.data.isCanChangeDir){
+            this.canSelectDir = res.data
+            this.makeOption(res.data)
+          }else{
+            util.box.alert(res.data.msg,'提示').then(()=>{
+              // 使用replace来控制跳转
+              this.$router.replace({name:'direction-course'})
+              
+            })
+          }
+
         })
       },
       makeOption(canSelectDir) {
@@ -42,11 +51,8 @@
       },
       confirm() {
         util.box.confirm("确定选中该方向？").then(action => {
-
-          // 首先清楚存储的账户数据，以便更新
-          _store.account = {}
           // 发送请求
-          this.$http.post("account/select-dir", {
+          this.$http.post("direction/select-dir", {
             direction_id: Number(this.finalDirection) })
         }, action => {
           util.toast("您已取消操作")

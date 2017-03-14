@@ -16,16 +16,16 @@ export default {
         // 基本的四个
         { path: '', redirect: "course" }, // 重定向到默认的course
         { name: 'course', path: 'course', component: require('_views/tab/course.vue') },
-        { name: 'start-select', path: 'start-select', component: require('_views/tab/start-select.vue') },
+        { name: 'account', path: 'account', component: require('_views/tab/account.vue') },
       ]
     },
     // 其他页面
-    { name: "details", path: '/details/:course_id', component: require('_views/page/details.vue') },
+    { name: "details", path: '/details/:direction_index/:course_index', component: require('_views/page/details.vue') },
 
     { name: "select-direction", path: '/select-direction', component: require('_views/page/select-direction.vue') },
     { name: "select-class", path: '/select-class', component: require('_views/page/select-class.vue') },
-    { name: "select-course", path: '/select-course', component: require('_views/page/select-course.vue') },
-
+    { name: "direction-course", path: '/direction-course', component: require('_views/page/direction-course.vue') },
+    { name: "common-course", path: '/common-course', component: require('_views/page/common-course.vue') },
     { path: '*', component: require('_views/404.vue') }
   ]
 }

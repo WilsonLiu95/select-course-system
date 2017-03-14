@@ -7,6 +7,7 @@ use Flexihash\Flexihash;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Psy\Util\Json;
 use Validator;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Artisan;
@@ -24,13 +25,11 @@ class Test extends Controller
     public function getIndex()
     {
 
-        $hash = new Flexihash();
-        // bulk add
-         $hash->addTargets(array('cache-1', 'cache-2', 'cache-3'));
+        $a=[1,2,4,3];
+        $b=[2,3];
 
-        // simple lookup
-        echo $hash->lookup('wilson'); // "cache-1"
-        echo $hash->lookup('object-b'); // "cache-2"
+        $c=array_diff($a,$b);
+        return $this->json($c);
 
     }
 

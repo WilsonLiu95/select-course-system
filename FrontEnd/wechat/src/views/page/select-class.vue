@@ -25,7 +25,7 @@
     },
     methods: {
       getCanSelectClass() {
-        this.$http.get("account/can-select-class").then((res) => {
+        this.$http.get("classes/can-select-class").then((res) => {
           this.canSelectClass = res.data
           this.makeOption(res.data)
         })
@@ -42,10 +42,8 @@
       },
       confirm() {
         util.box.confirm("确定选中该方向？").then(action => {
-          // 首先清楚存储的账户数据，以便更新
-          _store.account = {}
           // 发送请求
-          this.$http.post("account/select-class", { class_code: this.finalClass })
+          this.$http.post("classes/select-class", { class_code: this.finalClass })
         }, action => {
           util.toast("您已取消操作")
         })

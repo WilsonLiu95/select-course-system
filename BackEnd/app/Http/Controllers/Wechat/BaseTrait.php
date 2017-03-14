@@ -53,6 +53,14 @@ trait BaseTrait {
 
     //====================================start cache的相关操作================================================
 
+    public function cacheSystemConfig($institute_id){
+        $key = 'system_config' . $institute_id;
+        return Cache::tags(["ins" . $institute_id])
+            ->remember($key, 0.1, function()use($institute_id){
+              return Model\Grade::where('institute_id',$institute_id)
+                   ->select('system_status',"min_credit")->first()->toArray();
+            });
+    }
     public function cacheMajorDirMap($institute_id,$major_id){ // 专业与方向的映射表
         // 基本长期不变的数据
         $key = 'major_dir_map';
@@ -77,7 +85,7 @@ trait BaseTrait {
             ->remember($key, 0.1, function() use($institute_id,$direction_id){
 
                 $course = Model\Direction::find($direction_id)->course();
-                $courseList =  $course->select("course.id","title","teacher","credit",'required_number')->get();
+                $courseList =  $course->select("course.id","title","teacher","credit",'required_number','detail')->get();
 
                 // 去更新每个课程的人数
                 $courseList->map(function ($item) use($institute_id) {
@@ -145,12 +153,12 @@ trait BaseTrait {
             });
     }
 
-    public function cacheHandleSelectCourseNum($institute_id, $course_id, $isSelect){
+    public function cacheHandleSelectCourseNum($institute_id, $course_id, $isQuit){
         // 操作当前选中该课程的学生数量
         $key = 'course_has_select_num_' . $course_id;
         $this->cacheSelectCourseNum($institute_id, $course_id); // 确保存在
-        $isSelect ? Cache::tags(["ins" . $institute_id])->increment($key)
-            : Cache::tags(["ins" . $institute_id])->decrement($key);
+        $isQuit ? Cache::tags(["ins" . $institute_id])->decrement($key)
+            :Cache::tags(["ins" . $institute_id])->increment($key);
     }
 
     // 课程等待人数的相关函数
@@ -183,19 +191,19 @@ trait BaseTrait {
         $key = 'selectResult_' . $student_id . "_" . $course_id;
         return Cache::tags(["ins" . $institute_id, "student_" . $student_id])
             ->rememberForever($key,function(){ // 需要手动清除
-                return ["isSelect"=> false,// 是否选上该门课程
+                return ["isSuccess"=> false,// 是否选上该门课程
                         "isFinish"=> false, ];// 队列中该任务是否完成
             });
     }
 
-    public function cacheHandleSelectResult($institute_id, $student_id, $course_id, $isSelect, $isFinish){
+    public function cacheHandleSelectResult($institute_id, $student_id, $course_id, $isSuccess, $isFinish){
         $key = 'selectResult_' . $student_id . "_" . $course_id;
 
         if(Cache::tags(["ins" . $institute_id, "student_" . $student_id])->has($key)){
             // 如果cache中存在该选课记录,则对其进行修改
             Cache::tags(["ins" . $institute_id, "student_" . $student_id])
                 ->forever($key, [
-                    "isSelect"=> $isSelect,// 是否选上该门课程
+                    "isSuccess"=> $isSuccess,// 是否选上该门课程
                     "isFinish"=> $isFinish, // 队列中该任务是否完成
                 ]);
         }

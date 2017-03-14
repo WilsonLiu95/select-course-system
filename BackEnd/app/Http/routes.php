@@ -13,15 +13,21 @@
 */
 Route::controller("/test","Test");
 Route::group(['prefix' => 'wechat'], function(){
-
     Route::controller("/wechat","Wechat\Wechat"); // 微信授权
 
     Route::group(['middleware' => 'AuthOfWechat'], function(){
-        // 微信接口 如下
+        // 将微信openid与student的记录绑定
         Route::controller("/register","Wechat\Register");
+
+        // 对student表的操作
         Route::controller("/account","Wechat\Account");
+        Route::controller("/direction","Wechat\SelectDirection");
+        Route::controller("/classes","Wechat\SelectClasses");
+
+        // 对select_course表的操作
         Route::controller("/course","Wechat\CourseTab");
         Route::controller("/direction-course","Wechat\DirectionCourse");
+        Route::controller("/common-course","Wechat\CommonCourse");
     });
 });
 

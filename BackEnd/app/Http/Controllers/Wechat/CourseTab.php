@@ -23,9 +23,4 @@ class CourseTab extends Controller
         }
         return $this->json($course);
     }
-    public function getDetail(){
-        $id =  request()->input("id");
-        return $this->json(Model\Course::find($id));
-    }
-
 }

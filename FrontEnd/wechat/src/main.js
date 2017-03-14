@@ -28,8 +28,6 @@ window._store = { // 因为是单页面框架，将全局变量当成session使�
   page: '', // 用户在哪一页
   hasStoreCourse: false,
   course: [], // 存储课程数据
-  // account页面的数据
-  account: {}, // 账户信息
 }
 window.util = {
   v: validator,

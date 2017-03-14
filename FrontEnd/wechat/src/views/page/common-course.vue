@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class='t-center'>
-      <h4>选定专业方向选修课</h4>
+      <h4>公选课</h4>
     </div>
 
     <mt-checklist id="course-check-item" v-if="canSelectCourseOptions.length" :max="7" title="专业方向课程列表" v-model="finalCourseArr" :options="canSelectCourseOptions"></mt-checklist>
@@ -12,7 +12,7 @@
 </template>
 <script>
   export default {
-    name: "select-course",
+    name: "common-course",
     data() {
       return {
         canSelectCourse: [],
@@ -55,7 +55,7 @@
       },
       confirm() {
         util.box.confirm("确定选中该方向？").then(action => {
-          this.$http.post("direction-course/handle-course", { course_id_arr: this.finalCourseArr},{noIndicator: true}) 
+          this.$http.post("direction-course/handle-course", { course_id_arr: this.finalCourseArr, isQuit:false},{noIndicator: true}) 
           this.$indicator.open({
             text: '紧急抢课ing~',
             spinnerType: 'double-bounce'
