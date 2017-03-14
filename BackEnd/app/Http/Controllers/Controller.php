@@ -27,7 +27,10 @@ abstract class Controller extends BaseController
                             'msg'=>$msg],301);
 	}
 	public function errorMsg($msg=""){
-		return response()->json($msg, 400);
+		$res = [
+			'msg' => $msg
+		];
+		return response()->json($res, 400);
 	}
 	
 }

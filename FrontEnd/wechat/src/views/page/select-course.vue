@@ -25,7 +25,7 @@
     },
     methods: {
       getCanSelectCourse() {
-        this.$http.get("select-course/can-select-course").then((res) => {
+        this.$http.get("direction-course/can-select-course").then((res) => {
           this.canSelectCourse = res.data.courseList
           this.makeOption(res.data.courseList)
         })
@@ -33,7 +33,7 @@
       getSelectResult(){
 
         setTimeout(()=>{
-          this.$http.get('select-course/select-result',{ noIndicator:true }).then(res=>{
+          this.$http.get('direction-course/select-result',{ noIndicator:true }).then(res=>{
             if(res.data.isFinish === false){
               this.getSelectResult() // 没有结束处理，继续请求
             } else {
@@ -55,7 +55,7 @@
       },
       confirm() {
         util.box.confirm("确定选中该方向？").then(action => {
-          this.$http.post("select-course/select-course", { course_id_arr: this.finalCourseArr},{noIndicator: true}) 
+          this.$http.post("direction-course/handle-course", { course_id_arr: this.finalCourseArr},{noIndicator: true}) 
           this.$indicator.open({
             text: '紧急抢课ing~',
             spinnerType: 'double-bounce'

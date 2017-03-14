@@ -21,7 +21,7 @@ Route::group(['prefix' => 'wechat'], function(){
         Route::controller("/register","Wechat\Register");
         Route::controller("/account","Wechat\Account");
         Route::controller("/course","Wechat\CourseTab");
-        Route::controller("/select-course","Wechat\SelectCourse");
+        Route::controller("/direction-course","Wechat\DirectionCourse");
     });
 });
 

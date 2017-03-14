@@ -9,6 +9,7 @@
 
       <mt-field v-if="course.detail" label="详情" placeholder="课题详情" type="textarea" rows="8" v-model="course.detail" disabled></mt-field>
     </div>
+
     <!--第一部分 end 基本课程信息-->
   </div>
 </template>

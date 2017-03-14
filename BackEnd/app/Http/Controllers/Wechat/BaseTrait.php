@@ -113,10 +113,8 @@ trait BaseTrait {
 
     public function cacheDirStudentNum($institute_id, $direction_id){ // 某个方向有多少人
         $key = 'direction_student_num_' .$direction_id;
-
-            // 如果不存在,则先进行查询,并存储
-        return   Cache::tags(["ins" . $institute_id])
-                 ->remember($key, 1, function()use($institute_id, $direction_id){
+        return (int)Cache::tags(["ins" . $institute_id])
+                 ->remember($key, 2, function()use($institute_id, $direction_id){
                     return Student::where('institute_id',$institute_id)
                         ->where('direction_id',$direction_id)->count();
                 });
@@ -139,8 +137,8 @@ trait BaseTrait {
         // 已经选中该课程学生的数量
         $key = 'course_has_select_num_' . $course_id;
 
-        return Cache::tags(["ins" . $institute_id])
-            ->remember($key, 0.1,function()use($institute_id, $course_id){ // 永远记着
+        return (int)Cache::tags(["ins" . $institute_id])
+            ->remember($key, 2, function()use($institute_id, $course_id){ // 永远记着
                return Model\SelectCourse::where('institute_id',$institute_id)
                    ->where('course_id', $course_id)
                    ->where('isQuit',false)->count(); // 统计没有退选的人数
@@ -148,7 +146,7 @@ trait BaseTrait {
     }
 
     public function cacheHandleSelectCourseNum($institute_id, $course_id, $isSelect){
-        // 操作当前选中该课程的数据
+        // 操作当前选中该课程的学生数量
         $key = 'course_has_select_num_' . $course_id;
         $this->cacheSelectCourseNum($institute_id, $course_id); // 确保存在
         $isSelect ? Cache::tags(["ins" . $institute_id])->increment($key)
@@ -159,8 +157,8 @@ trait BaseTrait {
     public function cacheWaitSelectCourseNum($institute_id, $course_id){
         // 队列中在选取该课程的数量
         $key = 'course_wait_select_num_' . $course_id;
-        return Cache::tags(["ins" . $institute_id])
-            ->rememberForever($key, function()use($institute_id, $course_id){
+        return (int)Cache::tags(["ins" . $institute_id])
+            ->remember($key, 2, function()use($institute_id, $course_id){
                 return 0; // 启动时,默认为0
                 // TODO: 系统重启后,如何获取队列中剩下的任务个数
             });
@@ -184,9 +182,9 @@ trait BaseTrait {
     public function cacheSelectResult($institute_id, $student_id, $course_id){
         $key = 'selectResult_' . $student_id . "_" . $course_id;
         return Cache::tags(["ins" . $institute_id, "student_" . $student_id])
-            ->rememberForever($key,function(){
+            ->rememberForever($key,function(){ // 需要手动清除
                 return ["isSelect"=> false,// 是否选上该门课程
-                    "isFinish"=> false, ];// 队列中该任务是否完成
+                        "isFinish"=> false, ];// 队列中该任务是否完成
             });
     }
 
@@ -203,9 +201,5 @@ trait BaseTrait {
         }
     }
     //====================================end cache操作================================================
-
-
-
-
 
 }

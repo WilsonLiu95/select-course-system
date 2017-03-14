@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Validator;
@@ -21,8 +22,9 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        $w = $this->cacheWaitSelectCourseNum(1,12);
-        return $this->json($c);
+        Cache::put('test',1,1);
+        return $this->json((int)(Cache::get('test')));
+
     }
 
     public function getFile(){
