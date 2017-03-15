@@ -24,15 +24,11 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
+//        $this->cacheHandleDir(1, 2, true);
+        $res['dir'] = $this->cacheDirStudentNum(1,2);
+        //        $res['ca_dir'] = $this->cacheDirection(1,0);
+        return $this->json($res);
 
-
-        $has_select_common_course = [6, 10, 13, 30, 40];
-
-        $major_course = $this->cacheMajorCourse(1, 2);
-        $c = $major_course[0]['course']->filter(function($item) use($has_select_common_course){
-            return in_array($item['id'], $has_select_common_course);
-        });
-        return $this->json($c);
 
     }
 

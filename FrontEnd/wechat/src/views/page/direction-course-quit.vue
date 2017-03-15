@@ -37,7 +37,14 @@
               this.getSelectResult() // 没有结束处理，继续请求
             } else {
               this.$indicator.close()
-              console.log(res)
+              var msg = '课程退选成功'
+              for (var key in res.data){
+                if(res.data[key] == false){   // 只有有课程失败就弹出提示
+                  msg = '有部分课程，退选失败，请再次尝试'
+                }}
+              util.box.alert(msg).then(type=>{
+                this.getCanSelectCourse()
+              })
             }
           })
         },1000) // 每1S发送一次请求
@@ -57,10 +64,10 @@
         this.canSelectCourseOptions = data
       },
       confirm() {
-        util.box.confirm("确定选中该方向？").then(action => {
+        util.box.confirm("确定退选选中的方向？").then(action => {
           this.$http.post("direction-course/handle-course", { course_id_arr: this.finalCourseArr, isQuit:true},{noIndicator: true}) 
           this.$indicator.open({
-            text: '紧急抢课ing~',
+            text: '紧急退选ing~',
             spinnerType: 'double-bounce'
           })
           this.getSelectResult()

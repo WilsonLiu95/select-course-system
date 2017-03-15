@@ -41,6 +41,7 @@ trait BaseTrait {
             ->where('isQuit',false)
             ->where('direction_id',"!=", 0)->lists('course_id')->toArray();
         if ($student){
+            session()->put('id',$student->id);
             session()->put("isAbleSelect",true); // 默认可以进行选课操作,同时只能进行一次选课操作
             session()->put("has_select_common_course",$has_select_common_course);
             session()->put("has_select_direction_course",$has_select_direction_course);
@@ -56,7 +57,7 @@ trait BaseTrait {
     public function cacheSystemConfig($institute_id){
         $key = 'system_config' . $institute_id;
         return Cache::tags(["ins" . $institute_id])
-            ->remember($key, 0.1, function()use($institute_id){
+            ->remember($key, 1, function()use($institute_id){
               return Model\Grade::where('institute_id',$institute_id)
                    ->select('system_status',"min_credit")->first()->toArray();
             });
@@ -79,20 +80,20 @@ trait BaseTrait {
         })[$major_id];
     }
     public function cacheDirection($institute_id,$direction_id){ // 方向对于课程的映射表以及方向下课程的内容
-        // 方向数据不敏感,以DB的方向数据为准,每6S自动更新一次
         $key = "direction_" . $direction_id;
         return Cache::tags(["ins" . $institute_id])
-            ->remember($key, 0.1, function() use($institute_id,$direction_id){
-
-                $course = Model\Direction::find($direction_id)->course();
-                $courseList =  $course->select("course.id","title","teacher","credit",'required_number','detail')->get();
-
-                // 去更新每个课程的人数
-                $courseList->map(function ($item) use($institute_id) {
-                    $item['current_number'] = $this->cacheSelectCourseNum($institute_id, $item["id"]);
-                    return $item;
-                });
-
+            ->remember($key, 1, function() use($institute_id,$direction_id){
+                // 公选课
+                if($direction_id == 0){ // 方向为0表示公选课
+                    $courseList = Model\Course::where("institute_id",$institute_id)
+                        ->where('is_common', true)
+                        ->select("course.id","title","teacher","credit",'required_number','detail')
+                        ->get();
+                }else{
+                    $courseList =  Model\Direction::find($direction_id)->course()
+                        ->select("course.id","title","teacher","credit",'required_number','detail')
+                        ->get();
+                }
                 return $courseList;
         });
     }
@@ -102,12 +103,10 @@ trait BaseTrait {
         return Cache::tags(["ins" . $institute_id])
             ->remember($key, 1, function()use($institute_id, $major_id){
                 $data = [];
-                $common_course = Model\Course::where("institute_id",$institute_id)
-                    ->where('is_common', true)->get();
                 $data[0] = [
                   "id"=>0,
                   "name" => "公选课",
-                  "course" => $common_course,
+                  "course" => $this->cacheDirection($institute_id, 0),
                 ];
                 $dirArrMap = $this->cacheMajorDirMap($institute_id,$major_id);
                 foreach ($dirArrMap as $index => $item) {
@@ -122,7 +121,7 @@ trait BaseTrait {
     public function cacheDirStudentNum($institute_id, $direction_id){ // 某个方向有多少人
         $key = 'direction_student_num_' .$direction_id;
         return (int)Cache::tags(["ins" . $institute_id])
-                 ->remember($key, 2, function()use($institute_id, $direction_id){
+                 ->remember($key, 1, function()use($institute_id, $direction_id){
                     return Student::where('institute_id',$institute_id)
                         ->where('direction_id',$direction_id)->count();
                 });
@@ -146,7 +145,7 @@ trait BaseTrait {
         $key = 'course_has_select_num_' . $course_id;
 
         return (int)Cache::tags(["ins" . $institute_id])
-            ->remember($key, 2, function()use($institute_id, $course_id){ // 永远记着
+            ->remember($key, 1, function()use($institute_id, $course_id){
                return Model\SelectCourse::where('institute_id',$institute_id)
                    ->where('course_id', $course_id)
                    ->where('isQuit',false)->count(); // 统计没有退选的人数
@@ -166,7 +165,7 @@ trait BaseTrait {
         // 队列中在选取该课程的数量
         $key = 'course_wait_select_num_' . $course_id;
         return (int)Cache::tags(["ins" . $institute_id])
-            ->remember($key, 2, function()use($institute_id, $course_id){
+            ->remember($key, 1, function()use($institute_id, $course_id){
                 return 0; // 启动时,默认为0
                 // TODO: 系统重启后,如何获取队列中剩下的任务个数
             });
@@ -208,6 +207,11 @@ trait BaseTrait {
                 ]);
         }
     }
+    public function cacheFogetResult($student_id){
+        Cache::tags([ "student_" . $student_id])->flush();
+    }
+
+
     //====================================end cache操作================================================
 
 }

@@ -55,7 +55,7 @@ class SelectDirection extends Controller
             return $this->errorMsg('重选的方向与原方向一致,更改无效');
         }
         if(!$filterDir->isEmpty()){
-
+            $orgin_direction = $this->account['direction_id'];
             // 不为空,用户有权选择该方向
             $isUpdate = $this->getUser()->update([ // 选定新的方向
                 'direction_id' => $direction_id ,
@@ -65,10 +65,8 @@ class SelectDirection extends Controller
                 return $this->errorMsg('选定方向失败,请重试');
             }
             // 先行操作cache中方向的数据,如果之前有选定方向,则退选之前的方向先
-            if($this->account['direction_id']){
-
-
-                $this->cacheHandleDir($this->account['institute_id'], $this->account['direction_id'], false);
+            if($orgin_direction){
+                $this->cacheHandleDir($this->account['institute_id'], $orgin_direction, false);
             }
 
             $this->cacheHandleDir($this->account['institute_id'], $direction_id, true); // 选中的方向上人数+1

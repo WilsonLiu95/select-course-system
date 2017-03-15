@@ -31,6 +31,11 @@ class DirectionCourse extends Controller
     public function getCanSelectCourse(){
         // 获取可以选修的选修课接口
         $courseList = $this->cacheDirection($this->account['institute_id'],$this->account['direction_id']);
+        // 去更新每个课程的人数
+        $courseList->map(function ($item)  {
+            $item['current_number'] = $this->cacheSelectCourseNum($this->account['institute_id'], $item["id"]);
+            return $item;
+        });
         $current_number = $this->cacheDirStudentNum($this->account['institute_id'],$this->account['direction_id']);
         $data = [
             'current_number' => $current_number,
@@ -70,6 +75,7 @@ class DirectionCourse extends Controller
             'grade_id'=>$this->account['grade_id'],
             'direction_id'=>$this->account['direction_id'],
             'student_id'=>$this->account['id'],
+            'isQuit'=>$isQuit
         ];
         foreach ($queue_course as $course_id) {
             $option['course_id'] = $course_id;
@@ -116,7 +122,7 @@ class DirectionCourse extends Controller
             }
         }
         // 如果所有选课操作都处理完成,则返回结果
-        Cache::tags('student_'.$this->account['id'])->flush();// 清除cache中的所有的课程结果
+        $this->cacheFogetResult($this->account['id']);
 
         // 对session进行操作
         $has_select = $this->getSessionInfo('has_select_direction_course');
@@ -124,7 +130,7 @@ class DirectionCourse extends Controller
         session()->put('isAbleSelect', true); // 重置为可进行选课操作
         if(session()->get('isQuit')){
             // 退选课程
-            session()->put('has_select_direction_course', array_diff($has_select, $success_handle)); // 更新session中,用户选中的课程
+            session()->put('has_select_direction_course', array_values(array_diff($has_select, $success_handle))); // 更新session中,用户选中的课程
         }else{
             // 选课
             session()->put('has_select_direction_course', array_merge($has_select, $success_handle)); // 更新session中,用户选中的课程

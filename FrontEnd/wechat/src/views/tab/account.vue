@@ -82,7 +82,7 @@
           util.box.confirm(confirmMsg).then(action => {
             if(unQuitCourse){
               // 先去退选所有课程
-              this.$router.push({name:'direction-course-select'})
+              this.$router.push({name:'direction-course-quit'})
             }else{
               this.$router.push({name:'select-direction'})
             }

@@ -38,7 +38,14 @@
               this.getSelectResult() // 没有结束处理，继续请求
             } else {
               this.$indicator.close()
-              console.log(res)
+              var msg = '选课成功'
+              for (var key in res.data){
+                if(res.data[key] == false){   // 只有有课程失败就弹出提示
+                  msg = '有部分课程，选课失败，请再次尝试'
+                }}
+              util.box.alert(msg).then(type=>{
+                this.getCanSelectCourse()
+              })
             }
           })
         },1000) // 每1S发送一次请求

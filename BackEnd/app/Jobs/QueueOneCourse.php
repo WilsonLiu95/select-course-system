@@ -34,7 +34,6 @@ class QueueOneCourse extends Job implements SelfHandling, ShouldQueue
     {
         $this->option = $option;
         $this->isQuit = $isQuit;
-        // 进入执行,则对cache减1
     }
 
     /**
@@ -64,7 +63,7 @@ class QueueOneCourse extends Job implements SelfHandling, ShouldQueue
             return false; // 直接返回
         }
         // 课程未选满,继续选课,新增一条选课记录。理论上可以直接使用create,因为分发选课事件任务时,进行过检测筛选掉了已选课程
-        SelectCourse::firstOrCreate($this->option);
+        SelectCourse::create($this->option);
         $this->handleCache(true, true);
 
     }
@@ -78,17 +77,16 @@ class QueueOneCourse extends Job implements SelfHandling, ShouldQueue
         if($course_handle){ // 更新isQuit字段
             $course_handle->update(['isQuit'=>true]);
             $this->handleCache(true, true);
+            return true;
         }else{
             $this->handleCache(false, true); // 记录中没有该条选课记录,操作失败
         }
     }
     private function handleCache($isSuccess, $isFinish){
-
         if($isSuccess){ // 课程是否选上
             // 选上,则进行相应的 cache中该课程的选中人数相应的 +/- 1,
             $this->cacheHandleSelectCourseNum($this->option['institute_id'], $this->option['course_id'], $this->isQuit);
         }
-
         // 队列等待人数-1
         $this->cacheHandleWaitSelectCourseNum($this->option['institute_id'], $this->option['course_id'], true);
 
@@ -96,3 +94,4 @@ class QueueOneCourse extends Job implements SelfHandling, ShouldQueue
         $this->cacheHandleSelectResult($this->option['institute_id'], $this->option['student_id'],$this->option['course_id'], $isSuccess, $isFinish);
     }
 }
+

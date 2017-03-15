@@ -92,7 +92,7 @@ $factory->define(\App\Model\Student::class, function ($faker) {
 
 $factory->define(\App\Model\SelectCourse::class, function ($faker) {
     return [
-
+        'institute_id' => 1,
         'grade_id'=>1,
         'student_id' => $faker->numberBetween($min = 1, $max = 237),
         "course_id"=> $faker->numberBetween($min = 1, $max = 77),
