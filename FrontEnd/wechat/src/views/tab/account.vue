@@ -44,7 +44,7 @@
         },
         system_status:0,
         has_select_direction_course:[],
-        has_select_common_course:[]
+        has_select_common_course:[],
       }
     },
     created() {

@@ -8,7 +8,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: './',
-    httpUrl: 'http://bishe.wilsonliu.cn/BackEnd/public/index.php/wechat/',
+    httpUrl: 'http://dev.wilsonliu.cn/self_product/select-course-system/BackEnd/public/index.php/wechat/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -22,15 +22,16 @@ module.exports = {
     port: 8080,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    httpUrl: '/wechat/',
+    // httpUrl: '/wechat/',
+    httpUrl: 'http://dev.wilsonliu.cn:8000/wechat/',
     proxyTable: {
-      '/wechat': {
-        target: 'http://dev.wilsonliu.cn:8000',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/wechat': '/wechat'
-        }
-      }
+      // '/wechat': {
+      //   target: 'http://dev.wilsonliu.cn:8000',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/wechat': '/wechat'
+      //   }
+      // }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

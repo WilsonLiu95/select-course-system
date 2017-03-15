@@ -44,7 +44,7 @@
         var data = [];
         canSelectDir.forEach((item, index) => {
           var option = {
-            label: item.name,
+            label: item.name + " 当前:"+item.current_number+ "人",
             value: String(item.id)
           }
           if(item.id == this.finalDirection){

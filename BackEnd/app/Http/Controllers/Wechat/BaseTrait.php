@@ -128,7 +128,7 @@ trait BaseTrait {
     }
     public function cacheHandleDir($institute_id,$direction_id, $isSelect){ // 增减方向的人数
         $key = 'direction_student_num_' . $direction_id;
-        $this->cacheDirection($institute_id,$direction_id); // 先运行一遍,确保存在
+        $this->cacheDirStudentNum($institute_id,$direction_id); // 先运行一遍,确保存在
         $isSelect ? Cache::tags(["ins" .$institute_id])->increment($key) :
             Cache::tags(['ins'.$institute_id])->decrement($key);
     }
@@ -173,7 +173,7 @@ trait BaseTrait {
     public function cacheHandleWaitSelectCourseNum($institute_id, $course_id, $isHasBeenExecute){
         // 操作队列选课的数据
         $key = 'course_wait_select_num_' . $course_id;
-        $nowWaitNum = $this->cacheSelectCourseNum($institute_id, $course_id); // 确保存在
+        $nowWaitNum = $this->cacheWaitSelectCourseNum($institute_id, $course_id); // 确保存在
         if($nowWaitNum == 0){
             // 担心,系统重启,导致本数据丢失,但是队列中任务仍然存在,重启后,相应任务继续执行,造成本数字为负
             return true;
@@ -197,7 +197,7 @@ trait BaseTrait {
 
     public function cacheHandleSelectResult($institute_id, $student_id, $course_id, $isSuccess, $isFinish){
         $key = 'selectResult_' . $student_id . "_" . $course_id;
-
+        $this->cacheSelectResult($institute_id, $student_id, $course_id);
         if(Cache::tags(["ins" . $institute_id, "student_" . $student_id])->has($key)){
             // 如果cache中存在该选课记录,则对其进行修改
             Cache::tags(["ins" . $institute_id, "student_" . $student_id])

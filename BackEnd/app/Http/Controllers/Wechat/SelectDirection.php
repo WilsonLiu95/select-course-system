@@ -31,6 +31,10 @@ class SelectDirection extends Controller
                 'msg'=>'重选方向需退选其他课程,请手动退选所有选修课程',]);
         }
         $res['data'] = $this->userCanSelectDir();
+        $res['data']->map(function($item){
+            $item['current_number'] = $this->cacheDirStudentNum($this->account['institute_id'], $item['id']);
+            return $item;
+        });
         $res['hasSelectDir'] = $this->account['direction_id'];
         if(is_null($res['data'] )){
             return $this->errorMsg("系统出错,暂无你可选择的方向");
