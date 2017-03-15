@@ -22,6 +22,7 @@ class SelectDirection extends Controller
     public function getCanSelectDir(){
         $res = [
             'isCanChangeDir'=>true,
+            'hasSelectDir'=>0,
             'data'=>[]
         ];
         if(!$this->isCanChangeDir()){
@@ -30,6 +31,7 @@ class SelectDirection extends Controller
                 'msg'=>'重选方向需退选其他课程,请手动退选所有选修课程',]);
         }
         $res['data'] = $this->userCanSelectDir();
+        $res['hasSelectDir'] = $this->account['direction_id'];
         if(is_null($res['data'] )){
             return $this->errorMsg("系统出错,暂无你可选择的方向");
         }
@@ -50,9 +52,10 @@ class SelectDirection extends Controller
         $filterDir = $this->userCanSelectDir()->where('id',$direction_id);
 
         if($direction_id == $this->account['direction_id']){
-            return $this->redirect(['name'=>"direction-course"],'重选的方向与原方向一致,更改无效');
+            return $this->errorMsg('重选的方向与原方向一致,更改无效');
         }
         if(!$filterDir->isEmpty()){
+
             // 不为空,用户有权选择该方向
             $isUpdate = $this->getUser()->update([ // 选定新的方向
                 'direction_id' => $direction_id ,
@@ -63,13 +66,20 @@ class SelectDirection extends Controller
             }
             // 先行操作cache中方向的数据,如果之前有选定方向,则退选之前的方向先
             if($this->account['direction_id']){
+
+
                 $this->cacheHandleDir($this->account['institute_id'], $this->account['direction_id'], false);
             }
 
-            $this->cacheHandleDir($this->account['institute_id'], $direction_id, true);
+            $this->cacheHandleDir($this->account['institute_id'], $direction_id, true); // 选中的方向上人数+1
 
             session()->forget('account'); // 更新账户数据
-            return $this->redirect(['name'=> 'direction-course'],'选定方向成功,马上为您自动跳转');
+
+            // 系统状态与跳转页面的映射关系
+            $system_status = $this->cacheSystemConfig($this->account['institute_id'])['system_status'];
+            $redirect_map = [0=>'account', 1=>'direction-course-select', 2=>'common-course-select'];
+
+            return $this->redirect(['name'=>$redirect_map[$system_status]], '选定方向成功,正在为您自动跳转');
         }
 
         return $this->errorMsg("该方向不在您的候选范围内,请确认无误。如有问题,请咨询老师。");
@@ -79,7 +89,5 @@ class SelectDirection extends Controller
     }
     private function isCanChangeDir(){
         return count($this->getSessionInfo('has_select_direction_course')) == 0 ? true : false;
-
-//        return $this->redirect(["name"=>'direction-course'], '重选方向需退选其他课程,请手动退选所有选修课程')->send();
     }
 }

@@ -26,7 +26,7 @@ class Account extends Controller
         $data['account'] = $this->account;
         $data['has_select_direction_course'] = $this->getSessionInfo('has_select_direction_course');
         $data['system_status'] = $this->cacheSystemConfig($this->account['institute_id'])['system_status'];
-
+        $data['has_select_common_course'] = $this->getSessionInfo('has_select_common_course');
         return $this->json($data);
     }
 

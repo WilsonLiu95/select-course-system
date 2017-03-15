@@ -25,10 +25,13 @@ class Test extends Controller
     public function getIndex()
     {
 
-        $a=[1,2,4,3];
-        $b=[2,3];
 
-        $c=array_diff($a,$b);
+        $has_select_common_course = [6, 10, 13, 30, 40];
+
+        $major_course = $this->cacheMajorCourse(1, 2);
+        $c = $major_course[0]['course']->filter(function($item) use($has_select_common_course){
+            return in_array($item['id'], $has_select_common_course);
+        });
         return $this->json($c);
 
     }

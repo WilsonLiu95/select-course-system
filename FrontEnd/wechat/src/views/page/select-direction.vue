@@ -27,12 +27,13 @@
       getCanSelectDir() {
         this.$http.get("direction/can-select-dir").then((res) => {
           if(res.data.isCanChangeDir){
-            this.canSelectDir = res.data
-            this.makeOption(res.data)
+            this.canSelectDir = res.data.data
+            this.finalDirection = String(res.data.hasSelectDir)
+            this.makeOption(res.data.data)
           }else{
             util.box.alert(res.data.msg,'提示').then(()=>{
               // 使用replace来控制跳转
-              this.$router.replace({name:'direction-course'})
+              this.$router.replace({name:'direction-course-select'})
               
             })
           }
@@ -42,10 +43,14 @@
       makeOption(canSelectDir) {
         var data = [];
         canSelectDir.forEach((item, index) => {
-          data.push({
+          var option = {
             label: item.name,
             value: String(item.id)
-          })
+          }
+          if(item.id == this.finalDirection){
+            option.disabled = true
+          }
+          data.push(option)
         })
         this.canSelectDirOptions = data
       },

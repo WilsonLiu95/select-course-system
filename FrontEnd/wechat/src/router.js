@@ -22,10 +22,20 @@ export default {
     // 其他页面
     { name: "details", path: '/details/:direction_index/:course_index', component: require('_views/page/details.vue') },
 
-    { name: "select-direction", path: '/select-direction', component: require('_views/page/select-direction.vue') },
+    // 选择班级和方向
     { name: "select-class", path: '/select-class', component: require('_views/page/select-class.vue') },
-    { name: "direction-course", path: '/direction-course', component: require('_views/page/direction-course.vue') },
-    { name: "common-course", path: '/common-course', component: require('_views/page/common-course.vue') },
+    { name: "select-direction", path: '/select-direction', component: require('_views/page/select-direction.vue') },
+
+    // 专业方向课程 选课与退选页面
+    { name: "direction-course-select", path: '/direction-course-select', component: require('_views/page/direction-course-select.vue') },
+    { name: "direction-course-quit", path: '/direction-course-quit', component: require('_views/page/direction-course-quit.vue') },
+
+    // 公选课 选课与退选页面
+    { name: "common-course-select", path: '/common-course-select', component: require('_views/page/common-course-select.vue') },
+    { name: "common-course-quit", path: '/common-course-quit', component: require('_views/page/common-course-quit.vue') },
+
+    // 选课结果
+    { name: "select-result", path: '/select-result', component: require('_views/page/select-result.vue') },
     { path: '*', component: require('_views/404.vue') }
   ]
 }

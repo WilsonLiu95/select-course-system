@@ -78,7 +78,7 @@ class DirectionCourse extends Controller
 
             // 分发选课到队列中去
             $queue_name = $this->hash->lookup($course_id);
-            $this->dispatch((new QueueOneCourse($option,$isQuit))->onQueue($queue_name)->delay(10));
+            $this->dispatch((new QueueOneCourse($option,$isQuit))->onQueue($queue_name));
         }
     }
     private function filterCanQueueCourse($queue_course, $isQuit){
