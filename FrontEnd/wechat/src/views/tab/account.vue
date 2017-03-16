@@ -6,7 +6,7 @@
       <mt-field v-if="account.major" label="专业" v-model="account.major" placeholder="通信工程" disableClear readonly></mt-field>
       <!--专业方向-->
       <mt-field v-if="account.direction_id" label="选修方向" v-model="account.direction" placeholder="互联网" disableClear readonly>
-        <mt-button size="small" v-if="system_status!=2" @click="reselectDirection">重选</mt-button>
+        <mt-button size="small" v-if="[0,1].indexOf(system_status)!=-1  " @click="reselectDirection">重选</mt-button>
       </mt-field>
       <mt-field label="班级" v-model="account.classes" placeholder="通信1305班" disableClear readonly></mt-field>
       <mt-field label="姓名" v-model="account.name" placeholder="WilsonLiu" disableClear readonly></mt-field>
@@ -22,13 +22,13 @@
         <mt-cell title="系统说明" label="系统已开放专业方向选修课，请尽快选课。" ></mt-cell>
     
         <mt-button v-if="has_select_direction_course.length" size='large' type="primary" class="second-part-btn" @click="$router.push({name:'select-result'})">查看选课结果</mt-button>
-        <mt-button v-else size='large' type="primary" class="second-part-btn" @click="startSelect(1)">开始选则专业方向课程</mt-button>
+        <mt-button v-else size='large' type="primary" class="second-part-btn" @click="startSelect(1)">开始选择专业方向课程</mt-button>
       </div>
       <div v-if="system_status==2">
         <mt-cell title="系统说明" label="系统已开放公共选修课，请尽快选课。" ></mt-cell>
         
         <mt-button v-if="has_select_common_course.length" size='large' type="primary" class="second-part-btn" @click="$router.push({name:'select-result'})">查看选课结果</mt-button>
-        <mt-button v-else size='large' type="primary" @click="startSelect(2)">开始选则公共选修课程</mt-button>
+        <mt-button v-else size='large' type="primary" @click="startSelect(2)">开始选择公共选修课程</mt-button>
       </div>
       <div v-if="system_status > 2">
         <mt-cell title="系统说明" label="系统已关闭。" ></mt-cell>
@@ -76,7 +76,7 @@
         if(system_status == 1){
           return this.$router.push({name:'direction-course-select'})
         }else if(system_status == 2){
-          return this.$router.push({name:'common-course'})
+          return this.$router.push({name:'common-course-select'})
         }
 
       },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="course-select-page">
     <div class='t-center'>
       <h4>选定专业方向选修课</h4>
     </div>
@@ -48,7 +48,7 @@
               })
             }
           })
-        },1500) // 每1.5S发送一次请求
+        },1500)
       },
       makeOption(canSelectCourse) {
         var data = [];
@@ -83,11 +83,3 @@
   }
 
 </script>
-<style>
-  .confirm {
-    margin: 20px 0 20px 0;
-  }
-  #course-check-item .mint-checkbox-label{
-    font-size: 12px;
-  }
-</style>

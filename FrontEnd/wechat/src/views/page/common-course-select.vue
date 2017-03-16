@@ -1,9 +1,8 @@
 <template>
-  <div>
+  <div class="course-select-page">
     <div class='t-center'>
       <h4>公共选修课程</h4>
     </div>
-
     <mt-checklist id="course-check-item" v-if="canSelectCourseOptions.length" :max="7" title="公共选修课程列表" v-model="finalCourseArr" :options="canSelectCourseOptions"></mt-checklist>
     <mt-button type="primary" size="large" @click="confirm" class="confirm">
       确认
@@ -48,7 +47,7 @@
               })
             }
           })
-        },1500) // 每1.5S发送一次请求
+        },2000)
       },
       makeOption(canSelectCourse) {
         var data = [];
@@ -83,11 +82,3 @@
   }
 
 </script>
-<style>
-  .confirm {
-    margin: 20px 0 20px 0;
-  }
-  #course-check-item .mint-checkbox-label{
-    font-size: 12px;
-  }
-</style>

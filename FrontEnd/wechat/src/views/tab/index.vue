@@ -44,9 +44,29 @@
 
 </script>
 
-<style scoped>
+<style>
+  /* tab页面的一些配置 */
   .tab-page-container {
-    padding-bottom: 50px;
+    padding-bottom: 55px;
   }
 
+  /*tab-course页面的配置*/
+  .tab-course .mint-cell-text{
+    font-size: 14px;
+    /*color:red;*/
+  }
+  .tab-course .mint-cell-label{
+    /*font-size: 12px;*/
+  }
+  .tab-course .mint-cell-value{
+    font-size: 12px;
+  }
+
+  /* 选课相关的4个页面配置 */
+  .course-select-page .mint-checkbox-label {
+    font-size: 12px;
+  }
+  .course-select-page .confirm {
+    /*margin: */
+  }
 </style>

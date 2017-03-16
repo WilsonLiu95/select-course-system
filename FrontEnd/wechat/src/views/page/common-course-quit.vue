@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="course-select-page">
     <div class='t-center'>
       <h4>退选公共选修课程</h4>
     </div>
@@ -47,7 +47,7 @@
               })
             }
           })
-        },1500) // 每1.5S发送一次请求
+        },2000) 
       },
       makeOption(canSelectCourse) {
         var data = [];
@@ -82,11 +82,3 @@
   }
 
 </script>
-<style>
-  .confirm {
-    margin: 20px 0 20px 0;
-  }
-  #course-check-item .mint-checkbox-label{
-    font-size: 12px;
-  }
-</style>

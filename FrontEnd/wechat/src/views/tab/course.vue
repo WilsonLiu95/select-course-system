@@ -1,19 +1,19 @@
 <template>
-  <div class="tab-page-container">
+  <div class="tab-page-container tab-course">
     <div class="nav tab-line">
-      <mt-button class="t-btn" type="primary" @click.native="jumpPage(-1)" size="small">
+      <mt-button class="t-btn btn" type="primary" @click.native="jumpPage(-1)" size="small">
         上个方向
       </mt-button>
-      <mt-button class="t-center-btn" type="primary" @click.native="isPopupVisible = true" size="small" v-if="isInit">{{current_page}}/{{direction.length}} {{direction[current_page-1]}}</mt-button>
-      <mt-button class="t-btn" type="primary" @click.native="jumpPage(+1)" size="small">
+      <mt-button class="t-center-btn btn" type="primary" @click.native="isPopupVisible = true" size="small" v-if="isInit">{{current_page}}/{{direction.length}} {{direction[current_page-1]}}</mt-button>
+      <mt-button class="t-btn btn" type="primary" @click.native="jumpPage(+1)" size="small">
         下个方向
       </mt-button>
     </div>
     <!--end 下一页-->
 
     <!--start 课表清单-->
-    <div class="page-tab-container" v-if="isInit">
-      <mt-cell v-if="current_page==1" style="text-align:center" label="提示：部分公共选修课程同时属于专业方向选修课，优先当成选修课">
+    <div  v-if="isInit">
+      <mt-cell v-if="current_page==1" style="text-align:center" label="提示：部分公共选修课程同时属于专业方向选修课。">
       </mt-cell>
       <mt-cell v-for="(item,index) in course[current_page-1].course" :title="item.title" :label="getLabel(item)" :to="'/details/' + (current_page-1) +'/'+ index" is-link>
         {{ item.teacher}}
@@ -86,7 +86,7 @@
         }
       },
       getLabel(item) {        
-          return '  人数:' + item.required_number
+          return '  人数:' + item.required_number + ' 学分:' + item.credit
       },
       pickerPage(picker, $item) {
         if (this.first_into) {
@@ -122,7 +122,7 @@
   };
 
 </script>
-<style>
+<style scoped>
   .tab-line {
     display: flex;
     flex-direction: row;
@@ -136,7 +136,9 @@
     margin: 0 1px;
     padding:  0 3px;
   }
-
+  .tab-line .btn {
+    height: 40px;
+  }
   .mint-popup {
     width: 100%;
   }

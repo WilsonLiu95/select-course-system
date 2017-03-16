@@ -3,7 +3,7 @@
     <div class='direction-course'>
       <h2 class="title">专业方向选修课</h2>
       <div v-if="direction_course">
-        <mt-cell v-for="(item,index) in direction_course" :title="item.title">
+        <mt-cell v-for="(item,index) in direction_course" :title="item.title" :label="'学分: '+item.credit">
             {{ item.teacher }}
             <span>index</span>
         </mt-cell>
@@ -19,7 +19,7 @@
     <div v-if="system_status!=1" class='common-course'>
       <h2 class="title">公共选修课程</h2>
       <div v-if="common_course">
-        <mt-cell v-for="(item,index) in common_course" :title="item.title">
+        <mt-cell v-for="(item,index) in common_course" :title="item.title" :label="'学分: '+item.credit">
           {{ item.teacher}}
         </mt-cell>
       </div>
@@ -56,12 +56,7 @@
           this.direction_course = res.data.direction_course
         })
       },
-
-
-
     },
-
-
   }
 
 </script>
@@ -71,7 +66,7 @@
     text-align: center;
   }
   .select-result .btn-group {
-    margin: 8px 0;
+    margin: 8px 0 20px 0;
     display: flex;
     justify-content: flex-end;
   }
