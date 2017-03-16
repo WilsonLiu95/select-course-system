@@ -101,7 +101,6 @@ axios.interceptors.response.use((response) => {
     // 前端的数据校验错误
 
   }
-  debugger
   return Promise.reject(error);
 });
 

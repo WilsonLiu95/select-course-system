@@ -62,7 +62,6 @@
               is_common: this.isCommonCourse
             }
         }).then(res=>{
-          debugger
             if(res.data.isFinish === false){
               return this.getSelectResult() // 没有结束处理，继续请求
             } 
@@ -78,8 +77,8 @@
                 msg = '有部分课程，操作失败，请再次尝试'
               }}
             util.box.alert(msg)
-          },err=>{
-            debugger
+          }).catch(err=>{
+            this.$indicator.close()
           })
         },1000) 
       },
@@ -103,9 +102,8 @@
             setTimeout(()=>{ // 首次发起请求结果
               this.getSelectResult() // 查询结果
             },500)
-          },(err)=>{
-            // 失败 
-            this.getCanSelectCourse()
+          })
+          .catch(err=>{
             this.$indicator.close()  
           }) 
         }, action => {

@@ -65,7 +65,7 @@ class HandleCourse extends Controller
         $is_common = request()->is_common;
         $system_auth = $this->isSystemOpen($is_common);
         if(!$system_auth['isOpen']){
-            return $this->errorMsg($system_auth['msg']);
+            return $this->redirect(['name'=> 'tab-account'],$system_auth['msg']);
         }
 
         // 首先进行过滤,避免用户伪造接口请求数据
@@ -126,7 +126,7 @@ class HandleCourse extends Controller
         $is_common = request()->is_common =='true' ? true : false;
         $system_auth = $this->isSystemOpen($is_common);
         if(!$system_auth['isOpen']){
-            return $this->errorMsg($system_auth['msg']);
+            return $this->redirect(['name'=> 'tab-account'],$system_auth['msg']);
         }
         $queue_course = $this->getSessionInfo('queue_course');
         $data = [
