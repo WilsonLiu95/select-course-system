@@ -1,26 +1,15 @@
 <template>
   <div class="course-page">
-    <div v-if='isCommonCourse'>
-      <div class='t-center'>
-        <h4><span v-if="isQuit">退选</span>公共选修课程</h4>
-      </div>
-      <mt-checklist id="" v-if="canSelectCourseOptions.length" 
-          title="公共选修课程列表" v-model="finalCourseArr" :options="canSelectCourseOptions">
-      </mt-checklist>
-      <div class='btn-group' @click="confirm">
-        <mt-button v-if="isQuit"  type="danger" size="large">退选</mt-button>
-        <mt-button v-else  type="primary" size="large" >选课</mt-button>      
-      </div>
+    <div  class='t-center'>
+        <h4 v-if='isCommonCourse'><span v-if="isQuit">退选</span>公共选修课程</h4>
+        <h4 v-else><span v-if="isQuit">退选</span>专业方向选修课</h4>
     </div>
-    <div v-else>
-      <div class='t-center'>
-        <h4><span v-if="isQuit">退选</span>专业方向选修课</h4>
-      </div>
-      <mt-checklist id="" v-if="canSelectCourseOptions.length" title="专业方向课程列表" v-model="finalCourseArr" :options="canSelectCourseOptions"></mt-checklist>
-      <div class='btn-group' @click="confirm">
-        <mt-button v-if="isQuit"  type="danger" size="large" :disabled='isDisabledSubmit'>退选</mt-button>
-        <mt-button v-else  type="primary" size="large" :disabled='isDisabledSubmit'>选课</mt-button>      
-      </div>
+    <mt-checklist id="" v-if="canSelectCourseOptions.length" 
+        title="课程列表" v-model="finalCourseArr" :options="canSelectCourseOptions">
+    </mt-checklist>
+    <div class='btn-group' @click="confirm">
+      <mt-button v-if="isQuit"  type="danger" size="large" :disabled='isDisabledSubmit'>退选</mt-button>
+      <mt-button v-else  type="primary" size="large" :disabled='isDisabledSubmit'>选课</mt-button>      
     </div>
 
   </div>
@@ -31,19 +20,16 @@
     data() {
       return {
         isQuit: false,
-        isCommonCourse:false,
-        httpPrefix: 'direction-course',
+        isCommonCourse:false, 
         isAbleHandle: true, // 是否允许操作
         canSelectCourse: [],
         canSelectCourseOptions: [],
         finalCourseArr: [],
         has_select_course: [],
-        
       }
     },
     created() {
       this.isCommonCourse = (this.$route.params[0] == 'common') // 判断是否为退选页面
-      this.httpPrefix = this.isCommonCourse ? 'common-course' : 'direction-course' // http前缀
       this.isQuit = (this.$route.params[1] == 'quit') 
       this.getCanSelectCourse();
     },
@@ -64,13 +50,19 @@
           this.canSelectCourseOptions = this.makeCourseOption(data.courseList, data.has_select_course, this.isQuit)
       },
       getCanSelectCourse() {
-        this.$http.get(this.httpPrefix+"/can-select-course").then((res) => {
+        this.$http.get("handle-course/can-select-course?is_common="+this.isCommonCourse).then((res) => {
           this.initPage(res.data);
         })
       },
       getSelectResult(){
         setTimeout(()=>{
-          this.$http.get(this.httpPrefix+'/select-result',{ noIndicator:true }).then(res=>{
+          this.$http.get('handle-course/select-result',{ 
+            noIndicator:true, 
+            params: {
+              is_common: this.isCommonCourse
+            }
+        }).then(res=>{
+          debugger
             if(res.data.isFinish === false){
               return this.getSelectResult() // 没有结束处理，继续请求
             } 
@@ -86,6 +78,8 @@
                 msg = '有部分课程，操作失败，请再次尝试'
               }}
             util.box.alert(msg)
+          },err=>{
+            debugger
           })
         },1000) 
       },
@@ -100,15 +94,18 @@
             text: '紧急'+ msg +'ing~',
             spinnerType: 'double-bounce'
           })
-          this.$http.post(this.httpPrefix+"/handle-course", {
+          this.$http.post("handle-course/handle-course", {
             course_id_arr: this.finalCourseArr, 
+            is_common: this.isCommonCourse,
             isQuit:this.isQuit // 告诉后台，这次是选课还是退选课程
           }, {noIndicator: true})// 配置项，取消默认ajax请求的loading动画
           .then((res)=>{
             setTimeout(()=>{ // 首次发起请求结果
               this.getSelectResult() // 查询结果
-            },1000)
+            },500)
           },(err)=>{
+            // 失败 
+            this.getCanSelectCourse()
             this.$indicator.close()  
           }) 
         }, action => {
@@ -139,3 +136,8 @@
 
 </script>
 
+<style>
+.course-page  .mint-checkbox-label{
+  font-size: 12px;
+}
+</style>

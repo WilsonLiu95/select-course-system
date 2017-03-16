@@ -133,6 +133,7 @@
   .tab-course .mint-cell-value{
     font-size: 12px;
   }
+
 </style>
 <style scoped>
   .tab-line {

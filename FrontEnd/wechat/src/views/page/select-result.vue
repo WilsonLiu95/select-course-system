@@ -1,8 +1,9 @@
 <template>
   <div class='select-result' v-if='isInit'>
+    <!-- 专业方向选修课结果-->
     <div class='direction-course'>
       <h2 class="title">专业方向选修课</h2>
-      <div v-if="direction_course">
+      <div v-if="direction_course.length">
         <mt-cell v-for="(item,index) in direction_course" :title="item.title" :label="'学分: '+item.credit">
             {{ item.teacher }}
             <span>index</span>
@@ -12,13 +13,15 @@
         <h4>暂无选中课程</h4>
       </div>
       <div v-if="system_status==1" class='btn-group'>
-        <mt-button class='btn' type="primary"  @click="jumpPage('direction-course','select')">选课</mt-button>
-        <mt-button class='btn' type="danger"  @click="jumpPage('direction-course','quit')" >退选</mt-button>
+        <mt-button class='btn' type="primary"  @click="jumpPage('handle-course','direction','select')">选课</mt-button>
+        <mt-button class='btn' type="danger"  @click="jumpPage('handle-course','direction','quit')" >退选</mt-button>
       </div>
     </div>
-    <div v-if="system_status!=1" class='common-course'>
+
+    <!-- 公选课选修结果-->
+    <div v-if="[0,1].indexOf(system_status)==-1 " class='common-course'>
       <h2 class="title">公共选修课程</h2>
-      <div v-if="common_course">
+      <div v-if="common_course.length">
         <mt-cell v-for="(item,index) in common_course" :title="item.title" :label="'学分: '+item.credit">
           {{ item.teacher}}
         </mt-cell>
@@ -27,8 +30,8 @@
         <h4>暂无选中课程</h4>
       </div>
       <div v-if="system_status==2" class='btn-group'>
-        <mt-button class='btn' type="primary"  @click="jumpPage('common-course','select')">选课</mt-button>
-        <mt-button class='btn' type="danger"  @click="jumpPage('common-course','quit')" >退选</mt-button>
+        <mt-button class='btn' type="primary"  @click="jumpPage('handle-course', 'common', 'select')">选课</mt-button>
+        <mt-button class='btn' type="danger"  @click="jumpPage('handle-course', 'common', 'quit')" >退选</mt-button>
       </div>
     </div>
   </div>
@@ -56,11 +59,12 @@
           this.direction_course = res.data.direction_course
         })
       },
-      jumpPage(name, params){
+      jumpPage(name, paramsFir, paramsSec){
         this.$router.push({
           name: name,
           params:{
-            0: params
+            0: paramsFir,
+            1: paramsSec
           }
         })
       }

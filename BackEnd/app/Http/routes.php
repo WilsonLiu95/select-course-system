@@ -26,8 +26,9 @@ Route::group(['prefix' => 'wechat'], function(){
 
         // 对select_course表的操作
         Route::controller("/course","Wechat\CourseTab");
-        Route::controller("/direction-course","Wechat\DirectionCourse");
-        Route::controller("/common-course","Wechat\CommonCourse");
+
+        Route::controller("/handle-course","Wechat\HandleCourse");
+
         Route::controller("/select-result","Wechat\SelectResult");
     });
 });

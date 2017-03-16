@@ -4,12 +4,11 @@
     <router-view class="second-router">
     </router-view>
     <!--四栏tab-->
-    <mt-tabbar v-model="selected" :fixed=true>
-      <mt-tab-item id="course">
+    <mt-tabbar v-model="selected" :fixed="true">
+      <mt-tab-item id="tab-course">
         <img slot="icon" :src="assets.class"> <span>课题</span>
       </mt-tab-item>
-
-      <mt-tab-item id="account">
+      <mt-tab-item id="tab-account">
         <img slot="icon" :src="assets.account"> <span>我的</span>
       </mt-tab-item>
     </mt-tabbar>
@@ -26,11 +25,12 @@
           class: require("assets/class.svg"),
           account: require("assets/account.svg"),
         },
-        selected: "course", // 默认课程页面
+        selected: "tab-course", // 默认课程页面
       }
     },
     watch: {
       selected: function (selected) {
+        // debugger
         this.$router.push({ name: selected }) // 改变hash是为了重载该tab的组件，同时其他组件由于没有匹配路由规则被销毁
       }
     },
@@ -49,6 +49,4 @@
   .tab-page-container {
     padding-bottom: 55px;
   }
-
-
 </style>

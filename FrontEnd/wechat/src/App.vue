@@ -27,10 +27,7 @@
   .t-center{
     text-align: center
   }
-      /*tab-course页面的配置*/
-  .course-page  .mint-checkbox-label{
-    font-size: 12px;
-  }
+
   .btn-group{
     margin: 5px 0 20px 0;
   }

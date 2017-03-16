@@ -74,20 +74,7 @@ axios.interceptors.response.use((response) => {
   if (!error.response.config.noIndicator) {
     Indicator.close();
   }
-
   var res = error.response;
-  if (res.status == 301) { // 前端控制跳转
-    // 跳转提示
-    if (res.data.url) {
-      location.href = res.data.url
-    } else {
-      router.push(res.data.option)
-    }
-  } else if ([400, 422].indexOf(res.status) !== -1) { // 客户端请求错误，数据校验无问题
-    // 前端的数据校验错误
-
-  }
-
   // 弹出错误提示
   if (res.status == 422) {
     var message = '';
@@ -103,7 +90,18 @@ axios.interceptors.response.use((response) => {
     position: 'top',
   }) : ""
 
-  // Do something with response error
+  if (res.status == 301) { // 前端控制跳转
+    // 跳转提示
+    if (res.data.url) {
+      location.href = res.data.url
+    } else {
+      router.push(res.data.option)
+    }
+  } else if ([400, 422].indexOf(res.status) !== -1) { // 客户端请求错误，数据校验无问题
+    // 前端的数据校验错误
+
+  }
+  debugger
   return Promise.reject(error);
 });
 
