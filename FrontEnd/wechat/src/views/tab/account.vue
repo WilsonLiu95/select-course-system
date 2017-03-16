@@ -6,7 +6,7 @@
       <mt-field v-if="account.major" label="专业" v-model="account.major" placeholder="通信工程" disableClear readonly></mt-field>
       <!--专业方向-->
       <mt-field v-if="account.direction_id" label="选修方向" v-model="account.direction" placeholder="互联网" disableClear readonly>
-        <mt-button size="small" @click="reselectDirection">重选</mt-button>
+        <mt-button size="small" v-if="system_status!=2" @click="reselectDirection">重选</mt-button>
       </mt-field>
       <mt-field label="班级" v-model="account.classes" placeholder="通信1305班" disableClear readonly></mt-field>
       <mt-field label="姓名" v-model="account.name" placeholder="WilsonLiu" disableClear readonly></mt-field>
@@ -29,6 +29,11 @@
         
         <mt-button v-if="has_select_common_course.length" size='large' type="primary" class="second-part-btn" @click="$router.push({name:'select-result'})">查看选课结果</mt-button>
         <mt-button v-else size='large' type="primary" @click="startSelect(2)">开始选则公共选修课程</mt-button>
+      </div>
+      <div v-if="system_status > 2">
+        <mt-cell title="系统说明" label="系统已关闭。" ></mt-cell>
+        <mt-button v-if="has_select_common_course.length" size='large' type="primary" class="second-part-btn" @click="$router.push({name:'select-result'})">查看选课结果</mt-button>
+        
       </div>
     </div>
   </div>

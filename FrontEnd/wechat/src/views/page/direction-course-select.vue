@@ -48,7 +48,7 @@
               })
             }
           })
-        },1000) // 每1S发送一次请求
+        },1500) // 每1.5S发送一次请求
       },
       makeOption(canSelectCourse) {
         var data = [];

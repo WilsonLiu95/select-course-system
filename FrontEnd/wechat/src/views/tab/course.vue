@@ -13,7 +13,7 @@
 
     <!--start 课表清单-->
     <div class="page-tab-container" v-if="isInit">
-      <mt-cell v-if="current_page==1" style="text-align:center" label="提示：部分公选课同时属于专业方向选修课，优先当成选修课">
+      <mt-cell v-if="current_page==1" style="text-align:center" label="提示：部分公共选修课程同时属于专业方向选修课，优先当成选修课">
       </mt-cell>
       <mt-cell v-for="(item,index) in course[current_page-1].course" :title="item.title" :label="getLabel(item)" :to="'/details/' + (current_page-1) +'/'+ index" is-link>
         {{ item.teacher}}
