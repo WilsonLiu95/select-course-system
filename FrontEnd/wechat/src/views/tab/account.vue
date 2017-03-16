@@ -74,9 +74,9 @@
           return this.$router.push({name:'select-direction'})
         }
         if(system_status == 1){
-          return this.$router.push({name:'direction-course-select'})
+          return this.$router.push({name:'direction-course',params:{'0':'select'}})
         }else if(system_status == 2){
-          return this.$router.push({name:'common-course-select'})
+          return this.$router.push({name:'common-course',params:{'0':'select'}})
         }
 
       },
@@ -87,7 +87,7 @@
           util.box.confirm(confirmMsg).then(action => {
             if(unQuitCourse){
               // 先去退选所有课程
-              this.$router.push({name:'direction-course-quit'})
+              this.$router.push({name:'direction-course',params:{'0':'quit'}})
             }else{
               this.$router.push({name:'select-direction'})
             }

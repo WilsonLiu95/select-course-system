@@ -27,23 +27,24 @@ class DirectionCourse extends Controller
         $this->hash->addTargets(array('default'));
         $this->account = $this->getSessionInfo('account');
     }
-
     public function getCanSelectCourse(){
+        $data = $this->makeInitPageData($this->account['institute_id'], $this->account['direction_id']); // 公选课方向id为0
+        return $this->json($data);
+    }
+    private function makeInitPageData($institute_id, $direction_id){
         // 获取可以选修的选修课接口
-        $courseList = $this->cacheDirection($this->account['institute_id'],$this->account['direction_id']);
+        $courseList = $this->cacheDirection($institute_id, $direction_id);
         // 去更新每个课程的人数
         $courseList->map(function ($item)  {
             $item['current_number'] = $this->cacheSelectCourseNum($this->account['institute_id'], $item["id"]);
             return $item;
         });
-        $current_number = $this->cacheDirStudentNum($this->account['institute_id'],$this->account['direction_id']);
+        $has_select_course = $direction_id == 0 ? 'has_select_common_course' : 'has_select_direction_course';
         $data = [
-            'current_number' => $current_number,
-            'has_select_direction_course'=>$this->getSessionInfo('has_select_direction_course'),
-            'has_select_common_course'=>$this->getSessionInfo('has_select_common_course'),
+            'has_select_course'=>$this->getSessionInfo($has_select_course),
             'courseList'=>$courseList,
         ];
-        return $this->json($data);
+        return $data;
     }
     // 操作选课的接口
     public function postHandleCourse(){
@@ -107,18 +108,23 @@ class DirectionCourse extends Controller
     }
     public function getSelectResult(){
         $queue_course = $this->getSessionInfo('queue_course');
-        $data = [];
+        $data = [
+            'data'=> [], // 用来传输新的课程数据
+            'result'=>[], // 用来传输结果
+            'isFinish'=>true
+        ];
         $success_handle=[];
         // 进行判断,选课是否完成
         foreach ($queue_course as $course_id) {
             $one_result = $this->cacheSelectResult($this->account['institute_id'], $this->account['id'], $course_id);
-            $data[$course_id] = $one_result['isSuccess']; // 是否被选中
-            if($one_result['isSuccess']){ // 收集选课成功的课程
-                $success_handle[] = $course_id;
-            }
             if(!$one_result['isFinish']){
                 // 如果有课程没有结束,则直接返回。选课动画继续
-                return $this->json(['isFinish'=>false]);
+                $data['isFinish']=false;
+                return $this->json($data);
+            }
+            $data['result'][$course_id] = $one_result['isSuccess']; // 是否被选中
+            if($one_result['isSuccess']){ // 收集选课成功的课程
+                $success_handle[] = $course_id;
             }
         }
         // 如果所有选课操作都处理完成,则返回结果
@@ -135,7 +141,7 @@ class DirectionCourse extends Controller
             // 选课
             session()->put('has_select_direction_course', array_merge($has_select, $success_handle)); // 更新session中,用户选中的课程
         }
-
+        $data['data'] = $this->makeInitPageData($this->account['institute_id'],$this->account['direction_id']);
         return $this->json($data);
     }
 

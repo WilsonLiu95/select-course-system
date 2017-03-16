@@ -12,8 +12,8 @@
         <h4>暂无选中课程</h4>
       </div>
       <div v-if="system_status==1" class='btn-group'>
-        <mt-button class='btn' type="primary"  @click="$router.push({name:'direction-course-select'})">选课</mt-button>
-        <mt-button class='btn' type="danger"  @click="$router.push({name:'direction-course-quit'})" >退选</mt-button>
+        <mt-button class='btn' type="primary"  @click="jumpPage('direction-course','select')">选课</mt-button>
+        <mt-button class='btn' type="danger"  @click="jumpPage('direction-course','quit')" >退选</mt-button>
       </div>
     </div>
     <div v-if="system_status!=1" class='common-course'>
@@ -27,8 +27,8 @@
         <h4>暂无选中课程</h4>
       </div>
       <div v-if="system_status==2" class='btn-group'>
-        <mt-button class='btn' type="primary"  @click="$router.push({name:'common-course-select'})">选课</mt-button>
-        <mt-button class='btn' type="danger"  @click="$router.push({name:'common-course-quit'})" >退选</mt-button>
+        <mt-button class='btn' type="primary"  @click="jumpPage('common-course','select')">选课</mt-button>
+        <mt-button class='btn' type="danger"  @click="jumpPage('common-course','quit')" >退选</mt-button>
       </div>
     </div>
   </div>
@@ -56,6 +56,14 @@
           this.direction_course = res.data.direction_course
         })
       },
+      jumpPage(name, params){
+        this.$router.push({
+          name: name,
+          params:{
+            0: params
+          }
+        })
+      }
     },
   }
 
