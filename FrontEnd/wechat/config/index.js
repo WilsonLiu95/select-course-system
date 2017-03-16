@@ -23,7 +23,6 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     httpUrl: '/wechat/',
-    // httpUrl: 'http://dev.wilsonliu.cn:8000/wechat/',
     proxyTable: {
       '/wechat': {
         target: 'http://dev.wilsonliu.cn:8000',

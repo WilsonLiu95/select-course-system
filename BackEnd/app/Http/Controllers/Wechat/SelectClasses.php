@@ -22,7 +22,7 @@ class SelectClasses extends Controller
 
     public function getCanSelectClass(){
         if($this->isHasSelectClass()){
-            return $this->redirect(['name'=> 'account'],'班级已选定,将为您跳转。');
+            return $this->redirect(['name'=> 'tab-account'],'班级已选定,将为您跳转。');
         }
         // 获取学院下所有可选的班级
 
@@ -35,7 +35,7 @@ class SelectClasses extends Controller
     // 选择班级
     public function postSelectClass(){
         if($this->isHasSelectClass()){
-            return $this->redirect(['name'=> 'account'],'班级已选定,不可再次更改,如果问题请联系教务科。');
+            return $this->redirect(['name'=> 'tab-account'],'班级已选定,不可再次更改,如果问题请联系教务科。');
         }
         $this->validate(request(),['class_code'=>'required']);
 
@@ -58,7 +58,7 @@ class SelectClasses extends Controller
 
             $this->getUser()->update($data);
             Session::forget('account');
-            return $this->redirect(['name'=> 'account'],'选定班级成功,正在为您自动跳转');
+            return $this->redirect(['name'=> 'tab-account'],'选定班级成功,正在为您自动跳转');
         }else{
             return $this->errorMsg('系统出错,暂无该班级,请检查');
         }

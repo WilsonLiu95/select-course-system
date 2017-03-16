@@ -84,4 +84,14 @@
   .select-result .course-check-list .mint-checkbox-label{
     font-size: 12px;
   }
+    /*tab-course页面的配置*/
+  .select-result .mint-cell-text{
+    font-size: 14px;
+  }
+  .select-result .mint-cell-label{
+    /*font-size: 12px;*/
+  }
+  .select-result .mint-cell-value{
+    font-size: 12px;
+  }
 </style>

@@ -8,8 +8,6 @@ use phpDocumentor\Reflection\Types\Boolean;
 
 
 trait BaseTrait {
-
-
     //====================================start session的相关操作================================================
     public function getUser(){
         // 		查找user对象
@@ -42,7 +40,7 @@ trait BaseTrait {
             ->where('direction_id',"!=", 0)->lists('course_id')->toArray();
         if ($student){
             session()->put('id',$student->id);
-            session()->put("isAbleSelect",true); // 默认可以进行选课操作,同时只能进行一次选课操作
+            session()->put("isAbleHandleSelect",true); // 默认可以进行选课操作,同时只能进行一次选课操作
             session()->put("has_select_common_course",$has_select_common_course);
             session()->put("has_select_direction_course",$has_select_direction_course);
             session()->put('account',$student->account());

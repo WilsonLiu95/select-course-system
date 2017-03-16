@@ -40,7 +40,7 @@
 </template>
 <script>
   export default {
-    name: "account-page",
+    name: "tab-account",
     data() {
       return {
         isInit: false,

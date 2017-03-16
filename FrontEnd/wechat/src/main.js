@@ -38,22 +38,7 @@ window.util = {
     var args = [].slice.call(arguments).slice(2);
     return validator[type](value, args)
   },
-  makeCourseOption: function(canSelectCourse, finalCourseArr, isQuit) {
-    var data = [];
-    canSelectCourse.forEach((item, index) => {
-      var option = {
-        label: " 学分:" + item.credit + " 人数" + item.current_number + "/" + item.required_number + " " + "《" + item.title + "》",
-        value: item.id
-      }
-      if (finalCourseArr.indexOf(item.id) == -1) {
-        option.disabled = isQuit ? true : false // 推选课程，则需要已经选过课程
-      } else {
-        option.disabled = isQuit ? false : true
-      }
-      data.push(option)
-    })
-    return data
-  },
+
   toast: Toast,
   box: MessageBox,
 }

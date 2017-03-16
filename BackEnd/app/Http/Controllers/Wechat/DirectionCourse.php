@@ -48,7 +48,7 @@ class DirectionCourse extends Controller
     }
     // 操作选课的接口
     public function postHandleCourse(){
-         if(!$this->getSessionInfo('isAbleSelect')){
+         if(!$this->getSessionInfo('isAbleHandleSelect')){
              return $this->errorMsg('正在操作中,请勿重复提交选课'); // 同一时间,用户只能进行一次选课
          }
         $this->validate(request(),[ // 数据校验
@@ -67,7 +67,7 @@ class DirectionCourse extends Controller
     }
     // 私有的分发课程函数
     private function handleSelectCourse($queue_course,$isQuit){
-        session()->put('isAbleSelect',false); // 阻止用户选课
+        session()->put('isAbleHandleSelect',false); // 阻止用户选课
         session()->put('isQuit',$isQuit); // 记录用户是选课还是退选
         session()->put('queue_course', $queue_course); // 把本次丢入队列的课程存储到session中去
 
@@ -133,7 +133,7 @@ class DirectionCourse extends Controller
         // 对session进行操作
         $has_select = $this->getSessionInfo('has_select_direction_course');
         session()->forget("queue_course"); // 删除队列信息
-        session()->put('isAbleSelect', true); // 重置为可进行选课操作
+        session()->put('isAbleHandleSelect', true); // 重置为可进行选课操作
         if(session()->get('isQuit')){
             // 退选课程
             session()->put('has_select_direction_course', array_values(array_diff($has_select, $success_handle))); // 更新session中,用户选中的课程

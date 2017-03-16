@@ -57,15 +57,16 @@ class QueueOneCourse extends Job implements SelfHandling, ShouldQueue
         // 进行判断,当前课程是否已经选满,获取该门课程需要的人数以及当前选中人数
         $required_num = $this->cacheRequiredNum($this->option['institute_id'],$this->option['course_id']);
         $current_num = $this->cacheSelectCourseNum($this->option['institute_id'],$this->option['course_id']);
-        if($current_num >= $required_num) {
-            // 课程已被选满,返回课程处理结果
+        $wait_num = $this->cacheWaitSelectCourseNum($this->option['institute_id'],$this->option['course_id']);
+        if(($current_num + $wait_num >= $required_num + 10) || $current_num >= $required_num ) {
+            // 课程已经选满 or 选中的人数与队列中的人数之和 比要求的人数大10人都默认为选课失败
             $this->handleCache(false, true);
             return false; // 直接返回
         }
+
         // 课程未选满,继续选课,新增一条选课记录。理论上可以直接使用create,因为分发选课事件任务时,进行过检测筛选掉了已选课程
         SelectCourse::create($this->option);
         $this->handleCache(true, true);
-
     }
 
     private function jobQuitOneCourse(){

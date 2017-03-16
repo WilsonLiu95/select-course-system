@@ -79,7 +79,7 @@ class SelectDirection extends Controller
 
             // 系统状态与跳转页面的映射关系
             $system_status = $this->cacheSystemConfig($this->account['institute_id'])['system_status'];
-            $redirect_map = [0=>'account', 1=>'direction-course-select', 2=>'common-course-select'];
+            $redirect_map = [0=>'tab-account', 1=>'course/direction/select', 2=>'course/common/select'];
 
             return $this->redirect(['name'=>$redirect_map[$system_status]], '选定方向成功,正在为您自动跳转');
         }

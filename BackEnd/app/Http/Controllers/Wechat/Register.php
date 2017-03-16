@@ -45,7 +45,7 @@ class Register extends Controller
             if($this->getSessionInfo('account')['classes_id'] == 0) { // 如果classes_id为未设定过,则重定向到选择班级页面
                 return $this->redirect(['name' => 'select-class']);
             }
-            return $this->redirect([ "name" => 'course']);
+            return $this->redirect([ "name" => 'tab-course']);
         }
     }
 }

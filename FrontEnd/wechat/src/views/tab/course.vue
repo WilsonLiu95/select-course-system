@@ -30,7 +30,7 @@
 </template>
 <script>
   export default {
-    name: "course-tab",
+    name: "tab-course",
     data() {
       return {
         isInit: false,
@@ -122,6 +122,18 @@
   };
 
 </script>
+<style>
+  /*tab-course页面的配置*/
+  .tab-course .mint-cell-text{
+    font-size: 14px;
+  }
+  .tab-course .mint-cell-label{
+    /*font-size: 12px;*/
+  }
+  .tab-course .mint-cell-value{
+    font-size: 12px;
+  }
+</style>
 <style scoped>
   .tab-line {
     display: flex;
