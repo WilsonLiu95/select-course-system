@@ -56,8 +56,8 @@ trait BaseTrait {
         $key = 'system_config' . $institute_id;
         return Cache::tags(["ins" . $institute_id])
             ->remember($key, 1, function()use($institute_id){
-              return Model\Grade::where('institute_id',$institute_id)
-                   ->select('system_status',"min_credit")->first()->toArray();
+              return Model\SystemConfig::where('institute_id',$institute_id)
+                   ->first()->toArray();
             });
     }
     public function cacheMajorDirMap($institute_id,$major_id){ // 专业与方向的映射表

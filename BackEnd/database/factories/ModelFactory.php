@@ -55,11 +55,7 @@ $factory->define(\App\Model\Grade::class, function ($faker) {
     return [
         'id'=>1,
         'name' => 2013,
-        'min_credit'=>15,
-        'system_status'=>1,
-        'max_prior_select_num'=>5,
         'institute_id' => 1,
-
     ];
 });
 $factory->define(\App\Model\Classes::class, function ($faker) {
@@ -82,8 +78,7 @@ $factory->define(\App\Model\Student::class, function ($faker) {
         "grade_id"=>1,
         "institute_id" =>1,
         "name" => $faker->name,
-        'major_id'=>$faker->shuffle([1,2,3])[0],
-
+        'major_id'=>0,
         "job_num" => $faker->randomNumber($nbDigits = NULL),
     ];
 });
@@ -111,5 +106,19 @@ $factory->define(\App\Model\Course::class, function ($faker) {
         'credit' => $faker->shuffle([2,3,4,5])[0],
         'required_number' => $faker->numberBetween($min = 30, $max = 100),
         'title'=>$faker->word,
+    ];
+
+});
+
+$factory->define(\App\Model\SystemConfig::class, function($faker){
+    return [
+        'institute_id' => 1,
+        'grade_id' => 1,
+        'is_common_open' => true,
+        'min_common_credit'=>6,
+        'max_common_credit'=>10,
+        'is_direction_open'=>true,
+        'min_direction_credit'=>10,
+        'max_direction_credit'=>15,
     ];
 });

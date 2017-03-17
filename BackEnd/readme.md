@@ -9,7 +9,7 @@
 7. `php artisan serve --host=127.0.0.1` 启动服务器，访问 `http://127.0.0.1:8000/test` 看是否启动成功
 8. 本地配置host， 将`dev.wilsonliu.cn`映射到`127.0.0.1` 。之后开发都通过该域名进行访问(因为微信登录设置了安全域名)
 9. 代码的编写只需要在`app/Http/routes/`下加相应的路由，之后在`app/Http/Controller/Wechat`添加相应文件，编写相应的`function`
-10. `php artisan queue:work --queue=queue1 --daemon`开启相应的线程
+10. `php artisan queue:work --queue=default --daemon`开启相应的线程
 ## 记录出现过的问题
 ###  小问题
 1. 配置中的`unix_socket`，应该是记录socket的路径，换台机子可能对应路径不一样
@@ -66,11 +66,6 @@ PC端不提供注册，只有登录。PC为教务科使用。
 微信开发的权限需要通过认证，认证后需要服务号才有全部权限。所以个人进行开发时，可以申请私人测试账号，测试账号拥有全部权限，但是需要用户先关注你的测试公众号，才能打开你的网页。
 - 测试号申请链接 http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login`
 - 接口调试工具 http://mp.weixin.qq.com/debug/ 
-
-
-
-## TODO LIST
-1. 后端很多接口的数据未进行校验
 
 
 ## 一些参考链接

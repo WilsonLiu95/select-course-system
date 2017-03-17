@@ -28,7 +28,7 @@ class HandleCourse extends Controller
         $this->validate(request(),[
             "is_common"=>"required|in:true,false"
         ]);
-        $is_common = request()->is_common == 'true'? true: false;
+        $is_common = request()->is_common == 'true'? true : false;
         $direction_id = $is_common ? 0 : $this->account['direction_id'];
         $data = $this->makeInitPageData($this->account['institute_id'], $direction_id); // 公选课方向id为0
         return $this->json($data);
@@ -45,6 +45,7 @@ class HandleCourse extends Controller
         $data = [
             'has_select_course'=>$this->getSessionInfo($has_select_course),
             'courseList'=>$courseList,
+            'system_config'=>$this->cacheSystemConfig($institute_id)
         ];
         return $data;
     }
@@ -173,20 +174,19 @@ class HandleCourse extends Controller
             'isOpen'=> false,
             'msg'=>'开放中'
         ];
-        $system_status = $this->cacheSystemConfig($this->account['institute_id'])['system_status'];
-
-        if($system_status == 1 && $is_common==true){
-            // 选修课的时候,在操作非选修课
-            $res['msg'] = '当前处于选择专业方向选修课,请勿操作公选课';
-        }else if($system_status == 2 && $is_common==false){
-            // 公选课的时候,在操作选修课
-            $res['msg'] = '当前处于选择公选课,专业方向选修课已不可再更改';
-        }else if(!in_array($system_status, [1,2])){
-            // 非选课状态
-            $res['msg'] = '系统暂未开放选课';
+        $system_config = $this->cacheSystemConfig($this->account['institute_id']);
+        if($is_common){
+            if(!$system_config['is_common_open']){
+               $res['msg'] = '当前未开放选择公选课课程';
+                return $res;
+            }
         }else{
-            $res['isOpen'] = true;
+            if(!$system_config['is_direction_open']){
+                $res['msg'] = '当前未开放选择专业选修方向课程';
+                return $res;
+            }
         }
+        $res['isOpen'] = true;
         return $res;
     }
 

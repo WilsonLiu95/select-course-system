@@ -32,7 +32,7 @@ class SelectResult extends Controller
                 return in_array($item['id'], $has_select_direction_course);
         })->all());
 
-        $res['system_status'] = $this->cacheSystemConfig($this->account['institute_id'])['system_status'];
+        $res['system_config'] = $this->cacheSystemConfig($this->account['institute_id']);
         return $this->json($res);
     }
 }

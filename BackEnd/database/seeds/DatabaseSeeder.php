@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call(SelectCourseTableSeeder::class);
+        $this->call(SystemConfigSeeder::class);
 
         Model::reguard();
     }

@@ -7,7 +7,7 @@
       <div v-if="direction_course.length">
         <mt-cell v-for="(item,index) in direction_course"
                  :title="item.title"
-                 :label="'学分: '+item.credit">
+                 :label="'人数:' + item.required_number + ' 学分: '+item.credit">
           {{ item.teacher }}
           <span>index</span>
         </mt-cell>
@@ -16,7 +16,7 @@
            class='t-center'>
         <h4>暂无选中课程</h4>
       </div>
-      <div v-if="system_status==1"
+      <div v-if="system_config.is_direction_open"
            class='btn-group'>
         <mt-button class='btn'
                    type="primary"
@@ -28,13 +28,12 @@
     </div>
   
     <!-- 公选课选修结果-->
-    <div v-if="[0,1].indexOf(system_status)==-1 "
-         class='common-course'>
+    <div class='common-course'>
       <h2 class="title">公共选修课程</h2>
       <div v-if="common_course.length">
         <mt-cell v-for="(item,index) in common_course"
                  :title="item.title"
-                 :label="'学分: '+item.credit">
+                 :label=" '人数:' + item.required_number + ' 学分: '+item.credit">
           {{ item.teacher}}
         </mt-cell>
       </div>
@@ -42,7 +41,7 @@
            class='t-center'>
         <h4>暂无选中课程</h4>
       </div>
-      <div v-if="system_status==2"
+      <div v-if="system_config.is_common_open"
            class='btn-group'>
         <mt-button class='btn'
                    type="primary"
@@ -62,7 +61,7 @@ export default {
       isInit: false,
       direction_course: [],
       common_course: [],
-      system_status: 0,
+      system_config: 0,
     }
   },
   created() {
@@ -72,7 +71,7 @@ export default {
     getCanSelectCourse() {
       this.$http.get("select-result").then((res) => {
         this.isInit = true
-        this.system_status = res.data.system_status
+        this.system_config = res.data.system_config
         this.common_course = res.data.common_course
         this.direction_course = res.data.direction_course
       })
@@ -97,7 +96,8 @@ export default {
 }
 
 .select-result .btn-group {
-  margin: 8px 0 20px 0;
+  /*margin: 8px 0 20px 0;*/
+  padding: 10px 0 20px 0;
   display: flex;
   justify-content: flex-end;
 }
@@ -109,9 +109,6 @@ export default {
 .select-result .course-check-list .mint-checkbox-label {
   font-size: 12px;
 }
-
-
-/*tab-course页面的配置*/
 
 .select-result .mint-cell-text {
   font-size: 14px;

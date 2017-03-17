@@ -29,6 +29,10 @@ class Grade extends Model
     {
         return $this->hasMany('App\Model\SelectCourse');
     }
+    public function systemConfig()
+    {
+        return $this->hasMany('App\Model\SystemConfig');
+    }
     public function course()
     {
         return $this->hasMany('App\Model\Course');

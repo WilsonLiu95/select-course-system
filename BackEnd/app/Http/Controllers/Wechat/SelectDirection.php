@@ -76,12 +76,12 @@ class SelectDirection extends Controller
             $this->cacheHandleDir($this->account['institute_id'], $direction_id, true); // 选中的方向上人数+1
 
             session()->forget('account'); // 更新账户数据
+            $data['option'] = ['name'=>'handle-course','params'=>[
+                0 => 'direction',
+                1 => 'select'
+            ]];
 
-            // 系统状态与跳转页面的映射关系
-            $system_status = $this->cacheSystemConfig($this->account['institute_id'])['system_status'];
-            $redirect_map = [0=>'tab-account', 1=>'course/direction/select', 2=>'course/common/select'];
-
-            return $this->redirect(['name'=>$redirect_map[$system_status]], '选定方向成功,正在为您自动跳转');
+            return $this->json($data);
         }
 
         return $this->errorMsg("该方向不在您的候选范围内,请确认无误。如有问题,请咨询老师。");

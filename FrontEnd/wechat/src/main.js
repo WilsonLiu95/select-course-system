@@ -11,7 +11,6 @@ import routerConfig from './router'
 import config from '../config'
 import App from './App'
 import { Indicator, Toast, MessageBox } from 'mint-ui'
-import validator from 'validator'
 
 Vue.use(VueRouter)
 Vue.use(MintUI)
@@ -30,15 +29,6 @@ window._store = { // 因为是单页面框架，将全局变量当成session使�
   course: [], // 存储课程数据
 }
 window.util = {
-  v: validator,
-  is(type, value, option) {
-    if (value === undefined || value === null) {
-      return false
-    }
-    var args = [].slice.call(arguments).slice(2);
-    return validator[type](value, args)
-  },
-
   toast: Toast,
   box: MessageBox,
 }

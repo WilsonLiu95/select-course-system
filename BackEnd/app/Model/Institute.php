@@ -27,9 +27,9 @@ class Institute extends Model
     {
         return $this->hasMany('App\Model\Grade');
     }
-    public function major_direction()
+    public function systemConfig()
     {
-
+        return $this->hasMany('App\Model\SystemConfig');
     }
     public function major()
     {

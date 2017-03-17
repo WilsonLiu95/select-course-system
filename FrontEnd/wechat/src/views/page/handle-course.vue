@@ -1,17 +1,24 @@
 <template>
-  <div class="course-page">
+  <div class="handle-course">
     <div class='t-center'>
       <h4 v-if='isCommonCourse'><span v-if="isQuit">退选</span>公共选修课程</h4>
       <h4 v-else><span v-if="isQuit">退选</span>专业方向选修课</h4>
     </div>
-    <mt-checklist id=""
-                  v-if="canSelectCourseOptions.length"
-                  title="课程列表"
-                  v-model="finalCourseArr"
-                  :options="canSelectCourseOptions">
-    </mt-checklist>
+    <div>
+      <mt-checklist v-if="canSelectCourseOptions.length"
+                    title="课程列表"
+                    v-model="finalCourseArr"
+                    :options="canSelectCourseOptions">
+      </mt-checklist>
+    </div>
+  
     <div class='btn-group'
          @click="confirm">
+      <mt-cell title="提示:满足学分要求才可以提交"
+               :label="'学分要求:' +  (isCommonCourse ? (system_config.min_common_credit + '~' + system_config.max_common_credit ):
+                (system_config.min_direction_credit + '~' + system_config.max_direction_credit))">
+        {{ '当前: ' + this.currentTotalCredit }}
+      </mt-cell>
       <mt-button v-if="isQuit"
                  type="danger"
                  size="large"
@@ -26,16 +33,20 @@
 </template>
 <script>
 export default {
-  name: "course",
+  name: "handle-course",
   data() {
     return {
       isQuit: false,
       isCommonCourse: false,
       isAbleHandle: true, // 是否允许操作
+
+      system_config: {},
+      currentTotalCredit: 0,
+
       canSelectCourse: [],
       canSelectCourseOptions: [],
-      finalCourseArr: [],
       has_select_course: [],
+      finalCourseArr: [],
     }
   },
   created() {
@@ -45,11 +56,28 @@ export default {
   },
   computed: {
     isDisabledSubmit: function () {
+      // debugger
+      var isDisabledSubmit = true
+      var currentTotalCredit = 0
+      this.canSelectCourse.forEach((item, index) => {
+        if (this.finalCourseArr.indexOf(item.id) != -1) { // 课程被选中
+          currentTotalCredit += item.credit
+        }
+      })
+      this.currentTotalCredit = currentTotalCredit // 计算当前学分
       if (this.isQuit) { // 退选，则不可以退选0门课程
-        return this.finalCourseArr.length == 0
+        isDisabledSubmit = this.finalCourseArr.length == 0
       } else { // 选课，则需要多选几门课程
-        return this.has_select_course == this.finalCourseArr;
+        // 首先需要多选几门课程，才允许提交
+        isDisabledSubmit = this.has_select_course.toString() == this.finalCourseArr.toString()
+        // 其次，需满足最低学分要求
+        var minCredit = this.isCommonCourse ? this.system_config.min_common_credit : this.system_config.min_direction_credit
+        var maxCredit = this.isCommonCourse ? this.system_config.max_common_credit : this.system_config.max_direction_credit
+        if (currentTotalCredit < minCredit || currentTotalCredit > maxCredit) {
+          isDisabledSubmit = true
+        }
       }
+      return isDisabledSubmit
     }
   },
   methods: {
@@ -57,6 +85,8 @@ export default {
       this.canSelectCourse = data.courseList
       this.finalCourseArr = data.has_select_course
       this.has_select_course = data.has_select_course
+      this.system_config = data.system_config
+
       this.canSelectCourseOptions = this.makeCourseOption(data.courseList, data.has_select_course, this.isQuit)
     },
     getCanSelectCourse() {
@@ -82,13 +112,14 @@ export default {
 
           // 弹出提示
           var msg = '操作成功'
-          for (var key in res.data) {
+          for (var key in res.data.result) {
             if (res.data.result[key] == false) {   // 只有有课程失败就弹出提示
               msg = '有部分课程，操作失败，请再次尝试'
             }
           }
           util.box.alert(msg)
         }).catch(err => {
+          this.isAbleHandle = true
           this.$indicator.close()
         })
       }, 1000)
@@ -115,6 +146,7 @@ export default {
             }, 500)
           })
           .catch(err => {
+            this.isAbleHandle = true
             this.$indicator.close()
           })
       }, action => {
@@ -128,25 +160,42 @@ export default {
           label: " 学分:" + item.credit + " 人数" + item.current_number + "/" + item.required_number + " " + "《" + item.title + "》",
           value: item.id
         }
-        if (finalCourseArr.indexOf(item.id) == -1) {
-          option.disabled = isQuit ? true : false // 推选课程，则需要已经选过课程
-        } else {
-          option.disabled = isQuit ? false : true
+        var isContainer = (finalCourseArr.indexOf(item.id) != -1)
+        if (isQuit) {
+          option.disabled = !isContainer // 退选则只要是用户选中的课程，就可以退选
+        } else { // 选课
+          option.disabled = isContainer // 选课首先，用户要是已选了该门课程则置为true
+          if (item.current_number == item.required_number) { // 另外如果该门课满员了，也置为true
+            option.disabled = true
+          }
         }
         data.push(option)
       })
       return data
     },
-
   },
-
-
 }
 
 </script>
 
 <style>
-.course-page .mint-checkbox-label {
+.handle-course .mint-checkbox-label {
   font-size: 12px;
+}
+
+.handle-course .btn-group {
+  padding: 10px 0 10px 0;
+}
+
+.handle-course .mint-cell-text {
+  font-size: 14px;
+}
+
+.handle-course .mint-cell-label {
+  /*font-size: 12px;*/
+}
+
+.handle-course .mint-cell-value {
+  font-size: 14px;
 }
 </style>

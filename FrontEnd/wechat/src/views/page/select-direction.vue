@@ -38,8 +38,7 @@ export default {
         } else {
           util.box.alert(res.data.msg, '提示').then(() => {
             // 使用replace来控制跳转
-            this.$router.replace({ name: 'direction-course-select' })
-
+            this.$router.replace({ name: 'handle-course', params: { '0': 'direction', '1': 'select' } })
           })
         }
 
@@ -64,6 +63,8 @@ export default {
         // 发送请求
         this.$http.post("direction/select-dir", {
           direction_id: Number(this.finalDirection)
+        }).then(res=>{
+          this.$router.replace(res.data.option)
         })
       }, action => {
         util.toast("您已取消操作")

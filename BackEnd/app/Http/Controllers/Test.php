@@ -24,10 +24,8 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-//        $this->cacheHandleDir(1, 2, true);
-        $res['dir'] = $this->cacheDirStudentNum(1,2);
-        //        $res['ca_dir'] = $this->cacheDirection(1,0);
-        return $this->json($res);
+        $d = $this->cacheSystemConfig(1);
+        return $this->json($d);
 
 
     }

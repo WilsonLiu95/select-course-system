@@ -21,7 +21,7 @@
                 disableClear
                 readonly>
         <mt-button size="small"
-                   v-if="[0,1].indexOf(system_status)!=-1  "
+                   v-if="system_config.is_direction_open==true"
                    @click="reselectDirection">重选</mt-button>
       </mt-field>
       <mt-field label="班级"
@@ -40,57 +40,37 @@
                 disableClear
                 readonly></mt-field>
     </div>
+  
     <div class='second-part'
          v-if="isInit">
-      <div v-if="system_status==0">
+  
+      <div v-if="!(system_config.is_direction_open || system_config.is_common_open || has_select_common_course.length || has_select_direction_course.length)">
+        <!--只有在两个选课系统没开发，且用户没有选课程的时候显示-->
         <mt-cell title="系统说明"
-                 label="系统暂未开放选课，请先预览课程及选择专业方向。"></mt-cell>
-        <mt-button v-if="!account.direction_id"
-                   class="second-part-btn"
-                   size="large"
-                   @click="startSelect(0)"
-                   type='primary'>选择专业方向</mt-button>
-        <!--<p>系统暂未开放选课，请先预览课程及选择专业方向。</p>-->
+                 label="系统暂未开放选课，请先预览课程。"></mt-cell>
       </div>
-      <div v-if="system_status==1">
+      <div v-else-if="system_config.is_direction_open && !has_select_direction_course.length">
         <mt-cell title="系统说明"
                  label="系统已开放专业方向选修课，请尽快选课。"></mt-cell>
-  
-        <mt-button v-if="has_select_direction_course.length"
-                   size='large'
+        <mt-button size='large'
                    type="primary"
                    class="second-part-btn"
-                   @click="$router.push({name:'select-result'})">查看选课结果</mt-button>
-        <mt-button v-else
-                   size='large'
-                   type="primary"
-                   class="second-part-btn"
-                   @click="startSelect(1)">开始选择专业方向课程</mt-button>
+                   @click="startSelect(false)">开始选择专业方向课程</mt-button>
       </div>
-      <div v-if="system_status==2">
+      <div v-else-if="system_config.is_common_open && !has_select_common_course.length">
         <mt-cell title="系统说明"
                  label="系统已开放公共选修课，请尽快选课。"></mt-cell>
-  
-        <mt-button v-if="has_select_common_course.length"
-                   size='large'
+        <mt-button size='large'
                    type="primary"
-                   class="second-part-btn"
-                   @click="$router.push({name:'select-result'})">查看选课结果</mt-button>
-        <mt-button v-else
-                   size='large'
-                   type="primary"
-                   @click="startSelect(2)">开始选择公共选修课程</mt-button>
+                   @click="startSelect(true)">开始选择公共选修课程</mt-button>
       </div>
-      <div v-if="system_status > 2">
-        <mt-cell title="系统说明"
-                 label="系统已关闭。"></mt-cell>
-        <mt-button v-if="has_select_common_course.length"
-                   size='large'
-                   type="primary"
-                   class="second-part-btn"
-                   @click="$router.push({name:'select-result'})">查看选课结果</mt-button>
   
-      </div>
+      <mt-button v-else
+                 size='large'
+                 type="primary"
+                 class="second-part-btn"
+                 @click="$router.push({name:'select-result'})">查看选课结果</mt-button>
+  
     </div>
   </div>
 </template>
@@ -103,7 +83,7 @@ export default {
       account: {
         'major': "待选择"
       },
-      system_status: 0,
+      system_config: {},
       has_select_direction_course: [],
       has_select_common_course: [],
     }
@@ -114,25 +94,23 @@ export default {
   methods: {
     getAccount() {
       this.$http.get("account").then((res) => {
-
         var data = res.data
         this.account = data.account
-        this.system_status = data.system_status
+        this.system_config = data.system_config
         this.has_select_direction_course = data.has_select_direction_course
         this.has_select_common_course = data.has_select_common_course
         this.isInit = true
       })
     },
 
-    startSelect(system_status) {
-      if (system_status == 0 || this.account.direction_id == 0) {
-        // 系统未开放，只能选择专业方向。或者系统开放了，但是用户尚未选择专业方向
-        return this.$router.push({ name: 'select-direction' })
-      }
-      if (system_status == 1) {
-        return this.$router.push({ name: 'handle-course', params: { '0': 'direction', '1': 'select' } })
-      } else if (system_status == 2) {
+    startSelect(is_common_course) {
+      if (is_common_course) {
+        // 如果是点击选择公选课按钮
         return this.$router.push({ name: 'handle-course', params: { '0': 'common', '1': 'select' } })
+      } else if (this.account.direction_id == 0) {
+        return this.$router.push({ name: 'select-direction' })
+      } else {
+        return this.$router.push({ name: 'handle-course', params: { '0': 'direction', '1': 'select' } })
       }
 
     },
