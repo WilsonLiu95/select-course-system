@@ -98,6 +98,7 @@ axios.interceptors.response.use((response) => {
 axios.defaults.baseURL = (process.env.NODE_ENV !== 'production' ? config.dev.httpUrl : config.build.httpUrl); // 同时根据不同环境引用不同的ajax请求前缀。
 axios.defaults.withCredentials = true; // 本地dev开发时，存在跨域。跨域请求时，将不带上cookie。需要设置这个参数为true才会带上cookie。坑了几天。
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
 // phpstorm断点调试 需要此参数
 // axios.defaults.params = {
 //   XDEBUG_SESSION_START: "PHPSTORM"

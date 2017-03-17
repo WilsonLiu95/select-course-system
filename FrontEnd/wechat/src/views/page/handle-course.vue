@@ -17,7 +17,12 @@
       <mt-cell title="提示:满足学分要求才可以提交"
                :label="'学分要求:' +  (isCommonCourse ? (system_config.min_common_credit + '~' + system_config.max_common_credit ):
                 (system_config.min_direction_credit + '~' + system_config.max_direction_credit))">
-        {{ '当前: ' + this.currentTotalCredit }}
+        <span v-if='isQuit'>
+          {{ '退选:' + this.currentTotalCredit  + "学分"}}
+        </span>        
+        <span v-else>
+          {{ '当前: ' + this.currentTotalCredit }}
+        </span>
       </mt-cell>
       <mt-button v-if="isQuit"
                  type="danger"
@@ -90,7 +95,10 @@ export default {
       this.canSelectCourseOptions = this.makeCourseOption(data.courseList, data.has_select_course, this.isQuit)
     },
     getCanSelectCourse() {
-      this.$http.get("handle-course/can-select-course?is_common=" + this.isCommonCourse).then((res) => {
+      this.$http.get("handle-course/can-select-course?is_common=" + this.isCommonCourse,{
+          xsrfCookieName: 'XSRF-TOKEN', // default
+          xsrfHeaderName: 'X-XSRF-TOKEN', // default
+      }).then((res) => {
         this.initPage(res.data);
       })
     },
@@ -189,10 +197,6 @@ export default {
 
 .handle-course .mint-cell-text {
   font-size: 14px;
-}
-
-.handle-course .mint-cell-label {
-  /*font-size: 12px;*/
 }
 
 .handle-course .mint-cell-value {

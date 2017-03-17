@@ -23,7 +23,7 @@ class AuthOfWechat
     public function handle($request, Closure $next)
     {
         // 判断是否微信授权过
-
+        
         if (!session()->has("openid")){
             $res_data = array(
                 "url" =>"https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . env('WE_APPID') . "&redirect_uri=". urlencode(env('BASE_PATH') . '/#/wechat') . "&response_type=code&scope=snsapi_base#wechat_redirect",

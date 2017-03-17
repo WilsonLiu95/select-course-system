@@ -7,6 +7,7 @@ use App\Model;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Wechat\BaseTrait;
+
 class Wechat extends Controller
 {
     use BaseTrait;

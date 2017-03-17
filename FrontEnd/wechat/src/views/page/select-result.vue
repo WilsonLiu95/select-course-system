@@ -96,7 +96,6 @@ export default {
 }
 
 .select-result .btn-group {
-  /*margin: 8px 0 20px 0;*/
   padding: 10px 0 20px 0;
   display: flex;
   justify-content: flex-end;
@@ -114,9 +113,6 @@ export default {
   font-size: 14px;
 }
 
-.select-result .mint-cell-label {
-  /*font-size: 12px;*/
-}
 
 .select-result .mint-cell-value {
   font-size: 12px;
