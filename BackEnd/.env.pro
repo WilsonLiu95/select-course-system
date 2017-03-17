@@ -10,7 +10,7 @@ DB_PASSWORD=root
 
 CACHE_DRIVER=redis
 SESSION_DRIVER=redis
-QUEUE_DRIVER=sync
+QUEUE_DRIVER=redis
 
 MAIL_DRIVER=smtp
 MAIL_HOST=mailtrap.io
@@ -20,8 +20,8 @@ MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
 
 
-BASE_PATH=http://bishe.wilsonliu.cn/FrontEnd/wechat/dist
-BASE_DOMAIN=bishe.wilsonliu.cn
-CORS_ORIGN=bishe.wilsonliu.cn
+BASE_PATH=http://select-course.wilsonliu.cn/FrontEnd/wechat/dist
+BASE_DOMAIN=select-course.wilsonliu.cn
+CORS_ORIGN=select-course.wilsonliu.cn
 WE_APPID=wx21978563925b71f6 
 WE_SECRET=4dc0059caf977240e6f92b011f2d87da
