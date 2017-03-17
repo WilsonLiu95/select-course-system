@@ -9,12 +9,12 @@
 </template>
 
 <script>
-  export default {
-    name: "not-found",
-    created() {
+export default {
+  name: "not-found",
+  created() {
 
-    },
-    
+  },
 
-  };
+
+};
 </script>
