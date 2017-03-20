@@ -8,7 +8,7 @@ use App\Http\Controllers\CacheHandle;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class Home extends Controller
+class HomePage extends Controller
 {
     use CacheHandle;
     private $institute_id;
