@@ -17,7 +17,6 @@ class DirectionTableSeeder extends Seeder
         foreach ($dir as $index => $item){
             factory(\App\Model\Direction::class)->create([
                 'name'=>$item,
-                'direction_code'=> $index+1 // 方向代码
             ]);
         }
     }

@@ -15,13 +15,7 @@ class Direction extends Model
      *
      * @var array
      */
-    protected $fillable = [];
-    /**
-     * 不可被批量赋值的属性。
-     *
-     * @var array
-     */
-    protected $guarded = ['created_at','updated_at'];
+    protected $fillable = ['name','institute_id'];
 
     // 关联
     public function major(){

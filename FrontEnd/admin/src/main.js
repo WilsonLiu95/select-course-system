@@ -109,7 +109,10 @@ axios.interceptors.response.use(function(response) {
 axios.defaults.baseURL = (process.env.NODE_ENV !== 'production' ? config.dev.httpUrl : config.build.httpUrl); // 根据环境不同，配置不同的ajax请求前缀
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.withCredentials = true; // true才能使跨域 请求带上cookie
-
+// phpstorm断点调试 需要此参数
+axios.defaults.params = {
+  XDEBUG_SESSION_START: "PHPSTORM"
+}
 Vue.prototype.$http = axios // 将axios绑定到vue上
   /* eslint-disable no-new */
 new Vue({

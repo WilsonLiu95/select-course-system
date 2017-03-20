@@ -14,13 +14,12 @@ class Major extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['name','institute_id','major_code'];
     /**
      * 不可被批量赋值的属性。
      *
      * @var array
      */
-    protected $touches = ['institute'];
 
     public function direction(){
         return $this->belongsToMany('App\Model\Direction')

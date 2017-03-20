@@ -17,8 +17,6 @@ class CreateDirectionTable extends Migration
             $table->increments('id');
 
             $table->integer('institute_id');
-            $table->tinyInteger('direction_code')
-                ->comment('方向代号用于填充在excel中,根据institute与方向代号一起确认方向ID');
             $table->softDeletes();
             $table->string('name', 32);
             $table->timestamps();

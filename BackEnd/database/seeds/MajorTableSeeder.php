@@ -12,7 +12,7 @@ class MajorTableSeeder extends Seeder
     public function run()
     {
         $major = [
-            '电信','通信工程','微波技术'
+            '电子信息','通信工程','微波技术'
         ];
         foreach ($major as $key=>$item){
             factory(\App\Model\Major::class)->create([

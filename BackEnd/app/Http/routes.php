@@ -40,5 +40,6 @@ Route::group(['prefix' => 'admin'], function(){
         // 加个中间件认证 
         Route::controller("/home","Admin\Home");
         Route::controller("/config","Admin\Config");
+        Route::controller("/info","Admin\Info");
     });
 });

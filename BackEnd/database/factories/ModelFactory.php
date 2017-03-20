@@ -30,7 +30,6 @@ $factory->define(\App\Model\Major::class, function ($faker) {
 
 $factory->define(\App\Model\DirectionMajor::class, function ($faker) {
     return [
-        'institute_id' => 1,
         'direction_id'=>$faker->shuffle([1,2,3,4,5,6,7])[0],
         'major_id' => $faker->shuffle([1,2,3])[0],
 
@@ -39,7 +38,6 @@ $factory->define(\App\Model\DirectionMajor::class, function ($faker) {
 $factory->define(\App\Model\CourseDirection::class, function ($faker) {
     $code = $faker->shuffle([1,2,3,4,5,6,7])[0];
     return [
-        'institute_id' => 1,
         'direction_id'=>$code,
         'course_id' => $faker->numberBetween($min = 1, $max = 77),
 
@@ -47,7 +45,6 @@ $factory->define(\App\Model\CourseDirection::class, function ($faker) {
 });
 $factory->define(\App\Model\Direction::class, function ($faker) {
     return [
-        'direction_code'=>1,
         'institute_id' => 1,
     ];
 });

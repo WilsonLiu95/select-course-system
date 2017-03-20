@@ -37,8 +37,8 @@ class Config extends Controller
         if(request()->min_common_credit > request()->max_common_credit){
             return $this->errorMsg('公选课最低学分不能高于最高学分');
         }
-        if(request()->min_direction_credit > request()->min_common_credit){
-            return $this->errorMsg('公选课最低学分不能高于最高学分');
+        if(request()->min_direction_credit > request()->min_direction_credit){
+            return $this->errorMsg('专业方向选修课的最低学分不能高于最高学分');
         }
         $newConfig = request()->only('is_common_open','min_common_credit', 'max_common_credit',
             'is_direction_open','min_direction_credit','max_direction_credit');

@@ -14,7 +14,6 @@ class CreateDirectionMajorTable extends Migration
     {
         Schema::create('direction_major', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('institute_id');
 
             // 用于映射两者的多对多关系
             $table->integer('major_id');

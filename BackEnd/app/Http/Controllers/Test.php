@@ -26,11 +26,13 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        $data['one'] = Cache::get('test');
-        $data['two'] = Cache::forever('test',222);
-        $data['three'] = Cache::get('test');
-
-        return $this->json($data);
+        $a = [1,2];
+       $dir = new Model\Direction([
+            'name'=>'测试'
+        ]);
+        foreach($a as $b){
+            Model\Major::find($b)->direction()->save($dir);
+    }
     }
 
     public function getFile(){

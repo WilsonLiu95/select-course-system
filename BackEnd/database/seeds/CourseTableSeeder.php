@@ -106,9 +106,9 @@ class CourseTableSeeder extends Seeder
                     ]);
                 $isExists = \App\Model\Course::where("course_code",$k)->get();
                 if(count($isExists)){ // 如果存在则只更新关系
-                    \App\Model\Direction::find($key+1)->course()->attach($isExists[0]->id,['institute_id'=>1]);
+                    \App\Model\Direction::find($key+1)->course()->attach($isExists[0]->id);
                 }else{ // 否则即保存也更新
-                    \App\Model\Direction::find($key+1)->course()->save($c,['institute_id'=>1]);
+                    \App\Model\Direction::find($key+1)->course()->save($c);
                 }
 
             }
