@@ -33,10 +33,6 @@ class Course extends Model
         return $this->belongsToMany('App\Model\Direction')
             ->withTimestamps();
     }
-    public function grade()
-    {
-        return $this->belongsTo('App\Model\Grade');
-    }
     public function selectCourse()
     {
         return $this->hasMany('App\Model\SelectCourse');

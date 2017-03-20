@@ -15,7 +15,6 @@ class CreateCourseDirectionTable extends Migration
         Schema::create('course_direction', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('institute_id');
-            $table->integer('grade_id');
             // 用于映射两者的多对多关系
             $table->integer('course_id');
             $table->integer('direction_id');

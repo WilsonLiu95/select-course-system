@@ -31,8 +31,4 @@ class DirectionMajor extends Model
     {
         return $this->belongsTo('App\Model\Institute');
     }
-    public function grade()
-    {
-        return $this->belongsTo('App\Model\Grade');
-    }
 }

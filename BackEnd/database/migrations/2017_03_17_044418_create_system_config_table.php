@@ -15,9 +15,6 @@ class CreateSystemConfigTable extends Migration
         Schema::create('system_config', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('institute_id');
-            $table->integer('grade_id')
-                ->comment('支持每年一个配置');
-            // 个性化配置
 
             $table->boolean('is_common_open')
                 ->comment('公选课 是否开放选择');

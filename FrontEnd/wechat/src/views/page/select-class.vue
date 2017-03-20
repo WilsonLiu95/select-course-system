@@ -46,7 +46,7 @@ export default {
       this.canSelectClassOptions = data
     },
     confirm() {
-      util.box.confirm("确定选中该方向？").then(action => {
+      util.box.confirm("确定选中该班级？").then(action => {
         // 发送请求
         this.$http.post("classes/select-class", { class_code: this.finalClass })
       }, action => {

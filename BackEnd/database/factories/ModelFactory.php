@@ -97,7 +97,6 @@ $factory->define(\App\Model\Course::class, function ($faker) {
 
     return [
         'institute_id' => 1,
-        'grade_id' => 1,
         'teacher'=> $faker->name,
         'is_common' => false,
         "is_select"=>false,
@@ -112,7 +111,6 @@ $factory->define(\App\Model\Course::class, function ($faker) {
 $factory->define(\App\Model\SystemConfig::class, function($faker){
     return [
         'institute_id' => 1,
-        'grade_id' => 1,
         'is_common_open' => true,
         'min_common_credit'=>6,
         'max_common_credit'=>10,

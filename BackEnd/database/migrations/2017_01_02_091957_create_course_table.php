@@ -15,8 +15,6 @@ class CreateCourseTable extends Migration
         Schema::create('course', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('institute_id');
-            $table->integer('grade_id');
-
             $table->boolean('is_common');
             $table->boolean('is_select');
             $table->string('course_code',10)
