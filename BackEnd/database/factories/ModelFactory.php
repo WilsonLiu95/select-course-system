@@ -96,7 +96,6 @@ $factory->define(\App\Model\Course::class, function ($faker) {
         'institute_id' => 1,
         'teacher'=> $faker->name,
         'is_common' => false,
-        "is_select"=>false,
         'detail'=> $faker->text,
         'credit' => $faker->shuffle([2,3,4,5])[0],
         'required_number' => $faker->numberBetween($min = 30, $max = 100),

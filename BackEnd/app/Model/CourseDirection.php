@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseDirection extends Model
 {
-    use SoftDeletes;
     protected $table = 'course_direction';
-    protected $dates = ['deleted_at'];
     /**
      * 可以被批量赋值的属性。
      *

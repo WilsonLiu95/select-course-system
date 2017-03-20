@@ -19,7 +19,6 @@ class CreateDirectionMajorTable extends Migration
             $table->integer('major_id');
             $table->integer('direction_id');
 
-            $table->softDeletes();
             $table->timestamps();
         });
     }

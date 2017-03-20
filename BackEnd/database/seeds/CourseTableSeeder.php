@@ -102,7 +102,6 @@ class CourseTableSeeder extends Seeder
                         'course_code'=>$k,
                         'title'=> $v[0],
                         'credit'=>$v[1],
-                        'is_select'=> true,
                     ]);
                 $isExists = \App\Model\Course::where("course_code",$k)->get();
                 if(count($isExists)){ // 如果存在则只更新关系

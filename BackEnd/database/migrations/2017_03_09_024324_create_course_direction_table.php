@@ -18,7 +18,6 @@ class CreateCourseDirectionTable extends Migration
             $table->integer('course_id');
             $table->integer('direction_id');
 
-            $table->softDeletes();
             $table->timestamps();
         });
     }

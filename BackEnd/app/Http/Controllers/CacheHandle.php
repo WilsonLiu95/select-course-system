@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
 trait CacheHandle {
+    public function cacheFlush($institute_id){
+        Cache::tags(["ins" . $institute_id])->flush();
+    }
     public function cacheSystemConfig($institute_id, $isRenew=false){
         $key = 'system_config' . $institute_id;
         if($isRenew){
@@ -44,11 +47,17 @@ trait CacheHandle {
                 if($direction_id == 0){ // 方向为0表示公选课
                     $courseList = Model\Course::where("institute_id",$institute_id)
                         ->where('is_common', true)
-                        ->select("course.id","title","teacher","credit",'required_number','detail')
+                        ->select("course.id","title","is_common","course_code","teacher","credit",'required_number','detail')
+                        ->with(['direction'=>function($query){
+                            $query->select('direction.name','direction.id');
+                        }])
                         ->get();
                 }else{
                     $courseList =  Model\Direction::find($direction_id)->course()
-                        ->select("course.id","title","teacher","credit",'required_number','detail')
+                        ->select("course.id","title","is_common","course_code","teacher","credit",'required_number','detail')
+                        ->with(['direction'=>function($query){
+                            $query->select('direction.name','direction.id');
+                        }])
                         ->get();
                 }
                 return $courseList;
@@ -139,7 +148,6 @@ trait CacheHandle {
             $isHasBeenExecute ? Cache::tags(["ins" . $institute_id])->decrement($key)
                 : Cache::tags(["ins" . $institute_id])->increment($key);
         }
-
     }
 
     // 调用以初始化各个选课的操作,以及每次查询选课进度

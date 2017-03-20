@@ -16,7 +16,6 @@ class CreateCourseTable extends Migration
             $table->increments('id');
             $table->integer('institute_id');
             $table->boolean('is_common');
-            $table->boolean('is_select');
             $table->string('course_code',10)
                 ->comment('国家给的课程编号');
             $table->string('teacher',32);

@@ -102,7 +102,7 @@
   
         <el-form-item>
           <el-button type="primary"
-                     @click="onSubmit">确认</el-button>
+                     @click="systemConfigEdit">确认</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -137,7 +137,7 @@
            class="dialog-footer">
         <el-button @click="dialog = false">取 消</el-button>
         <el-button type="primary"
-                   @click="confirm">确 定</el-button>
+                   @click="submitEdit">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -171,7 +171,7 @@ export default {
   },
   methods: {
     init(isLoading) {
-      this.$http.get('info',{noLoading:isLoading}).then(res => {
+      this.$http.get('info', { noLoading: isLoading }).then(res => {
         this.major = res.data.major
         this.direction = res.data.direction
         this.config = res.data.config
@@ -186,7 +186,10 @@ export default {
       if (type === 'major') {
         this.newMajor = {}
       } else if (type === 'direction') {
-        this.newDirection = {}
+        this.newDirection = {
+          name: "",
+          major: [], // 属于哪几个专业
+        }
       }
     },
     handleEdit(index, item, type) {
@@ -205,30 +208,54 @@ export default {
       }
     },
     handleDelete(index, item, type) {
-      if (this.dialogType === 'major') {
-        this.$http.get('info/major-delete?id=' + item.id).then(res=>{
-          this.init(true)
-        })
-      } else if (this.dialogType === 'direction') {
-        this.$http.get('info/direction-delete?id=' + item.id).then(res=>{
-          this.init(true)
-        })
-      }
+      // debugger
+      this.$confirm('确认删除该条数据？请仔细确认', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (type === 'major') {
+          this.$http.get('info/major-delete?id=' + item.id).then(res => {
+            this.init(true)
+          })
+        } else if (type === 'direction') {
+          this.$http.get('info/direction-delete?id=' + item.id).then(res => {
+            this.init(true)
+          })
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      })
     },
-    confirm() {
-      if (this.dialogType === 'major') {
-        this.$http.post('info/major-update?id=' + this.editId, this.newMajor).then(res=>{
-          this.dialog=false
-          this.init(true)
-        })
-      } else if (this.dialogType === 'direction') {
-        this.$http.post('info/direction-update?id=' + this.editId, this.newDirection).then(res=>{
-          this.dialog=false
-          this.init(true)
-        })
-      }
+    submitEdit() {
+      this.$confirm('确认提交该操作？请仔细核对数据。', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (this.dialogType === 'major') {
+          this.$http.post('info/major-update?id=' + this.editId, this.newMajor).then(res => {
+            this.dialog = false
+            this.init(true)
+          })
+        } else if (this.dialogType === 'direction') {
+          this.$http.post('info/direction-update?id=' + this.editId, this.newDirection).then(res => {
+            this.dialog = false
+            this.init(true)
+          })
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      })
+
     },
-    onSubmit() {
+    systemConfigEdit() {
       this.$http.post('info/edit', this.config)
     },
   }

@@ -30,7 +30,6 @@ class Direction extends Model
     public function course()
     {
         return $this->belongsToMany('App\Model\Course')
-            ->withPivot('institute_id')
             ->withTimestamps();
     }
 

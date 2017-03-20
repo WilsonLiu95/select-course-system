@@ -23,11 +23,11 @@ abstract class Controller extends BaseController
 				            "option"=>$option,
                             'msg'=>$msg],301);
 	}
-	public function errorMsg($msg=""){
+	public function errorMsg($msg="")
+	{
 		$res = [
 			'msg' => $msg
 		];
 		return response()->json($res, 400);
 	}
-	
 }

@@ -26,13 +26,12 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        $a = [1,2];
-       $dir = new Model\Direction([
-            'name'=>'测试'
-        ]);
-        foreach($a as $b){
-            Model\Major::find($b)->direction()->save($dir);
-    }
+        $major_list = collect([2,3]);
+
+        $d = Model\Direction::find(3)->major()->lists('major.id');
+        $c=$major_list->diff($d);
+        return $this->json($c);
+
     }
 
     public function getFile(){

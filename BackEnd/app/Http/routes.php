@@ -38,8 +38,8 @@ Route::group(['prefix' => 'admin'], function(){
     Route::controller("/login","Admin\Login"); // 管理端登录
     Route::group(['middleware' => 'AuthOfAdmin'], function(){
         // 加个中间件认证 
-        Route::controller("/home","Admin\Home");
-        Route::controller("/config","Admin\Config");
-        Route::controller("/info","Admin\Info");
+        Route::controller("/home","Admin\HomePage");
+        Route::controller("/course","Admin\CoursePage");
+        Route::controller("/info","Admin\InfoPage");
     });
 });
