@@ -14,7 +14,6 @@ abstract class Controller extends BaseController
 
 	}
 	public function json($data=array(),$http_code=200){
-
 			return response()->json($data,$http_code);
 	}
 

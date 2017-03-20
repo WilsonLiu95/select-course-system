@@ -63,7 +63,6 @@ $factory->define(\App\Model\Classes::class, function ($faker) {
         'name' => $faker->name,
         'institute_id' => 1,
         "grade_id"=>1,
-        'is_prior'=>$faker->shuffle([true,false])[0],
     ];
 });
 $factory->define(\App\Model\Institute::class, function ($faker) {

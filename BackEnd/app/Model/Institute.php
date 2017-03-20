@@ -50,8 +50,9 @@ class Institute extends Model
     }
     public function course()
     {
-
+        return $this->hasMany('App\Model\Course');
     }
+
 
 
 }

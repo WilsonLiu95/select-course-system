@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Wechat;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Wechat\BaseTrait;
+use App\Http\Controllers\CacheHandle;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model;
 class Register extends Controller
 {
-    use BaseTrait;
+    use BaseTrait,CacheHandle;
     public function postIndex(Request $request)
     {
         // 数据校验

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Wechat;
 
 use App\Model;
 use App\Http\Controllers\Wechat\BaseTrait;
+use App\Http\Controllers\CacheHandle;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 
 class Account extends Controller
 {
-    use BaseTrait;
+    use BaseTrait,CacheHandle;
     private $account;
     public function __construct()
     {

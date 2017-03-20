@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Wechat;
 
 use Illuminate\Http\Request;
 use App\Jobs\QueueOneCourse;
+use App\Http\Controllers\CacheHandle;
 use Flexihash\Flexihash;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class HandleCourse extends Controller
 {
-    use BaseTrait;
+    use BaseTrait,CacheHandle;
     private $account;
     private $hash;
     public function __construct()

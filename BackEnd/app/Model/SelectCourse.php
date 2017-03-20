@@ -21,7 +21,6 @@ class SelectCourse extends Model
      * @var array
      */
     protected $guarded = ['created_at','updated_at'];
-    protected $appends = ['student_name','job_num'];
 
     public function student()
     {

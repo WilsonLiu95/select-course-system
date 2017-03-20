@@ -21,5 +21,16 @@ class Classes extends Model
      * @var array
      */
     protected $guarded = ['created_at','updated_at'];
-
+    public function institute()
+    {
+        return $this->belongsTo('App\Model\Institute');
+    }
+    public function major()
+    {
+        return $this->belongsTo('App\Model\Major');
+    }
+    public function grade()
+    {
+        return $this->belongsTo('App\Model\Grade');
+    }
 }

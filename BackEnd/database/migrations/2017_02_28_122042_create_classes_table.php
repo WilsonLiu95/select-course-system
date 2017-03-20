@@ -31,10 +31,6 @@ class CreateClassesTable extends Migration
             $table->string('major_id');
             $table->integer('major_code')
                 ->comment('专业代号,如果没有则代表该班级的人可以任意选择专业');
-
-
-            $table->boolean('is_prior')
-                ->comment('是否优先,即提高卓越');
             $table->softDeletes();
             $table->timestamps();
         });

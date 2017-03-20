@@ -7,10 +7,10 @@ use App\Model;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Wechat\BaseTrait;
-
+use App\Http\Controllers\CacheHandle;
 class Wechat extends Controller
 {
-    use BaseTrait;
+    use BaseTrait,CacheHandle;
     public function getIndex(Request $request)
     {
         $code = $request->query("code");

@@ -6,10 +6,10 @@ use App\Model;
 use App\Http\Controllers\Wechat\BaseTrait;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Controllers\CacheHandle;
 class CourseTab extends Controller
 {
-    use BaseTrait;
+    use BaseTrait,CacheHandle;
     public function getIndex()
     {
         // 从session中获取基本信息

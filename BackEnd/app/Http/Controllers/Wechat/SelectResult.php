@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Controllers\CacheHandle;
 class SelectResult extends Controller
 {
-    use BaseTrait;
+    use BaseTrait,CacheHandle;
     private $account;
     public function __construct()
     {

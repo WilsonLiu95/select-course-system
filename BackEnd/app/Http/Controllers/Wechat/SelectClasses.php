@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
-
+use App\Http\Controllers\CacheHandle;
 class SelectClasses extends Controller
 {
-    use BaseTrait;
+    use BaseTrait,CacheHandle;
     private $account;
     public function __construct()
     {

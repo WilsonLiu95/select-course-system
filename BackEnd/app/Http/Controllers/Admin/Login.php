@@ -18,8 +18,14 @@ class Login extends Controller
 		if($admin->count()){
 			session()->flush();
 			session()->set("isLogin",true);
-			return $this->redirect(['name'=>"admin"],'登陆成功');
+			session()->set("institute_id",true);
+			return $this->redirect(['name'=>"home"],'登陆成功');
 		}
 		return $this->toast(0,"账号密码错误,请重试");
+	}
+	public function getIsLogin(){
+		if(session()->get('isLogin')){
+			return $this->redirect(['name'=>'home'],'已登录,正在为您自动跳转');
+		}
 	}
 }

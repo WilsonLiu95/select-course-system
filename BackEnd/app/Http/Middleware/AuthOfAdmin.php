@@ -26,9 +26,8 @@ class AuthOfAdmin
             } else {
                 $res_data = array(
                     "url" =>env('BASE_PATH') . "/#/login",
-                    "state" => 301,
                 );
-                return response()->json($res_data);
+                return response()->json($res_data,301);
         }
 
         return $next($request);

@@ -32,7 +32,6 @@ class Course extends Model
     {
         return $this->belongsToMany('App\Model\Direction')
             ->withTimestamps();
-
     }
     public function grade()
     {
