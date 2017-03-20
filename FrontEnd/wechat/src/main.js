@@ -100,9 +100,9 @@ axios.defaults.withCredentials = true; // 本地dev开发时，存在跨域。�
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 // phpstorm断点调试 需要此参数
-// axios.defaults.params = {
-//   XDEBUG_SESSION_START: "PHPSTORM"
-// }
+axios.defaults.params = {
+  XDEBUG_SESSION_START: "PHPSTORM"
+}
 Vue.prototype.$http = axios
   /* eslint-disable no-new */
 new Vue({

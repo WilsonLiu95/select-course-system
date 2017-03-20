@@ -11,10 +11,7 @@ abstract class Controller extends BaseController
 	use DispatchesJobs, ValidatesRequests;
 	public function __construct()
 	{
-		// 默认http状态码为200
-        if(session()->get('openid')){
 
-        }
 	}
 	public function json($data=array(),$http_code=200){
 

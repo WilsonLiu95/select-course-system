@@ -133,7 +133,7 @@ export default {
       }, 1000)
     },
     confirm() {
-      if (!this.isAbleHandle) {
+      if (!this.isAbleHandle || this.isDisabledSubmit) {
         return // 不允许重复操作
       }
       var msg = this.isQuit ? "退选" : "选中"

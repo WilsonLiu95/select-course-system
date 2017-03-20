@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Model;
 use Flexihash\Flexihash;
+use GuzzleHttp\Cookie\SessionCookieJar;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Psy\Util\Json;
 use Validator;
 use App\Http\Requests;
@@ -24,10 +26,11 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        $d = $this->cacheSystemConfig(1);
-        return $this->json($d);
+        $data['one'] = Cache::get('test');
+        $data['two'] = Cache::forever('test',222);
+        $data['three'] = Cache::get('test');
 
-
+        return $this->json($data);
     }
 
     public function getFile(){

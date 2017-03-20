@@ -4,25 +4,36 @@ use App\Model;
 use App\Model\Student;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Boolean;
 
 
 trait BaseTrait {
     //====================================start session的相关操作================================================
-    public function getUser(){
-        // 		查找user对象
-        $id = $this->getSessionInfo("id");
-        return Student::find($id);
-    }
-
     public function getSessionInfo($which){
         // 		which 即session中存储的基本用户信息,目前包括 id,type两个
         $session_which = session()->get($which);
         if (isset($session_which)){
+            // 确保多设备登陆时,数据一致
+            $this->checkMultiDevice(session()->get('id'));
             return $session_which;
         }else{
             $this->initSession();
+            $this->checkMultiDevice(session()->get('id'));
             return session()->get($which);
+        }
+    }
+    private function checkMultiDevice($student_id){ // 检测多台设备同时登陆
+        $id = Session::getId();
+        $key = "current_sid_" . $student_id; // 拼接cache中的键值
+        $cache_id = Cache::tags(['select-course-sid'])
+            ->rememberForever($key, function() use($id){
+            return $id;
+        });
+        if($cache_id !== $id){ // 两者不相同则用户通过多台设备登陆,需保障数据一致性,故清除之前session内缓存的其他数据
+            Cache::forget($cache_id);
+            Cache::tags(['select-course-sid'])
+                ->forever($key, $id);
         }
     }
 

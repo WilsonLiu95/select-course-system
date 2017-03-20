@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Wechat;
 
 use App\Model\Classes;
+use App\Model\Student;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -56,7 +57,7 @@ class SelectClasses extends Controller
                 $data['major_id'] = $class["major_id"];
             }
 
-            $this->getUser()->update($data);
+            Student::find($this->account['id'])->update($data);
             Session::forget('account');
             return $this->redirect(['name'=> 'tab-account'],'选定班级成功,正在为您自动跳转');
         }else{

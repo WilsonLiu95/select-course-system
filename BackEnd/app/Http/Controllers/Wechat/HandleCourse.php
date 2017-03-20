@@ -20,7 +20,7 @@ class HandleCourse extends Controller
 
         $this->hash= new Flexihash();
         // bulk add
-        $this->hash->addTargets(array('default'));
+        $this->hash->addTargets(array('default','queue1','queue2','queue3'));
         $this->account = $this->getSessionInfo('account');
     }
 

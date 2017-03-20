@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Wechat;
 
+use App\Model\Student;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -61,7 +62,7 @@ class SelectDirection extends Controller
         if(!$filterDir->isEmpty()){
             $orgin_direction = $this->account['direction_id'];
             // 不为空,用户有权选择该方向
-            $isUpdate = $this->getUser()->update([ // 选定新的方向
+            $isUpdate = Student::find($this->account['id'])->update([ // 选定新的方向
                 'direction_id' => $direction_id ,
             ]);
             if(!$isUpdate){
