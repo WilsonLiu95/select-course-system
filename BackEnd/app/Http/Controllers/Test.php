@@ -26,12 +26,14 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        $major_list = collect([2,3]);
-
-        $d = Model\Direction::find(3)->major()->lists('major.id');
-        $c=$major_list->diff($d);
-        return $this->json($c);
-
+        Model\Student::where('institute_id', 1)
+            ->whereIn('grade_id',[1,2])->delete();
+        Model\Grade::where('institute_id', 1)
+            ->whereIn('id',[1,2])->delete();
+        Model\Classes::where('institute_id', 1)
+            ->whereIn('grade_id',[1,2])->delete();
+        Model\SelectCourse::where('institute_id', 1)
+            ->whereIn('grade_id',[1,2])->delete();
     }
 
     public function getFile(){

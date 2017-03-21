@@ -65,19 +65,12 @@ class InfoPage extends Controller
     public function postMajorUpdate(){
         $this->validate(request(),[
             'id'=>'required|integer',
-            'major_code'=>'required|integer',
             'name'=>'required'
         ]);
 
         if(request()->id){ // id不为0表示新增专业
-            $isExists = Major::where('institute_id',$this->institute_id)->where('major_code',request()->major_code)
-                ->where('id','!=', request()->id)->exists();
-            if($isExists){ // 2个代表
-                return $this->errorMsg('专业代码已存在'.request()->major_code .',请换一个专业代码');
-            }
             $isSuccess = Major::find(request()->id)->update([
                 'name'=>request()->name,
-                'major_code'=>request()->major_code
             ]);
             $this->cacheFlush($this->institute_id);
             return $this->json([
@@ -85,23 +78,15 @@ class InfoPage extends Controller
                 'msg'=>'更新成功'
             ]);
         }else{
-            $isExists = Major::where('institute_id',$this->institute_id)
-                ->where('major_code',request()->major_code)->exists();
-            if($isExists){
-                return $this->errorMsg('专业代码已存在'.request()->major_code .',请换一个专业代码');
-            }
-
             $isSuccess = Major::create([
                 'name'=>request()->name,
-                'institute_id'=>$this->institute_id,
-                'major_code'=>request()->major_code
+                'institute_id'=>$this->institute_id
             ]);
             $this->cacheFlush($this->institute_id);
             return $this->json([
                 'isSuccess' =>$isSuccess,
                 'msg'=>'新增成功'
             ]);
-
         }
     }
     public function getMajorDelete(){

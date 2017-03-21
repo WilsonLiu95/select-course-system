@@ -39,6 +39,8 @@ Route::group(['prefix' => 'admin'], function(){
     Route::group(['middleware' => 'AuthOfAdmin'], function(){
         // 加个中间件认证 
         Route::controller("/home","Admin\HomePage");
+        Route::controller("/student","Admin\StudentPage");
+        Route::controller("/classes","Admin\ClassesPage");
         Route::controller("/course","Admin\CoursePage");
         Route::controller("/info","Admin\InfoPage");
     });

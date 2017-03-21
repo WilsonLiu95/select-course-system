@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Model\Classes;
 use App\Model\Course;
+use App\Model\Direction;
 use App\Model\Grade;
+use App\Model\Major;
+use App\Model\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CacheHandle;
 use App\Http\Requests;
@@ -19,11 +23,6 @@ class HomePage extends Controller
         // 操作账户信息较多,默认生成
         $this->institute_id = session()->get('institute_id');
     }
-    public function getIndex(){
-        $data['grade_list'] = Grade::withTrashed()->where('institute_id', $this->institute_id)
-            ->select('id', 'name')
-            ->get();
-        return $this->json($data);
-    }
+
 
 }

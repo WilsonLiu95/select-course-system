@@ -14,16 +14,7 @@
         <el-table-column prop="name"
                          label="专业名称">
         </el-table-column>
-        <el-table-column label="专业代号">
-          <template scope="scope">
-            <el-tooltip class="item"
-                        effect="dark"
-                        content="可用于EXCEL中填写每个班级对应的专业"
-                        placement="right">
-              <el-button>{{ scope.row.major_code }}</el-button>
-            </el-tooltip>
-          </template>
-        </el-table-column>
+  
         <el-table-column label="操作">
           <template scope="scope">
             <el-button size="small"
@@ -115,9 +106,6 @@
         <el-form-item label="专业名称">
           <el-input v-model="newMajor.name"></el-input>
         </el-form-item>
-        <el-form-item label="专业代号">
-          <el-input v-model="newMajor.major_code"></el-input>
-        </el-form-item>
       </el-form>
       <!--专业方向部分-->
       <el-form :model="newDirection"
@@ -150,7 +138,6 @@ export default {
     return {
       major: [],
       newMajor: {
-        major_code: 1,
         name: 'test'
       },
       direction: [],
@@ -214,15 +201,9 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (type === 'major') {
-          this.$http.get('info/major-delete?id=' + item.id).then(res => {
+          this.$http.get('info/' + type + '-delete?id=' + item.id).then(res => {
             this.init(true)
           })
-        } else if (type === 'direction') {
-          this.$http.get('info/direction-delete?id=' + item.id).then(res => {
-            this.init(true)
-          })
-        }
       }).catch(() => {
         this.$message({
           type: 'info',

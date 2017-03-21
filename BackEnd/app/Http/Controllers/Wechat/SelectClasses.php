@@ -49,14 +49,9 @@ class SelectClasses extends Controller
         if($class){ // 班级存在
             $data=[
                 'classes_code'=> $class_code,
-                'classes_id' => $class["id"]];
-            if($class["major_code"]){
-                // 如果班级的 major_code不为0,即自动帮学生选定专业
-                // 否则,代表是不属于任何专业的特殊班级
-                $data['major_code'] = $class["major_code"];
-                $data['major_id'] = $class["major_id"];
-            }
-
+                'classes_id' => $class["id"],
+                'major_id'=>$class["major_id"]
+            ];
             Student::find($this->account['id'])->update($data);
             Session::forget('account');
             return $this->redirect(['name'=> 'tab-account'],'选定班级成功,正在为您自动跳转');

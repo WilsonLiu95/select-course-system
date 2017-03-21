@@ -30,7 +30,6 @@ class ClassesTableSeeder extends Seeder
         foreach($class_one as $key=>$v){
             factory(\App\Model\Classes::class)->create([
                 'name'=> $v,
-                'major_code'=>1,
                 'classes_code'=> $key+1,
                 'grade_id'=>$grade,
                 'major_id'=>1
@@ -39,7 +38,6 @@ class ClassesTableSeeder extends Seeder
         foreach($class_two as $key=>$v){
             factory(\App\Model\Classes::class)->create([
                 'name'=> $v,
-                'major_code'=>2,
                 'classes_code'=> $key+7,
                 'grade_id'=>$grade,
                 'major_id'=>2
@@ -49,7 +47,6 @@ class ClassesTableSeeder extends Seeder
             factory(\App\Model\Classes::class)->create([
                 'name'=> $v,
                 'classes_code'=> $key+13,
-                'major_code'=>3,
                 'grade_id'=>$grade,
                 'major_id'=>3
             ]);
@@ -57,7 +54,6 @@ class ClassesTableSeeder extends Seeder
         foreach($prior as $key=>$v){
             factory(\App\Model\Classes::class)->create([
                 'name'=> $v,
-                'major_code'=>0,
                 'grade_id'=>$grade,
                 'classes_code'=> $key+19,
                 'major_id'=>0,

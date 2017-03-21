@@ -17,7 +17,6 @@ class MajorTableSeeder extends Seeder
         foreach ($major as $key=>$item){
             factory(\App\Model\Major::class)->create([
                 'name'=>$item,
-                'major_code'=> $key+1 // 课程代号
             ]);
         }
     }

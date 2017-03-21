@@ -23,8 +23,7 @@ $factory->define(\App\Model\Admin::class, function ($faker) {
 $factory->define(\App\Model\Major::class, function ($faker) {
     return [
         'name' => $faker->name,
-        'institute_id' => 1,
-        'major_code'=>1
+        'institute_id' => 1
     ];
 });
 
