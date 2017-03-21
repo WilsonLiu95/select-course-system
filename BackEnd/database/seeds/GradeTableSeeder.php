@@ -11,6 +11,17 @@ class GradeTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Model\Grade::class)->create();
+        $grade_list = [
+            '2015','2016','2017'
+        ];
+        foreach($grade_list as $index=>$item){
+            factory(\App\Model\Grade::class)->create(
+                [
+
+                    'name'=>$item
+                ]
+            );
+        }
+
     }
 }

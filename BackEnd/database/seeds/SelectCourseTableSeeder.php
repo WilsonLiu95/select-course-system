@@ -11,6 +11,12 @@ class SelectCourseTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Model\SelectCourse::class,100)->create();
+        $grade_list = [1,2,3];
+        foreach ($grade_list as $item) {
+            factory(\App\Model\SelectCourse::class,100)->create([
+                'grade_id'=>$item
+            ]);
+        }
+
     }
 }

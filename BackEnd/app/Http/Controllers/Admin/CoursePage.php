@@ -28,7 +28,7 @@ class CoursePage extends Controller
         $this->validate(request(),[
             'id'=>'required|integer',
         ]);
-        Course::find(request()->id)->direction()->detach();
+        Course::find(request()->id)->direction()->detach(); // 删除course_direction中课程关联数据
         Course::find(request()->id)->delete();
         $this->cacheFlush($this->institute_id);
     }
@@ -39,14 +39,30 @@ class CoursePage extends Controller
             'is_common'=>'required|bool',
             'course_code'=>'required|numeric',
             'teacher'=>'required',
-            'credit'=>'required|integer',
+            'credit'=>'required|numeric',
             'required_number'=>'required|integer',
             'direction'=>'required|array',
             'detail'=>'required',
         ]);
         $newData = request()->only('title','is_common','course_code','teacher','credit','required_number','detail');
-        Course::find($this->institute_id)->update($newData);
-        Course::find($this->institute_id)->direction()->attach(request()->direction);
+        $newData['institute_id'] = $this->institute_id; // 添加院系id
+        $id = request()->id; // 课程ID,0表示新增
+        if($id){
+            $data['update'] = Course::find(request()->id)->update($newData);
+        }else{
+            $id = Course::create($newData)->id; // 新增之后,将id重新赋值
+        }
+
+        $direction_list = collect(request()->direction);
+        $origin_list = Course::find($id)->direction()->lists('direction.id');
+
+        $attach = $direction_list->diff($origin_list)->all();
+        $detach = $origin_list->diff($direction_list)->all();
+        $data['attach'] = Course::find($id)->direction()->attach($attach); // 添加新增的关联
+        if($detach){ // 去除取消的关联
+            Course::find($id)->direction()->detach($detach);
+        }
         $this->cacheFlush($this->institute_id);
+        return $this->json($data);
     }
 }

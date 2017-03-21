@@ -99,8 +99,8 @@
                     v-model="newCourse.detail"></el-input>
         </el-form-item>
         <el-form-item label="是否为公选课">
-          <el-switch on-text="开放"
-                     off-text="关闭"
+          <el-switch on-text="是"
+                     off-text="否"
                      v-model="newCourse.is_common"></el-switch>
         </el-form-item>
         <el-form-item label="专业方向">
@@ -131,7 +131,10 @@ export default {
       activeDirection: 0,
       dialog: false,
       course_id: 0,
-      newCourse: {}
+      newCourse: {
+        direction: [],
+        is_common: false,
+      }
     }
   },
   created() {
@@ -144,9 +147,22 @@ export default {
       })
     },
     submitEdit() {
-      this.$http.post('course/edit?id=' + this.course_id, this.newCourse).then(res => {
-
+      this.$confirm('确认提交本门课程？请仔细确认', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post('course/edit?id=' + this.course_id, this.newCourse).then(res => {
+          this.dialog = false
+          this.init(false)
+        })
       })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        })
     },
     handleEdit(isAdd, index, row) {
       this.dialog = true
@@ -158,13 +174,20 @@ export default {
           is_common: false
         }
       } else {
-        debugger
+        // debugger
         this.course_id = newCourse.id
-        this.newCourse = newCourse
-        this.newCourse.direction = newCourse.direction.map((item, index) => {
-          return item.id
-        })
-        this.newCourse.is_common = Boolean(newCourse.is_common)
+        for (var key in newCourse) {
+          if (key === 'direction') {
+            newCourse.direction.forEach((item, index) => {
+              this.newCourse.direction.push(item.id)
+            })
+          } else if (key === 'is_common') {
+            this.newCourse.is_common = Boolean(newCourse[key])
+          } else {
+            this.newCourse[key] = newCourse[key]
+          }
+        }
+
       }
     },
     handleDelete(index, row) {

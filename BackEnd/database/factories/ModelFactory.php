@@ -50,7 +50,6 @@ $factory->define(\App\Model\Direction::class, function ($faker) {
 });
 $factory->define(\App\Model\Grade::class, function ($faker) {
     return [
-        'id'=>1,
         'name' => 2013,
         'institute_id' => 1,
     ];

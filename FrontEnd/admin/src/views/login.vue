@@ -32,12 +32,6 @@ export default {
       }
     }
   },
-  watch: {
-
-  },
-  computed: {
-
-  },
   created() {
     this.$http.get('login/is-login')
   },
