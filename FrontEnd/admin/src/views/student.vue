@@ -9,7 +9,7 @@
   
         <el-input placeholder="搜索学生(支持姓名与学号搜索)"
                   icon="search"
-                  v-model="search"
+                  v-model="option.search"
                   style="width:300px;"
                   :on-icon-click="handleSearchClick">
         </el-input>
@@ -33,6 +33,8 @@
       </div>
       <el-table :data="student_list.data"
                 border
+                @filter-change="filterTag"
+                @sort-change="res=>{option.orderBy.prop = res.prop;option.orderBy.order = res.order}"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
         <el-table-column type="selection"
@@ -40,6 +42,7 @@
         </el-table-column>
         <el-table-column prop="id"
                          label="id"
+                         sortable
                          width="180">
         </el-table-column>
         <el-table-column prop="name"
@@ -48,6 +51,7 @@
         </el-table-column>
         <el-table-column prop="job_num"
                          label="学号"
+                         sortable
                          width="180">
         </el-table-column>
         <el-table-column prop="openid"
@@ -56,6 +60,9 @@
         </el-table-column>
         <el-table-column prop="direction"
                          label="方向"
+                         column-key="direction"
+                         :filters="[{ text: '家', value: '1' }, { text: '公司', value: '2' }]"
+      
                          width="180">
         </el-table-column>
         <el-table-column prop="class"
@@ -75,15 +82,37 @@
         </el-table-column>
       </el-table>
       <div class="block">
-        <el-pagination @current-change="studentPageInit"
-                       :current-page="student_list.current_page"
-                       :page-size="student_list.per_page"
+        <el-pagination @current-change="newPage=>{option.page = newPage}"
+                       @size-change="newPageSize=>{option.pageSize = newPageSize}"
+                       :current-page="option.page"
+                       :page-size="option.pageSize"
                        layout="total,sizes,prev, pager, next, jumper"
                        :total="student_list.total">
         </el-pagination>
       </div>
     </el-card>
+    <!--=========================================================dialog start===================================================================-->
+    <el-dialog title="学生"
+               v-model="dialog">
+      <!--班级对话框-->
+      <el-form :model="newStudent">
+        <el-form-item label="学生名">
+          <el-input placeholder="请输入学生名"
+                    v-model="newStudent.name"></el-input>
+        </el-form-item>
+        <el-form-item label="学号">
+          <el-input placeholder="请输入学号"
+                    v-model="newStudent.job_num"></el-input>
+        </el-form-item>
   
+      </el-form>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="dialog = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="submitEdit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -92,20 +121,35 @@ export default {
   data() {
     return {
       student_list: {},
-      search: '',
-      newStudent: {
+      option: {
+        search: '', // 搜索框内容
+        pageSize: 10,
+        page: 1,
+        orderBy: {
+          prop: 'job_num',
+          order: 'desc'
+        },
+        filter: {
+          key: '',
+          in: []
+        },
       },
-
+      multipleSelection: [], // 多选列
+      newStudent: {
+        name: '刘盛',
+        job_num: '201313759'
+      },
       dialog: false,
       dialogId: 0
     }
   },
   created() {
-    this.init({
-      page: 1
-    })
+    this.init(this.option)
   },
   methods: {
+    filterTag(){
+      debugger
+    },
     init(option, isLoading) {
       // 统一接口
       this.$http.get('student/student-init', {
@@ -117,9 +161,11 @@ export default {
     },
     addOne() {
       this.dialog = true
-      this.dialogType = type
       this.dialogId = 0
-      this.newStudent = {}
+      this.newStudent = {
+        name: '',
+        job_num: ''        
+      }
     },
     submitEdit() {
       this.$confirm('确认提交该操作？请仔细核对数据。', '提示', {
@@ -133,7 +179,6 @@ export default {
           }
         }).then(res => {
           this.dialog = false
-          this.studentPageInit(true)
         })
       }).catch(() => {
         this.$message({
@@ -146,10 +191,9 @@ export default {
     handleEdit(index, item, type) {
       this.dialog = true
       this.dialogId = item.id
-
-      this.newClasses.name = item.name
-      this.newClasses.major_id = Number(item.major_id)
-      this.newClasses.classes_code = item.classes_code
+      for(var key in item){
+        this.newStudent[key] = item[key]
+      }
 
     },
     handleDelete(index, item, type) {
@@ -159,7 +203,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$http.get('student/student-delete?id=' + item.id).then(res => {
-          this.classesPageInit(true)
+          this.init(this.option, true,)
         })
 
       }).catch(() => {
@@ -176,8 +220,9 @@ export default {
 
     },
     handleSelectionChange() {
+      debugger
+    },
 
-    }
   }
 }
 

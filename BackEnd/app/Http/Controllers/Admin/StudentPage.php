@@ -22,23 +22,29 @@ class StudentPage extends Controller
     }
 
     public function getStudentInit(){
-        $page = $this->makeStudentTable(request()->option);
+        $option = [
+            'search'=>[
+                'key'=> ['job_num','name'], // orwhere 查询
+                'rule'=> '759',
+            ],
+            'filter'=>[
+                ['major_id',[0,1,3]],
+            ],
+            'orderBy'=> [
+                'id'=>'asc'
+            ],
+            'size'=> 10,
+            'page'=> 1,
+        ];
 
-        $page['data'] = array_map( function($item) {
-            return $this->makeStudentItem($item);
-        }, $page['data']);
+        $page =$this->makePage(Student, $option);
+
+        // $page['data'] = array_map( function($item) {
+        //     return $this->makeStudentItem($item);
+        // }, $page['data']);
         $data['student_list'] = $page;
 
         return $this->json($data);
-    }
-    private function makeStudentTable($option){
-        request()->page = 10;
-        $handle = Student::where('institute_id', $this->institute_id);
-        if(!request()->sortBy){
-            $handle->orderBy('id','desc');
-        }
-        $page = $handle->paginate(20)->toArray();
-        return $page;
     }
     private function makeStudentItem($item){
         $direction_map = Direction::where('institute_id', $this->institute_id)
