@@ -86,6 +86,23 @@ class StudentPage extends Controller
         }else{
             return $this->errorMsg('请选择正确的文件类型');
         }
+    }
+    private function importStudent($excelPath){
+        $path = storage_path('app') . '/select-course/student_excel/test.xls';
+
+        $reader = new \PHPExcel_Reader_Excel2007();
+        $currentSheet = $reader->load($path)->getSheet(0);
+        $all = collect($currentSheet->toArray())->splice(1);
+        $import = [];
+        $all->each(function($item) use($import){
+          array_push(factory(Student::class)->make([
+              'name'=>$item[0],
+              'job_num'=>$item[1],
+              'classes_code'=>$item[2]
+          ]),$import) ;
+        Student::create($import);
+        });
+
 
     }
 }

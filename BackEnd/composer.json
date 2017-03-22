@@ -11,7 +11,8 @@
         "guzzlehttp/guzzle": "^6.2",
         "doctrine/dbal": "^2.5",
         "barryvdh/laravel-ide-helper": "^2.3",
-        "flexihash/flexihash": "^2.0"
+        "flexihash/flexihash": "^2.0",
+        "phpoffice/phpexcel": "^1.8"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
