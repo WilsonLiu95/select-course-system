@@ -20,11 +20,12 @@ abstract class Controller extends BaseController
                 // 'rule'=> '759',
             ],
             'filter'=>[
-                // ['direction_id',[1,2,3]],
-                // ['major_id',[1,3]],
+//                 'direction_id'=>[1,2,3],
+                // 'major_id'=>[1,3],
             ],
             'orderBy'=> [
-                // 'id'=>'asc'
+                'key'=>'id',
+                'order'=>'desc'
             ],
             'size'=> 20,
             'page'=> 1,
@@ -49,27 +50,35 @@ abstract class Controller extends BaseController
 		return response()->json($res, 400);
     }
 
-	public function makePage($handle, $option){
-
+	public function makePage($modelString, $option){ // 制表
         $option = $this->option->merge($option);
-//        $handle = $modelClass;
-        if(count($option['filter'])){ // 过滤filter
-            foreach($option['filter'] as $item){
-                $handle->whereIn($item[0], $item[1]);
+        $model = app($modelString); // 获取模型
+        $handle = $model->where(function($query)use($option){ // search关键词模糊匹配
+            if($option['search'] && $option['search']['rule']){ // 搜索规则
+                foreach ($option['search']['key'] as $key=>$item) {
+                    if($key==0){
+                        $query->where($item,'like','%'. $option['search']['rule'] .'%');
+                    }else{
+                        $query->orWhere($item,'like','%'. $option['search']['rule'] .'%');
+                    }
+                };
+
             }
+        });
+        if(count($option['orderBy'] )&& $option['orderBy']['key'] && $option['orderBy']['order']) { // 排序
+            $handle->orderBy($option['orderBy']['key'], $option['orderBy']['order']);
+
         }
-        if($option['search']['rule']){ // 搜索规则
-            foreach ($option['search']['key'] as $item) {
-                $handle->orWhere($item,'like','%'. $option['search']['rule'] .'%');
+        // 过滤filter
+
+        if(count($option['filter'])){
+            foreach($option['filter'] as $key=>$value){
+                $handle->whereIn($key, $value);
             }
-        }
-        if(count($option['orderBy'])){ // 排序规则
-            foreach ($option['orderBy'] as $key=>$value) {
-                $handle->orderBy($key, $value);
-            }
-        }
-        $page = $handle->paginate($option['size'], ['*'],'page',$option['page'])->toArray();
-        return $page;
+        };
+
+        $data = $handle->paginate($option['size'], ['*'],'page',$option['page'])->toArray();
+        return $data;
     }
 }
 

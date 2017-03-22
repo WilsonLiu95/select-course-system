@@ -26,24 +26,17 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-        Model\Student::where('institute_id', 1)
-            ->whereIn('grade_id',[1,2])->delete();
-        Model\Grade::where('institute_id', 1)
-            ->whereIn('id',[1,2])->delete();
-        Model\Classes::where('institute_id', 1)
-            ->whereIn('grade_id',[1,2])->delete();
-        Model\SelectCourse::where('institute_id', 1)
-            ->whereIn('grade_id',[1,2])->delete();
+        $data['t'] = Model\Student::where('direction_id','IN', [1])->get();
+        return $this->json($data);
     }
 
-    public function getFile(){
-        Cache::put('test',['a'=>2,"b"=>2],10);
+    public function getDelete(){
+        Model\Student::whereIn('grade_id',[1,2])->delete();
+        Model\Classes::whereIn('grade_id',[1,2])->delete();
+        Model\SelectCourse::whereIn('grade_id',[1,2])->delete();
     }
     public function getMail(){
-        $id = request()->id;
-        $user = Model\Student::find($id);
-        $job = (new SendReminderEmail($user));
-        $this->dispatch($job);
+
     }
 
 }

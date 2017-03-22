@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-
+import cookie from 'js-cookie'
 import routerConfig from './router'
 import config from '../config'
 import App from './App'
@@ -20,7 +20,9 @@ Vue.config.debug = true;
 
 // ======================配置路由===============================
 var router = new VueRouter(routerConfig)
-
+window.util = {
+  cookie: cookie
+}
 
 // ======================配置HTTP请求===============================
 var loading
