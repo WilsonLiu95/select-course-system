@@ -34,33 +34,7 @@ class InfoPage extends Controller
             ->first();
         return $this->json($data);
     }
-    public function postEdit(){
-        $this->validate(request(),[
-            'is_common_open'=> 'required|bool',
-            'is_direction_open'=> 'required|bool',
-            'min_common_credit'=> 'required|integer',
-            'max_common_credit'=> 'required|integer',
-            'min_direction_credit'=> 'required|integer',
-            'max_direction_credit'=> 'required|integer',
-        ]);
-        if(request()->min_common_credit > request()->max_common_credit){
-            return $this->errorMsg('公选课最低学分不能高于最高学分');
-        }
-        if(request()->min_direction_credit > request()->min_direction_credit){
-            return $this->errorMsg('专业方向选修课的最低学分不能高于最高学分');
-        }
-        $newConfig = request()->only('is_common_open','min_common_credit', 'max_common_credit',
-            'is_direction_open','min_direction_credit','max_direction_credit');
-        $updateResult = Institute::find($this->institute_id)->systemConfig()->update($newConfig);
 
-        if($updateResult){
-            $this->cacheSystemConfig($this->institute_id, true);
-            $this->cacheFlush($this->institute_id);
-            return $this->json(['msg'=>'更新成功']);
-        }else{
-            return $this->errorMsg('更新失败,请重试');
-        }
-    }
 //    ======================= 专业major相关操作====================================
     public function postMajorUpdate(){
         $this->validate(request(),[

@@ -57,46 +57,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <el-card class="box-card">
-      <div slot="header"
-           class="clearfix">
-        <span style="line-height: 36px;">系统设置</span>
-      </div>
-      <el-form ref="config"
-               :model="config"
-               label-width="180px">
-        <el-form-item label="公选课-最低学分">
-          <el-input v-model="config.min_common_credit"></el-input>
-        </el-form-item>
-        <el-form-item label="公选课-最高学分">
-          <el-input v-model="config.max_common_credit"></el-input>
-        </el-form-item>
-  
-        <el-form-item label="公选课">
-          <el-switch on-text="开放"
-                     off-text="关闭"
-                     v-model="config.is_common_open"></el-switch>
-        </el-form-item>
-  
-        <el-form-item label="专业方向选修课-最低学分">
-          <el-input v-model="config.min_direction_credit"></el-input>
-        </el-form-item>
-        <el-form-item label="专业方向选修课-最高学分">
-          <el-input v-model="config.max_direction_credit"></el-input>
-        </el-form-item>
-  
-        <el-form-item label="专业方向选修课">
-          <el-switch on-text="开放"
-                     off-text="关闭"
-                     v-model="config.is_direction_open"></el-switch>
-        </el-form-item>
-  
-        <el-form-item>
-          <el-button type="primary"
-                     @click="systemConfigEdit">确认</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
     <!--新增or修改的对话框 start-->
     <el-dialog :title="dialogType==='major' ? '专业':'专业方向'"
                v-model="dialog">
@@ -161,9 +121,6 @@ export default {
       this.$http.get('info', { noLoading: isLoading }).then(res => {
         this.major = res.data.major
         this.direction = res.data.direction
-        this.config = res.data.config
-        this.config.is_common_open = Boolean(this.config.is_common_open)
-        this.config.is_direction_open = Boolean(this.config.is_direction_open)
       })
     },
     addOne(type) {
@@ -236,9 +193,7 @@ export default {
       })
 
     },
-    systemConfigEdit() {
-      this.$http.post('info/edit', this.config)
-    },
+
   }
 }
 

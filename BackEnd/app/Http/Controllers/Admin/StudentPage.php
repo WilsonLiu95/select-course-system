@@ -26,7 +26,10 @@ class StudentPage extends Controller
 
     public function postStudentInit(){
         $option = request()->all();
-        $data['student_list'] = $this->makePage(Student::class, $option);
+        $option['where'] = [
+            ['institute_id','=',1], // 限制为自己学院
+        ];
+        $data['student_list'] = $this->makePage(Student::class, $option, false);
 
         // 制作映射关系
         $data['direction_map'] = Direction::where('institute_id', $this->institute_id)

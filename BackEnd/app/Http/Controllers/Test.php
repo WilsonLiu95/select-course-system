@@ -27,22 +27,23 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
-//        $path = storage_path('app') . '/select-course/student_excel/ins1_test.xlsx';
-//
-//        $reader = new \PHPExcel_Reader_Excel2007();
-//        return $this->json($reader->canRead($path));
-//        $currentSheet = $reader->load($path)->getSheet(0);
-//
-        $a = array_has([2=>1], 2);
 
-//array_has()
-        return $this->json($a);
+        // $data['a'] = Model\Course::find(52)->selectCourse()->withTrashed()->get();
+        // foreach ($data['a'] as $item) {
+
+        //     $c = $item->student()->withTrashed()->get();
+
+        //     $data['c'][] = $c;
+        // }
+        $data['stu'] = Model\Student::withTrashed()->where('id',46)->get();
+        return $this->json($data);
     }
 
 
     public function getDelete(){
         Model\Student::whereIn('grade_id',[1,2])->delete();
         Model\Classes::whereIn('grade_id',[1,2])->delete();
+        Model\Grade::whereIn('id',[1,2])->delete();
         Model\SelectCourse::whereIn('grade_id',[1,2])->delete();
     }
     public function getMakeExcel(){

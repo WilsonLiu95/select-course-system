@@ -29,7 +29,10 @@ abstract class Controller extends BaseController
             ],
             'size'=> 20,
             'page'=> 1,
-
+            'where'=>[
+                ['institute_id', '=', 1], // where筛选
+            ],
+            'col'=>'*', // 搜索哪些字段值
         ]);
 	}
 	public function json($data=array(),$http_code=200){
@@ -50,10 +53,19 @@ abstract class Controller extends BaseController
 		return response()->json($res, 400);
     }
 
-	public function makePage($modelString, $option){ // 制表
+	public function makePage($modelString, $option, $isWithTrashed=false){ // 制表
         $option = $this->option->merge($option);
         $model = app($modelString); // 获取模型
-        $handle = $model->where(function($query)use($option){ // search关键词模糊匹配
+        if($isWithTrashed){
+            $handle = $model->withTrashed()->select($option['col']);
+        }else{
+             // 经验证必须加入一道操作,否则后面的操作都不会生效,所以将字段select加在此处
+            $handle = $model->select($option['col']);
+        }
+        foreach($option['where'] as $item){
+         $handle->where($item[0],$item[1],$item[2]);
+        }
+        $handle->where(function($query)use($option){ // search关键词模糊匹配
             if($option['search'] && $option['search']['rule']){ // 搜索规则
                 foreach ($option['search']['key'] as $key=>$item) {
                     if($key==0){

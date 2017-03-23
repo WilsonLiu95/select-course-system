@@ -8,7 +8,8 @@
                   icon="search"
                   v-model="option.search.rule"
                   style="width:300px;"
-                  :on-icon-click="()=>{init(option, false)}">
+                  class="search-input"
+                  :on-icon-click="()=>{init(false)}">
         </el-input>
         <el-button @click="addOne('student')"
                    type="primary">新增学生</el-button>
@@ -154,12 +155,12 @@ export default {
     }
   },
   created() {
-    this.init(this.option, false)
+    this.init(false)
   },
   mounted() {
-    document.querySelector('.el-input__inner').addEventListener('keypress', (e) => {
+    document.querySelector('.search-input input').addEventListener('keypress', (e) => {
       if (e.keyCode === 13) { // 绑定回车事件
-        this.init(this.option, false)
+        this.init(false)
       }
     })
   },
@@ -176,13 +177,13 @@ export default {
   },
   watch: {
     isRenewData() { // 监听相关依赖，如果有变化，则触发更新
-      this.init(this.option, false)
+      this.init(false)
     }
   },
   methods: {
     fileUpload(res) {      
       this.$message({ message: res.msg, type: res.status? 'success':"error" })
-      this.init(this.option, true)
+      this.init(true)
     
   },
   filterChange(item) {
@@ -206,10 +207,10 @@ export default {
     }
     this[key] = tmp
   },
-  init(option, isLoading) {
+  init(noLoading) {
     // 统一接口
-    this.$http.post('student/student-init', option, {
-      noLoading: isLoading
+    this.$http.post('student/student-init', this.option, {
+      noLoading: noLoading
     }).then(res => {
       this.classes_map = res.data.classes_map
       this.direction_map = res.data.direction_map
@@ -263,7 +264,7 @@ export default {
       type: 'warning'
     }).then(() => {
       this.$http.post('student/delete', { student_list: student_list }).then(res => {
-        this.init(this.option, true)
+        this.init(true)
       })
     }).catch(() => {
       this.$message({
