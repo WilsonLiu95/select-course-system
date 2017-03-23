@@ -15,8 +15,10 @@
         <el-button @click="deleteStudent(multipleSelection)"
                    type="danger">删除选定学生</el-button>
         <el-upload :action="$http.defaults.baseURL + 'student/file'"
-                    name="excel"
-                    :headers="{'X-XSRF-TOKEN':token}"
+                   name="excel"
+                   :on-success='fileUpload'
+                   :on-error='err=>{$message({ message: "导入失败", type: "error" })}'
+                   :headers="{'X-XSRF-TOKEN':token}"
                    style="width:300px;float: right;">
           <el-button size="small"
                      type="primary">点击上传</el-button>
@@ -28,9 +30,9 @@
                 border
                 @filter-change="filterChange"
                 @sort-change="res=>{option.orderBy ={
-                              key: res.prop,
-                              order:res.order == 'descending' ? 'desc':'asc'
-                            } }"
+                                key: res.prop,
+                                order:res.order == 'descending' ? 'desc':'asc'
+                              } }"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
         <el-table-column type="selection"
@@ -127,7 +129,7 @@ export default {
       option: {
         search: {
           key: ['name', 'job_num'],
-          rule: "l"
+          rule: ""
         }, // 搜索框内容
         size: 20,
         page: 1,
@@ -178,106 +180,111 @@ export default {
     }
   },
   methods: {
-    filterChange(item) {
-      var tmp = {}
-      for (var key in this.option.filter) {
-        tmp[key] = this.option.filter[key]
-      }
-      for (var key in item) {
-        tmp[key] = item[key]
-      }
+    fileUpload(res) {      
+      this.$message({ message: res.msg, type: res.status? 'success':"error" })
+      this.init(this.option, true)
+    
+  },
+  filterChange(item) {
+    var tmp = {}
+    for (var key in this.option.filter) {
+      tmp[key] = this.option.filter[key]
+    }
+    for (var key in item) {
+      tmp[key] = item[key]
+    }
 
-      this.option.filter = tmp // 重新复制触发更新
-    },
-    makeFilters(key, data) {
-      var tmp = []
-      for (var index in data) {
-        tmp.push({
-          text: data[index],
-          value: Number(index)
-        })
-      }
-      this[key] = tmp
-    },
-    init(option, isLoading) {
-      // 统一接口
-      this.$http.post('student/student-init', option, {
-        noLoading: isLoading
+    this.option.filter = tmp // 重新复制触发更新
+  },
+  makeFilters(key, data) {
+    var tmp = []
+    for (var index in data) {
+      tmp.push({
+        text: data[index],
+        value: Number(index)
+      })
+    }
+    this[key] = tmp
+  },
+  init(option, isLoading) {
+    // 统一接口
+    this.$http.post('student/student-init', option, {
+      noLoading: isLoading
+    }).then(res => {
+      this.classes_map = res.data.classes_map
+      this.direction_map = res.data.direction_map
+      this.makeFilters('classes_filters', this.classes_map)
+      this.makeFilters('direction_filters', this.direction_map)
+      this.student_list = res.data.student_list
+    })
+  },
+  addOne() {
+    this.dialog = true
+    this.dialogId = 0
+    this.newStudent = {
+      name: '',
+      job_num: '',
+      classes_id: 0
+    }
+  },
+  submitEdit() {
+    this.$confirm('确认提交该操作？请仔细核对数据。', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      this.$http.post('student/student-submit', this.newStudent, {
+        params: {
+          id: this.dialogId,
+        }
       }).then(res => {
-        this.classes_map = res.data.classes_map
-        this.direction_map = res.data.direction_map
-        this.makeFilters('classes_filters', this.classes_map)
-        this.makeFilters('direction_filters', this.direction_map)
-        this.student_list = res.data.student_list
+        this.dialog = false
       })
-    },
-    addOne() {
-      this.dialog = true
-      this.dialogId = 0
-      this.newStudent = {
-        name: '',
-        job_num: '',
-        classes_id: 0
-      }
-    },
-    submitEdit() {
-      this.$confirm('确认提交该操作？请仔细核对数据。', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$http.post('student/student-submit', this.newStudent, {
-          params: {
-            id: this.dialogId,
-          }
-        }).then(res => {
-          this.dialog = false
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消操作'
-        });
+    }).catch(() => {
+      this.$message({
+        type: 'info',
+        message: '已取消操作'
+      });
+    })
+
+  },
+  handleEdit(index, item, type) {
+    this.dialog = true
+    this.dialogId = item.id
+    for (var key in this.newStudent) {
+      this.newStudent[key] = item[key]
+    }
+
+  },
+  deleteStudent(student_list) {
+    this.$confirm('确认删除选中的学生？请仔细确认', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      this.$http.post('student/delete', { student_list: student_list }).then(res => {
+        this.init(this.option, true)
       })
-
-    },
-    handleEdit(index, item, type) {
-      this.dialog = true
-      this.dialogId = item.id
-      for (var key in this.newStudent) {
-        this.newStudent[key] = item[key]
-      }
-
-    },
-    deleteStudent(student_list) {
-      this.$confirm('确认删除选中的学生？请仔细确认', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$http.post('student/delete', { student_list: student_list }).then(res => {
-          this.init(this.option, true)
-        })
-      }).catch(() => {
-        this.$message({
-          message: '已取消操作',
-          type: 'info',
-        })
+    }).catch(() => {
+      this.$message({
+        message: '已取消操作',
+        type: 'info',
       })
+    })
 
-    },
+  },
 
-    handleSelectionChange(list) {
-      var tmp = []
-      list.forEach(item => {
-        tmp.push(item.id)
-      })
-      this.multipleSelection = tmp
-    },
-    submitUpload() {
+  handleSelectionChange(list) {
+    var tmp = []
+    list.forEach(item => {
+      tmp.push(item.id)
+    })
+    this.multipleSelection = tmp
+  },
+  submitUpload() {
 
-    },
-  }
+  },
+}
 }
 
 </script>

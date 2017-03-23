@@ -27,10 +27,16 @@ class Test extends Controller
     use BaseTrait;
     public function getIndex()
     {
+//        $path = storage_path('app') . '/select-course/student_excel/ins1_test.xlsx';
+//
+//        $reader = new \PHPExcel_Reader_Excel2007();
+//        return $this->json($reader->canRead($path));
+//        $currentSheet = $reader->load($path)->getSheet(0);
+//
+        $a = array_has([2=>1], 2);
 
-        $classes_map = Model\Classes::where('institute_id', 1)
-            ->select('id','classes_code','major_id');
-        return $this->json($classes_map);
+//array_has()
+        return $this->json($a);
     }
 
 

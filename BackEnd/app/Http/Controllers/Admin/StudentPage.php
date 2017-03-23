@@ -81,8 +81,7 @@ class StudentPage extends Controller
                 $name = 'ins' . $this->institute_id . '_' . request()->file('excel')->getClientOriginalName();
                 $path = storage_path('app') . '/select-course/student_excel/'. $name;
                 request()->file('excel')->move(storage_path('app') . '/select-course/student_excel/', $name);
-                return $this->json($this->importStudent($path));
-
+                return $this->importStudent($path);
             }else{
                 return $this->errorMsg('文件无效');
             }
@@ -91,8 +90,11 @@ class StudentPage extends Controller
         }
     }
     private function importStudent($excelPath){ // 处理用于上传的excel
-
-        $sheet = (new \PHPExcel_Reader_Excel2007())->load($excelPath)->getSheet(0);
+        $phpexcel = new \PHPExcel_Reader_Excel2007();
+        if(!$phpexcel->canRead($excelPath)){
+            return ['msg'=> '不可读,仅支持EXCEL2007及以上的版本','status'=>false];
+        }
+        $sheet = $phpexcel->load($excelPath)->getSheet(0);
         $highestRow = $sheet->getHighestRow();
 
         $sheetHeader = $sheet->rangeToArray(
@@ -104,28 +106,45 @@ class StudentPage extends Controller
             NULL,TRUE,FALSE
         );
         if($sheetHeader[0] !== ['姓名','学号','班级代号']){
-            return '输入格式请规范,A1:姓名,A2:学号,A3:班级代号';
+            return ['msg'=>'输入格式请规范,A1:姓名,A2:学号,A3:班级代号','status'=>false];
         }
         $insert = [];
-        $grade_id = Grade::where('institute_id', $this->institute_id)->value('id');
         $classes_map = Classes::where('institute_id', $this->institute_id)
             ->lists('id','classes_code')->toArray();
         $major_map = Classes::where('institute_id', $this->institute_id)
             ->lists('major_id','classes_code')->toArray();
         $major_map[0] = 0;
         $classes_map[0] = 0;
+        $create_at = date("Y-m-d H:i:s");
 
+        $student = [ // 通用模板
+            'created_at'=>$create_at,
+            'updated_at'=>$create_at,
+            'institute_id'=>$this->institute_id,
+            'grade_id'=>Grade::where('institute_id', $this->institute_id)->value('id'),
+        ];
         foreach( $sheetbody as $key=>$item) {
-            $insert[$key]['created_at'] = date("Y-m-d H:i:s");
-            $insert[$key]['updated_at'] = $insert[$key]['created_at'];
-            $insert[$key]['name'] = $item[0];
-            $insert[$key]['job_num'] = $item[1];
-            $insert[$key]['classes_code'] = $item[2];
-            $insert[$key]['major_id'] = $major_map[$item[2]];
-            $insert[$key]['classes_id'] = $classes_map[$item[2]];
-            $insert[$key]['institute_id'] = $this->institute_id;
-            $insert[$key]['grade_id'] = $grade_id;
+            if($item[0] && $item[1] && $item[2]){
+                $student['name'] = $item[0];
+                $student['job_num'] = $item[1];
+                $student['classes_code'] = $item[2];
+                if($major_map[$item[2]] && $classes_map[$item[2]]){
+                    $student['major_id'] = $major_map[$item[2]];
+                    $student['classes_id'] = $classes_map[$item[2]];
+                    if(Student::where('institute_id',$this->institute_id)->where('job_num', $item[1])->count()){
+                        return ['status'=>false,'msg'=>'请检查第'.($key+1) . '条数据,数据库中已存在该学号的学生,请校验'];
+                    }else{
+                        $insert[] = $student; // 压入待插入的数组
+                    }
+
+                }else{
+                    return ['status'=>false,'msg'=>'请检查第'.($key+1) . '条数据,班级代号出错'];
+                }
+            }else{
+                return ['status'=>false,'msg'=>'请检查第'. ($key+1) . '条数据,数据不能为空,且班级代号不能为0'];
+            }
         }
-        Student::insert($insert);
+        $result = Student::insert($insert);
+        return ['status'=>$result, 'msg'=> ($result?'数据全部导入成功':'数据插入失败')];
     }
 }
