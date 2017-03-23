@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model;
+use Faker\Provider\zh_TW\DateTime;
 use Flexihash\Flexihash;
 use GuzzleHttp\Cookie\SessionCookieJar;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,38 +20,17 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Wechat\BaseTrait;
 use Illuminate\Support\Facades\Storage;
-use App\Jobs\SendReminderEmail;
+use \PHPExcel_IOFactory;
 use \PHPExcel;
 class Test extends Controller
 {
     use BaseTrait;
     public function getIndex()
     {
-//        $path = storage_path('app') . '/select-course/student_excel/test.xls';
-//
-//        $reader = new \PHPExcel_Reader_Excel2007();
-//        $currentSheet = $reader->load($path)->getSheet(0);
-////        $data['all'] = $currentSheet->toArray();
-//        $all = collect($currentSheet->toArray());
-//        $data['ee'] = $all->splice(1);
 
-        $path = storage_path('app') . '/select-course/student_excel/test.xls';
-
-        $reader = new \PHPExcel_Reader_Excel2007();
-        $currentSheet = $reader->load($path)->getSheet(0);
-        $all = collect($currentSheet->toArray())->splice(1);
-        $import = [];
-        $all->each(function($item,$index) use($import) {
-           $one = factory(Model\Student::class)->create([
-                'name' => $item[0],
-                'job_num' => $item[1],
-                'classes_code' => $item[2]
-            ]);
-            $import[] = $one;
-            
-        });
-        // $res = Model\Student::create($import);
-        // return $this->json($res);
+        $classes_map = Model\Classes::where('institute_id', 1)
+            ->select('id','classes_code','major_id');
+        return $this->json($classes_map);
     }
 
 

@@ -6,6 +6,8 @@ use App\Model\Classes;
 use App\Model\Direction;
 use App\Model\Grade;
 use App\Model\Student;
+use Faker\Provider\DateTime;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -77,9 +79,10 @@ class StudentPage extends Controller
         if(request()->hasFile('excel')){
             if(request()->file('excel')->isValid()){
                 $name = 'ins' . $this->institute_id . '_' . request()->file('excel')->getClientOriginalName();
-
+                $path = storage_path('app') . '/select-course/student_excel/'. $name;
                 request()->file('excel')->move(storage_path('app') . '/select-course/student_excel/', $name);
-                return $this->json(['isSuccess'=>true]);
+                return $this->json($this->importStudent($path));
+
             }else{
                 return $this->errorMsg('文件无效');
             }
@@ -87,22 +90,42 @@ class StudentPage extends Controller
             return $this->errorMsg('请选择正确的文件类型');
         }
     }
-    private function importStudent($excelPath){
-        $path = storage_path('app') . '/select-course/student_excel/test.xls';
+    private function importStudent($excelPath){ // 处理用于上传的excel
 
-        $reader = new \PHPExcel_Reader_Excel2007();
-        $currentSheet = $reader->load($path)->getSheet(0);
-        $all = collect($currentSheet->toArray())->splice(1);
-        $import = [];
-        $all->each(function($item) use($import){
-          array_push(factory(Student::class)->make([
-              'name'=>$item[0],
-              'job_num'=>$item[1],
-              'classes_code'=>$item[2]
-          ]),$import) ;
-        Student::create($import);
-        });
+        $sheet = (new \PHPExcel_Reader_Excel2007())->load($excelPath)->getSheet(0);
+        $highestRow = $sheet->getHighestRow();
 
+        $sheetHeader = $sheet->rangeToArray(
+            'A1:' . 'C' . 1,
+            NULL,TRUE,FALSE
+        );
+        $sheetbody = $sheet->rangeToArray(
+            'A2:' . 'C' . $highestRow,
+            NULL,TRUE,FALSE
+        );
+        if($sheetHeader[0] !== ['姓名','学号','班级代号']){
+            return '输入格式请规范,A1:姓名,A2:学号,A3:班级代号';
+        }
+        $insert = [];
+        $grade_id = Grade::where('institute_id', $this->institute_id)->value('id');
+        $classes_map = Classes::where('institute_id', $this->institute_id)
+            ->lists('id','classes_code')->toArray();
+        $major_map = Classes::where('institute_id', $this->institute_id)
+            ->lists('major_id','classes_code')->toArray();
+        $major_map[0] = 0;
+        $classes_map[0] = 0;
 
+        foreach( $sheetbody as $key=>$item) {
+            $insert[$key]['created_at'] = date("Y-m-d H:i:s");
+            $insert[$key]['updated_at'] = $insert[$key]['created_at'];
+            $insert[$key]['name'] = $item[0];
+            $insert[$key]['job_num'] = $item[1];
+            $insert[$key]['classes_code'] = $item[2];
+            $insert[$key]['major_id'] = $major_map[$item[2]];
+            $insert[$key]['classes_id'] = $classes_map[$item[2]];
+            $insert[$key]['institute_id'] = $this->institute_id;
+            $insert[$key]['grade_id'] = $grade_id;
+        }
+        Student::insert($insert);
     }
 }

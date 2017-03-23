@@ -129,7 +129,7 @@ export default {
           key: ['name', 'job_num'],
           rule: "l"
         }, // 搜索框内容
-        size: 10,
+        size: 20,
         page: 1,
         orderBy: {
           key: 'id',

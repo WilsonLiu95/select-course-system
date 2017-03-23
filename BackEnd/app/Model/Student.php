@@ -20,7 +20,7 @@ class Student extends Model
      *
      * @var array
      */
-    protected $guarded = ['created_at','updated_at'];
+//    protected $guarded = ['created_at','updated_at'];
 
     public function account(){
         $orign = $this->toArray();
