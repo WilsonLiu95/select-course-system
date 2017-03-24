@@ -70,37 +70,22 @@
                    v-if="!now_grade_id"
                    type="primary">新建学年</el-button>
         <el-button @click="deleteCurrentGrade(multipleSelection)"
+                   v-if="now_grade_id"
                    type="danger">结束学年</el-button>
       </div>
       <el-table :data="course.data"
+                stripe
                 border
                 @sort-change="res=>{option.orderBy ={
-                                          key: res.prop,
-                                          order:res.order == 'descending' ? 'desc':'asc'
-                                        } }"
+                                            key: res.prop,
+                                            order:res.order == 'descending' ? 'desc':'asc'
+                                          } }"
                 style="width: 100%">
         <!--展开部分-->
         <el-table-column type="expand">
           <template scope="props">
-            <el-form label-position="left"
-                     
-                     class="demo-table-expand">
-              <el-form-item label="课程名">
-                <span>{{ props.row.title }}</span>
-              </el-form-item>
-              <el-form-item label="老师">
-                <span>{{ props.row.teacher }}</span>
-              </el-form-item>
-              <el-form-item label="所需人数">
-                <span>{{ props.row.required_number }}</span>
-              </el-form-item>
-              <el-form-item label="学分">
-                <span>{{ props.row.credit }}</span>
-              </el-form-item>
-              <el-form-item label="详情">
-                <span>{{ props.row.detail }}</span>
-              </el-form-item>
-            </el-form>
+              <span>学生名单： </span>
+              <el-button v-for="item in props.row.name_list">{{item}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="title"
@@ -119,10 +104,10 @@
         <el-table-column prop="required_number"
                          label="课堂容量">
         </el-table-column>
-        <el-table-column prop="required_number"
+        <el-table-column prop="current_num"
                          label="选中人数">
         </el-table-column>
-
+  
       </el-table>
       <div class="block">
         <el-pagination @current-change="newPage=>{option.page = newPage}"
@@ -159,7 +144,7 @@ export default {
         page: 1,
         orderBy: {
           key: 'id',
-          order: 'desc'
+          order: 'asc'
         },
         filter: {},
       },
@@ -222,7 +207,7 @@ export default {
       this.$http.post('home/course?grade_id=' + this.grade_id, this.option, {
         noLoading: noLoading
       }).then(res => {
-        this.course = res.data.course
+        this.course = res.data
       })
     },
     systemConfigEdit() {

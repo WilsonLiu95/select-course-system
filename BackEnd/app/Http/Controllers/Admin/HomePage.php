@@ -35,7 +35,7 @@ class HomePage extends Controller
         $data['grade_map'] = Grade::withTrashed()->where('institute_id',$this->institute_id)
             ->lists('name','id')
             ;
-        $data['current_grade'] = Institute::find($this->institute_id)->grade()->select('id','name')->first();
+        $data['now_grade_id'] = Institute::find($this->institute_id)->grade()->value('id');
         return $this->json($data);
     }
     public function postCourse(){
@@ -43,29 +43,22 @@ class HomePage extends Controller
         $option['where'] = [
             ['institute_id','=',$this->institute_id], // 限制为自己学院
         ];
-        $grade_id = Institute::find($this->institute_id)->grade()->select('id','name')->first();
+        $option['col'] = ['id','course_code','credit','institute_id','required_number','teacher','title'];
         $course = $this->makePage(Course::class, $option, true);//允许查看软删除的数据
         $course['data'] = array_map(function($item){
-            $selects = SelectCourse::withTrashed()
-                ->where('course_id', $item['id'])
+            $selects = SelectCourse::where('course_id', $item['id'])
                 ->get()->toArray();
-            $item['name_list'] = 'ee';
+            $item['name_list'] = [];
+//            $item['current_num'] = $this->cacheSelectCourseNum($this->institute_id,$item['id']);
             foreach($selects as $select){
-                $item['name_list'].=Student::withTrashed()->where('id',$select['id'])->value('name');
+                $name = Student::where('id',$select['id'])->value('name');
+                if($name){
+                    $item['name_list'][] = $name;
+                }
+
             }
-
             return $item;
-
         },$course['data']);
-
-//            $item['test']= [];
-
-//                foreach($selects as $select){
-
-//                }
-            // $item['test'] = $a;
-
-
         return $this->json($course);
     }
 

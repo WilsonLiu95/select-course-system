@@ -25,14 +25,14 @@ abstract class Controller extends BaseController
             ],
             'orderBy'=> [
                 'key'=>'id',
-                'order'=>'desc'
+                'order'=>'asc'
             ],
             'size'=> 20,
             'page'=> 1,
             'where'=>[
                 ['institute_id', '=', 1], // where筛选
             ],
-            'col'=>'*', // 搜索哪些字段值
+            'col'=>'*', // 搜索哪些字段值,为数组
         ]);
 	}
 	public function json($data=array(),$http_code=200){
@@ -89,7 +89,8 @@ abstract class Controller extends BaseController
             }
         };
 
-        $data = $handle->paginate($option['size'], ['*'],'page',$option['page'])->toArray();
+        $data1 = $handle->paginate($option['size'], ['*'],'page',$option['page']);
+        $data = $data1->toArray();
         return $data;
     }
 }

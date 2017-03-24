@@ -4,8 +4,10 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use \App\Http\Controllers\CacheHandle;
 class Course extends Model
 {
+    use CacheHandle;
     use SoftDeletes;
     protected $table = 'course';
     protected $dates = ['deleted_at'];
@@ -16,6 +18,7 @@ class Course extends Model
      */
     protected $fillable = [];
     protected $hidden = ['pivot'];
+    protected $appends = ['current_num'];
     /**
      * 不可被批量赋值的属性。
      *
@@ -37,5 +40,7 @@ class Course extends Model
     {
         return $this->hasMany('App\Model\SelectCourse');
     }
-
+    public function getCurrentNumAttribute(){
+        return $this->cacheSelectCourseNum($this->attributes['institute_id'], $this->attributes['id']);
+    }
 }
