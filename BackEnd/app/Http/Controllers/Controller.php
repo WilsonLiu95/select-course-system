@@ -53,13 +53,19 @@ abstract class Controller extends BaseController
 		return response()->json($res, 400);
     }
 
-	public function makePage($modelString, $option){ // 制表
+	public function makePage($modelString, $optionOrign){ // 制表
+        $option = $this->option->merge($optionOrign);
+        $handle = $this->makePageHandle($modelString, $option);
+        $data = $handle->paginate($option['size'], ['*'],'page',$option['page'])->toArray();
+        return $data;
+    }
+    public function makePageHandle($modelString, $option){
         $option = $this->option->merge($option);
         $model = app($modelString); // 获取模型
-         // 经验证必须加入一道操作,否则后面的操作都不会生效,所以将字段select加在此处
+        // 经验证必须加入一道操作,否则后面的操作都不会生效,所以将字段select加在此处
         $handle = $model->select($option['col']);
         foreach($option['where'] as $item){
-         $handle->where($item[0],$item[1],$item[2]);
+            $handle->where($item[0],$item[1],$item[2]);
         }
         $handle->where(function($query)use($option){ // search关键词模糊匹配
             if($option['search'] && $option['search']['rule']){ // 搜索规则
@@ -84,9 +90,7 @@ abstract class Controller extends BaseController
                 $handle->whereIn($key, $value);
             }
         };
-
-        $data = $handle->paginate($option['size'], ['*'],'page',$option['page'])->toArray();
-        return $data;
+        return $handle;
     }
 }
 

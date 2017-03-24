@@ -51,12 +51,12 @@
     </el-card>
     <!--=========================================================班级管理 end===================================================================-->
     <!--=========================================================dialog start===================================================================-->
-    <el-dialog title="课程"
+    <el-dialog title="班级"
                v-model="dialog">
       <!--班级对话框-->
       <el-form :model="newClasses">
-        <el-form-item label="课程名">
-          <el-input placeholder="请输入课程名称"
+        <el-form-item label="班级名称">
+          <el-input placeholder="请输入班级名称"
                     v-model="newClasses.name"></el-input>
         </el-form-item>
         <el-form-item label="班级代号">

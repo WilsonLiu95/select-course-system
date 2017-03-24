@@ -20,7 +20,10 @@ class SelectResult extends Controller
     public function getIndex(){
         $has_select_common_course = $this->getSessionInfo('has_select_common_course');
         $has_select_direction_course = $this->getSessionInfo('has_select_direction_course');
-        $major_course = $this->cacheMajorCourse($this->account['institute_id'], $this->account['major_id']);
+        // 有坑， 若学生已经选择了选修方向及课程，管理员更改其班级，导致专业变更，变更后的专业无法选择该方向，将造成此处出问题
+        //  因此这里不做专业限制，以保证显示正常
+        // $major_course = $this->cacheMajorCourse($this->account['institute_id'], $this->account['major_id']);
+        $major_course = $this->cacheMajorCourse($this->account['institute_id'], 0);
         $direction_course = array_first($major_course,function($k, $v){
             return $v['id'] == $this->account['direction_id'];
         });

@@ -9,18 +9,13 @@ class Student extends Model
     use SoftDeletes;
     protected $table = 'student';
     protected $dates = ['deleted_at'];
-    /**
-     * 可以被批量赋值的属性。
-     *
-     * @var array
-     */
-    protected $fillable = [];
+
     /**
      * 不可被批量赋值的属性。
      *
      * @var array
      */
-//    protected $guarded = ['created_at','updated_at'];
+    protected $guarded = [];
 
     public function account(){
         $orign = $this->toArray();

@@ -48,17 +48,7 @@
     <el-card class="box-card">
       <div slot="header"
            class="clearfix">
-        <span style="line-height: 36px;">查看学年： </span>
-        <el-select v-model="grade_id"
-                   placeholder="请选择">
-          <el-option-group v-for="group in options3"
-                           :label="group.label">
-            <el-option v-for="item in group.options"
-                       :label="item.label"
-                       :value="item.value">
-            </el-option>
-          </el-option-group>
-        </el-select>
+  
         <el-input placeholder="搜索课程(支持课程名称，课程编号，课程老师搜索)"
                   icon="search"
                   class="search-input"
@@ -67,33 +57,32 @@
                   :on-icon-click="()=>{getCourse(option, false)}">
         </el-input>
         <el-button @click="addOneGrade()"
-                   v-if="!now_grade_id"
+                   v-if="now_grade.id==0"
                    type="primary">新建学年</el-button>
-        <el-button @click="deleteCurrentGrade(multipleSelection)"
-                   v-if="now_grade_id"
+        <el-button @click="deleteCurrentGrade"
+                   v-if="now_grade.id"
                    type="danger">结束学年</el-button>
       </div>
       <el-table :data="course.data"
                 stripe
                 border
                 @sort-change="res=>{option.orderBy ={
-                                            key: res.prop,
-                                            order:res.order == 'descending' ? 'desc':'asc'
-                                          } }"
+                                                key: res.prop,
+                                                order:res.order == 'descending' ? 'desc':'asc'
+                                              } }"
                 style="width: 100%">
         <!--展开部分-->
         <el-table-column type="expand">
           <template scope="props">
-              <span>学生名单： </span>
-              <el-button v-for="item in props.row.name_list">{{item}}</el-button>
+            <span>学生名单： </span>
+            <el-button v-for="item in props.row.name_list">{{item}}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="title"
                          label="课程名">
         </el-table-column>
         <el-table-column prop="course_code"
-                         label="课程编码"
-                         sortable>
+                         label="课程编码">
         </el-table-column>
         <el-table-column prop="teacher"
                          label="老师">
@@ -105,6 +94,7 @@
                          label="课堂容量">
         </el-table-column>
         <el-table-column prop="current_num"
+                         sortable
                          label="选中人数">
         </el-table-column>
   
@@ -128,13 +118,7 @@ export default {
     return {
       config: {},
       course: {},
-      grade_id: 3, // 当前查看的grade_id
-      now_grade_id: 3, // 现在生效的grade_id
-      grade_mao: {
-        1: '2015',
-        2: '2016',
-        3: '2017'
-      },
+      now_grade: {},
       option: {
         search: {
           key: ['teacher', 'title', 'course_code'],
@@ -143,27 +127,11 @@ export default {
         size: 20,
         page: 1,
         orderBy: {
-          key: 'id',
-          order: 'asc'
+          key: 'current_num',
+          order: 'desc'
         },
         filter: {},
       },
-      options3: [{
-        label: '当前年份',
-        options: [{
-          value: 3,
-          label: '2017'
-        }]
-      }, {
-        label: '历史年份',
-        options: [{
-          value: 1,
-          label: '2015'
-        }, {
-          value: 2,
-          label: '2016'
-        }]
-      }],
     }
   },
   created() {
@@ -184,7 +152,6 @@ export default {
       for (var key in this.option) {
         tmp.push(this.option[key])
       }
-      tmp.push(this.grade_id)
       return tmp
     }
   },
@@ -199,15 +166,22 @@ export default {
         this.config = res.data.config
         this.config.is_common_open = Boolean(this.config.is_common_open)
         this.config.is_direction_open = Boolean(this.config.is_direction_open)
-        this.now_grade_id = res.data.now_grade_id
-        this.grade_map = res.data.grade_map
       })
     },
     getCourse(noLoading) {
-      this.$http.post('home/course?grade_id=' + this.grade_id, this.option, {
-        noLoading: noLoading
+      this.$http.get('home/course', {
+        noLoading: noLoading,
+        params: {
+          option: JSON.stringify(this.option)
+        },
       }).then(res => {
-        this.course = res.data
+        if (!res.data.now_grade) { // 未创建学年
+          this.now_grade.id = 0
+        } else {
+          this.now_grade = res.data.now_grade
+          this.course = res.data.course
+        }
+
       })
     },
     systemConfigEdit() {
@@ -230,10 +204,40 @@ export default {
             message: '已取消操作'
           });
         })
-
       }
-
     },
+    deleteCurrentGrade() {
+      if (!this.now_grade.id) {
+        return false
+      }
+      this.$confirm('确认结束本学年，请确保已导出excel。如非必须请保持关闭选修课与公选课选课状态，直至下一学年。', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.post('home/delete').then(res => {
+          this.getCourse(true)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      })
+    },
+    addOneGrade() {
+      this.$prompt('请输入学年名称', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(({ value }) => {
+        this.$http.post('home/add-new-year', { grade_name: value })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });
+      });
+    }
   }
 
 }

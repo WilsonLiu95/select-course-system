@@ -15,7 +15,7 @@ class StudentTableSeeder extends Seeder
             1, 2, 3
         ];
         foreach ($grade_list as $item) {
-            factory(\App\Model\Student::class,247)->create([
+            factory(\App\Model\Student::class,250)->create([
                 'grade_id'=>$item
             ]);
         }

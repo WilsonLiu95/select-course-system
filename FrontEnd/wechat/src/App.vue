@@ -6,26 +6,26 @@
 </template>
 
 <script>
-  export default {
+export default {
 
-  };
+};
 
 </script>
 
 <style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  html,
-  body,
-  #app {
-    height: 100%;
-  }
-  .t-center{
-    text-align: center
-  }
+html,
+body,
+#app {
+  height: 100%;
+}
 
+.t-center {
+  text-align: center
+}
 </style>

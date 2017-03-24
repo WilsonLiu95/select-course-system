@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Http\Controllers\Wechat\BaseTrait;
 use App\Jobs\Job;
 use App\Model\SelectCourse;
 use Illuminate\Queue\SerializesModels;
@@ -10,11 +9,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Cache;
-
+use App\Http\Controllers\CacheHandle;
 class QueueOneCourse extends Job implements SelfHandling, ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
-    use BaseTrait;
+
+    use CacheHandle;
     protected $option;
     protected $isQuit;
     /**
@@ -64,8 +64,10 @@ class QueueOneCourse extends Job implements SelfHandling, ShouldQueue
             return false; // 直接返回
         }
 
-        // 课程未选满,继续选课,新增一条选课记录。理论上可以直接使用create,因为分发选课事件任务时,进行过检测筛选掉了已选课程
-        SelectCourse::create($this->option);
+        // 课程未选满,继续选课,新增一条选课记录。
+        // 理论上可以直接使用create,因为分发选课事件任务时,进行过检测筛选掉了已选课程
+        // 但为了确保无误 如果数据库存在对应的记录则不进行添加
+        SelectCourse::firstOrCreate($this->option);
         $this->handleCache(true, true);
     }
 

@@ -17,8 +17,8 @@ Route::group(['prefix' => 'wechat'], function(){
 
     Route::group(['middleware' => 'AuthOfWechat'], function(){
         // 将微信openid与student的记录绑定
-        Route::controller("/register","Wechat\Register");
-
+        Route::get("/register/is-login","Wechat\Register@getIsLogin")->name('is-login');
+        Route::post("/register","Wechat\Register@postIndex")->name('register');
         // 对student表的操作
         Route::controller("/account","Wechat\Account");
         Route::controller("/direction","Wechat\SelectDirection");

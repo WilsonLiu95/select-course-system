@@ -96,6 +96,8 @@
         </el-form-item>
         <el-form-item label="详情">
           <el-input placeholder="请输入详情"
+                    type="textarea"
+                    :rows="6"
                     v-model="newCourse.detail"></el-input>
         </el-form-item>
         <el-form-item label="是否为公选课">

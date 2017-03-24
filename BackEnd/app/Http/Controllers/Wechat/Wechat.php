@@ -39,7 +39,7 @@ class Wechat extends Controller
             // 用户已绑定过账号
             session()->put("id",$student->value('id'));
         }
-        return response()->json(['url'=> env("BASE_PATH"),],301);
+        return response()->json(['url'=> env("WE_BASE_PATH"),],301);
 
     }
 }

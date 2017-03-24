@@ -35,7 +35,7 @@ class Test extends Controller
 
         //     $data['c'][] = $c;
         // }
-        $data['stu'] = Model\Student::withTrashed()->where('id',46)->get();
+        $data = \DB::table('student')->count();
         return $this->json($data);
     }
 

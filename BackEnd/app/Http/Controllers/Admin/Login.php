@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class Login extends Controller
 {
 	public function postIndex()
-	    {
+	{
 		$account = request()->input("account");
 		$password = request()->input("password");
 		$admin = Admin::where("account",$account)->where("password",$password);

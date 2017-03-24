@@ -26,6 +26,7 @@ export default {
       institute: '电信学院',
     }
   },
+
 };
 
 </script>

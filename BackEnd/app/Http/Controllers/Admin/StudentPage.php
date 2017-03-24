@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Model\Classes;
 use App\Model\Direction;
 use App\Model\Grade;
+use App\Model\SelectCourse;
 use App\Model\Student;
 use Faker\Provider\DateTime;
 use Illuminate\Database\Eloquent\Model;
@@ -24,8 +25,8 @@ class StudentPage extends Controller
         $this->institute_id = session()->get('institute_id');
     }
 
-    public function postStudentInit(){
-        $option = request()->all();
+    public function getStudentInit(){
+        $option = \GuzzleHttp\json_decode(request()->input('option'),true);
         $option['where'] = [
             ['institute_id','=',1], // 限制为自己学院
         ];
@@ -52,7 +53,7 @@ class StudentPage extends Controller
         ]);
         $new = request()->only('name','job_num','classes_id');
         if(request()->classes_id){
-            $new['major_id'] = Classes::find(request()->classes_id)->major_id; // 更新majorId
+            $new['major_id'] = Student::find(request()->classes_id)->major_id; // 更新majorId
         }else{
             $new['major_id'] = 0;
         }
@@ -64,7 +65,7 @@ class StudentPage extends Controller
             // 新建的不写入classes_code 用以标识是手动创建
             $new['institute_id'] = $this->institute_id;
             $new['grade_id'] = Grade::where('institute_id', $this->institute_id)->value('id');
-            \App\Model\Classes::create($new);
+            \App\Model\Student::create($new);
         }
         $this->cacheFlush($this->institute_id);
         return $this->json(['msg'=>'修改成功']);
@@ -73,9 +74,11 @@ class StudentPage extends Controller
         $this->validate(request(),[
             'student_list'=>'required|array',
         ]);
+        SelectCourse::whereIn('student_id',request()->student_list)->forceDelete(); // 删除学生的同时,删除学生选课的数据
         Student::where('institute_id',$this->institute_id)
             ->whereIn('id', request()->student_list)
             ->forceDelete();
+
         return $this->json(['msg'=>'删除成功']);
     }
     public function postFile(){ // 上传excel

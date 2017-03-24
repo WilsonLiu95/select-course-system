@@ -209,8 +209,11 @@ export default {
   },
   init(noLoading) {
     // 统一接口
-    this.$http.post('student/student-init', this.option, {
-      noLoading: noLoading
+    this.$http.get('student/student-init',  {
+      noLoading: noLoading,
+      params:{
+        option: JSON.stringify(this.option)
+      }
     }).then(res => {
       this.classes_map = res.data.classes_map
       this.direction_map = res.data.direction_map
