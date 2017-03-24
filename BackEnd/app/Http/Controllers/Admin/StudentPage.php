@@ -29,7 +29,7 @@ class StudentPage extends Controller
         $option['where'] = [
             ['institute_id','=',1], // 限制为自己学院
         ];
-        $data['student_list'] = $this->makePage(Student::class, $option, false);
+        $data['student_list'] = $this->makePage(Student::class, $option);
 
         // 制作映射关系
         $data['direction_map'] = Direction::where('institute_id', $this->institute_id)

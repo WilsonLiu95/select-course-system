@@ -24,7 +24,6 @@ class HomePage extends Controller
         parent::__construct();
         // 操作账户信息较多,默认生成
         $this->institute_id = session()->get('institute_id');
-
     }
 
     public function getConfig(){
@@ -43,13 +42,12 @@ class HomePage extends Controller
         $option['where'] = [
             ['institute_id','=',$this->institute_id], // 限制为自己学院
         ];
-        $option['col'] = ['id','course_code','credit','institute_id','required_number','teacher','title'];
-        $course = $this->makePage(Course::class, $option, true);//允许查看软删除的数据
+        $course = $this->makePage(Course::class, $option);//允许查看软删除的数据
         $course['data'] = array_map(function($item){
             $selects = SelectCourse::where('course_id', $item['id'])
                 ->get()->toArray();
             $item['name_list'] = [];
-//            $item['current_num'] = $this->cacheSelectCourseNum($this->institute_id,$item['id']);
+            $item['current_num'] = $this->cacheSelectCourseNum($this->institute_id,$item['id']);
             foreach($selects as $select){
                 $name = Student::where('id',$select['id'])->value('name');
                 if($name){

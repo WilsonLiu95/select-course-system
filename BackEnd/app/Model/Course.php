@@ -18,7 +18,6 @@ class Course extends Model
      */
     protected $fillable = [];
     protected $hidden = ['pivot'];
-    protected $appends = ['current_num'];
     /**
      * 不可被批量赋值的属性。
      *
@@ -40,7 +39,5 @@ class Course extends Model
     {
         return $this->hasMany('App\Model\SelectCourse');
     }
-    public function getCurrentNumAttribute(){
-        return $this->cacheSelectCourseNum($this->attributes['institute_id'], $this->attributes['id']);
-    }
+
 }
