@@ -142,7 +142,7 @@ export default {
       },
       classes_map: [],
       classes_filters: [],
-      direction_mao: [],
+      direction_map: [],
       direction_filters: [],
       multipleSelection: [], // 多选列
       newStudent: {
@@ -284,9 +284,6 @@ export default {
       tmp.push(item.id)
     })
     this.multipleSelection = tmp
-  },
-  submitUpload() {
-
   },
 }
 }

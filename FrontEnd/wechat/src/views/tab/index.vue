@@ -33,7 +33,6 @@ export default {
   },
   watch: {
     selected: function (selected) {
-      // debugger
       this.$router.push({ name: selected }) // 改变hash是为了重载该tab的组件，同时其他组件由于没有匹配路由规则被销毁
     }
   },

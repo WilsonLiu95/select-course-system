@@ -150,10 +150,6 @@ export default {
   font-size: 14px;
 }
 
-.tab-course .mint-cell-label {
-  /*font-size: 12px;*/
-}
-
 .tab-course .mint-cell-value {
   font-size: 12px;
 }

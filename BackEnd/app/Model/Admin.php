@@ -9,12 +9,6 @@ class Admin extends Model
     protected $table = 'admin';
     protected $dates = ['deleted_at'];
     /**
-     * 可以被批量赋值的属性。
-     *
-     * @var array
-     */
-    protected $fillable = [];
-    /**
      * 不可被批量赋值的属性。
      *
      * @var array
