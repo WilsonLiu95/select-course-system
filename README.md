@@ -24,7 +24,8 @@
 
 ## 应用链接
 微信端 http://select-course.wilsonliu.cn/FrontEnd/wechat/dist/#/register (请在微信中打开)
-PC端 http://select-course.wilsonliu.cn/FrontEnd/admin/dist/#/login (PC)
+
+PC端 http://select-course.wilsonliu.cn/FrontEnd/admin/dist/#/login 
 注：微信端需要使用姓名与学号登录，请在PC端登录后手动添加自己的姓名与学号(随便填写一个就好了)，再用自己添加的账号进行登录。
 ## TODO LIST
 1. cache中课程对应的选中人数为0，正在执行的队列任务要执行退选该门课程操作。导致课程人数为负。 解决方案：重新到DB中校对一次数据，再对用户退选操作进行处理
